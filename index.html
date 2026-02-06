@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a9396">
+    <title>بيكسل آرت | منصة التصميم الإبداعية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* متغيرات التصميم المتقدمة */
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --primary-gradient-dark: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            --secondary-color: #ee9b00;
+            --secondary-gradient: linear-gradient(135deg, #ee9b00, #ffb703);
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: rgba(255, 255, 255, 0.95);
+            --bg-primary-solid: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 24px 48px rgba(0, 0, 0, 0.2);
+            --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            --blur-bg: blur(20px);
+        }
+
+        /* إصلاحات التمرير والتصميم الأساسي */
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* خلفية الصفحة مع صورة محلية */
+        body {
+            background: 
+                linear-gradient(rgba(10, 147, 150, 0.85), rgba(0, 95, 115, 0.9)),
+                /* ضع رابط الصورة المحلية هنا */
+                url('background.jpg') center center / cover no-repeat fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        /* طبقة زجاجية متحركة للخلفية */
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(148, 210, 189, 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 70% 80%, rgba(14, 116, 144, 0.15) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        /* تحسينات لخلفية الصورة */
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        /* حاوية تسجيل الدخول بتأثير الزجاج */
+        .login-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-primary);
+            backdrop-filter: var(--blur-bg);
+            -webkit-backdrop-filter: var(--blur-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 1rem;
+            max-height: 95vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            animation: fadeInUp 0.8s var(--transition-medium) both;
+        }
+
+        /* رأس الصفحة مع تأثير تدرج متقدم */
+        .login-header {
+            background: var(--primary-gradient-dark);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("background.jpg");
+            opacity: 0.3;
+        }
+
+        /* شعار مع تأثيرات متحركة */
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-logo-icon {
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-logo h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(45deg, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        /* علامات التبويب */
+        .login-tabs {
+            display: flex;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: var(--blur-bg);
+            -webkit-backdrop-filter: var(--blur-bg);
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 1.25rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: width var(--transition-medium);
+        }
+
+        .login-tab.active {
+            background: rgba(10, 147, 150, 0.1);
+            color: var(--primary-color);
+        }
+
+        .login-tab.active::after {
+            width: 80%;
+        }
+
+        .login-tab:hover:not(.active) {
+            background: rgba(10, 147, 150, 0.05);
+            color: var(--text-primary);
+        }
+
+        /* نماذج الإدخال */
+        .login-form {
+            padding: 2.5rem 2rem;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .input-with-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            right: 1.25rem;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            transition: color var(--transition-fast);
+            z-index: 2;
+        }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 1.125rem 1.25rem 1.125rem 3.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            background: var(--bg-primary-solid);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all var(--transition-medium);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .input-with-icon input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(10, 147, 150, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .input-with-icon input:focus + i {
+            color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        /* اختيار نوع المستخدم */
+        .user-type-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .user-type-selection {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .user-type-selection {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .user-type-btn {
+            padding: 1.5rem 0.75rem;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary-solid);
+            border-radius: var(--radius-lg);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-type-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform var(--transition-medium);
+            transform-origin: right;
+        }
+
+        .user-type-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-type-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .user-type-btn.selected {
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.1), rgba(148, 210, 189, 0.2));
+            color: var(--primary-dark);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-type-btn.selected::before {
+            transform: scaleX(1);
+        }
+
+        .user-type-btn i {
+            font-size: 2rem;
+            transition: transform var(--transition-medium);
+        }
+
+        .user-type-btn:hover i,
+        .user-type-btn.selected i {
+            transform: scale(1.1);
+        }
+
+        .user-type-btn small {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .user-type-btn.selected small {
+            color: var(--primary-color);
+        }
+
+        .user-type-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* زر الإرسال */
+        .login-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: var(--primary-gradient-dark);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all var(--transition-medium);
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            letter-spacing: 0.5px;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .login-btn i {
+            transition: transform var(--transition-medium);
+        }
+
+        .login-btn:hover i {
+            transform: translateX(5px);
+        }
+
+        /* تذييل النموذج */
+        .form-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: color var(--transition-fast);
+        }
+
+        .form-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width var(--transition-medium);
+        }
+
+        .form-footer a:hover {
+            color: var(--primary-dark);
+        }
+
+        .form-footer a:hover::after {
+            width: 100%;
+        }
+
+        /* تحسينات للجوال */
+        @media (max-width: 640px) {
+            .login-container {
+                max-height: 90vh;
+                margin: 0.75rem;
+            }
+            
+            .login-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .login-form {
+                padding: 2rem 1.5rem;
+            }
+            
+            .login-logo h1 {
+                font-size: 1.875rem;
+            }
+            
+            .login-logo-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                border-radius: var(--radius-lg);
+            }
+            
+            .login-header {
+                padding: 1.75rem 1.25rem;
+            }
+            
+            .login-form {
+                padding: 1.75rem 1.25rem;
+            }
+            
+            .login-logo {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .login-logo h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* إصلاح التمرير */
+        .login-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .login-container::-webkit-scrollbar-track {
+            background: rgba(248, 250, 252, 0.8);
+            border-radius: 4px;
+        }
+
+        .login-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+            transition: background var(--transition-fast);
+        }
+
+        .login-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* رسائل التنبيه */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1rem 0;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            border-right: 4px solid;
+        }
+
+        .alert.error {
+            background: rgba(231, 111, 81, 0.1);
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .alert.success {
+            background: rgba(42, 157, 143, 0.1);
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        /* الرسوم المتحركة */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-overlay"></div>
+    
+    <div class="login-container" id="loginContainer">
+        <div class="login-header">
+            <div class="login-logo">
+                <div class="login-logo-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h1>بيكسل آرت</h1>
+            </div>
+            <p class="login-subtitle">منصة الإبداع الرقمي الأولى للتصميم</p>
+        </div>
+
+        <div class="login-tabs">
+            <button class="login-tab active" onclick="switchTab('login')">
+                <span>تسجيل الدخول</span>
+            </button>
+            <button class="login-tab" onclick="switchTab('register')">
+                <span>إنشاء حساب</span>
+            </button>
+        </div>
+
+        <!-- رسائل التنبيه -->
+        <div id="alertContainer" style="display: none;">
+            <!-- سيتم إضافة رسائل التنبيه هنا ديناميكيًا -->
+        </div>
+
+        <!-- نموذج تسجيل الدخول -->
+        <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="loginEmail">البريد الإلكتروني</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="example@pixelart.com" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="loginPassword">كلمة المرور</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="********" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>نوع المستخدم</label>
+                <div class="user-type-selection">
+                    <button type="button" class="user-type-btn selected" data-type="client">
+                        <i class="fas fa-briefcase"></i>
+                        <span>عميل</span>
+                        <small>أبحث عن خدمات تصميم</small>
+                    </button>
+                    <button type="button" class="user-type-btn" data-type="designer">
+                        <i class="fas fa-palette"></i>
+                        <span>مصمم</span>
+                        <small>أقدم خدمات التصميم</small>
+                    </button>
+                    <button type="button" class="user-type-btn" data-type="admin">
+                        <i class="fas fa-user-tie"></i>
+                        <span>مدير</span>
+                        <small>لوحة التحكم الإدارية</small>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <span>تسجيل الدخول</span>
+                <i class="fas fa-sign-in-alt"></i>
+            </button>
+
+            <div class="form-footer">
+                <a href="#" onclick="showForgotPassword()">نسيت كلمة المرور؟</a>
+                <span> | </span>
+                <a href="#" onclick="showDemoAccounts()">حسابات تجريبية</a>
+            </div>
+        </form>
+
+        <!-- نموذج إنشاء حساب -->
+        <form class="login-form" id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
+            <div class="form-group">
+                <label for="registerName">الاسم الكامل</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="registerName" placeholder="أحمد محمد" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="registerEmail">البريد الإلكتروني</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="registerEmail" placeholder="example@pixelart.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="registerPhone">رقم الهاتف</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="registerPhone" placeholder="967xxxxxxxx" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="registerPassword">كلمة المرور</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="registerPassword" placeholder="********" minlength="8" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>سأكون:</label>
+                <div class="user-type-selection">
+                    <button type="button" class="user-type-btn selected" data-type="client">
+                        <i class="fas fa-briefcase"></i>
+                        <span>عميل</span>
+                        <small>أرغب في طلب خدمات التصميم</small>
+                    </button>
+                    <button type="button" class="user-type-btn" data-type="designer">
+                        <i class="fas fa-palette"></i>
+                        <span>مصمم</span>
+                        <small>أقدم خدمات التصميم الاحترافية</small>
+                    </button>
+                    <button type="button" class="user-type-btn" data-type="admin" disabled>
+                        <i class="fas fa-user-tie"></i>
+                        <span>مدير</span>
+                        <small>للموظفين المخولين فقط</small>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <span>إنشاء حساب</span>
+                <i class="fas fa-user-plus"></i>
+            </button>
+
+            <div class="form-footer">
+                <p>بالنقر على "إنشاء حساب" فإنك توافق على <a href="#" onclick="showTerms()">الشروط والأحكام</a> و <a href="#" onclick="showPrivacy()">سياسة الخصوصية</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // البيانات الأولية للمستخدمين
+        const users = {
+            client: {
+                email: "client@pixelart.com",
+                password: "client123",
+                name: "سهام ",
+                type: "client",
+                phone: "0551234567"
+            },
+            designer: {
+                email: "heyam@pixelart.com",
+                password: "heyam123",
+                name: "هيام حسن",
+                type: "designer",
+                phone: "0557654321"
+            },
+            client: {
+                email: "seham@pixelart.com",
+                password: "seham123",
+                name: " سهام",
+                type: "client",
+                phone: "0551234567"
+            },
+            designer: {
+                email: "designer@pixelart.com",
+                password: "designer123",
+                name: "هيام حسن",
+                type: "designer",
+                phone: "0557654321"
+            },
+            admin: {
+                email: "admin@pixelart.com",
+                password: "admin123",
+                name: "محمد المدير",
+                type: "admin",
+                phone: "0559876543"
+            },
+            admin: {
+                email: "fatima@pixelart.com",
+                password: "fatima123",
+                name: "فاطمة المديرة",
+                type: "admin",
+                phone: "0559876543"
+            }
+        };
+
+        let currentUserType = 'client';
+
+        // عرض رسالة تنبيه
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertHTML = `
+                <div class="alert ${type}" id="${alertId}">
+                    ${message}
+                </div>
+            `;
+            
+            alertContainer.innerHTML = alertHTML;
+            alertContainer.style.display = 'block';
+            
+            // إخفاء الرسالة بعد 5 ثوانٍ
+            setTimeout(() => {
+                const alertElement = document.getElementById(alertId);
+                if (alertElement) {
+                    alertElement.style.opacity = '0';
+                    alertElement.style.transform = 'translateX(-20px)';
+                    setTimeout(() => {
+                        alertContainer.style.display = 'none';
+                        alertContainer.innerHTML = '';
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // تبديل بين تسجيل الدخول وإنشاء حساب
+        function switchTab(tabName) {
+            // تحديث علامات التبويب
+            document.querySelectorAll('.login-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // إخفاء رسائل التنبيه
+            document.getElementById('alertContainer').style.display = 'none';
+            
+            // تبديل النماذج
+            document.getElementById('loginForm').style.display = tabName === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tabName === 'register' ? 'block' : 'none';
+            
+            // إضافة تأثير ظهور
+            const activeForm = tabName === 'login' ? document.getElementById('loginForm') : document.getElementById('registerForm');
+            activeForm.style.animation = 'none';
+            setTimeout(() => {
+                activeForm.style.animation = 'fadeIn 0.5s ease-out';
+            }, 10);
+        }
+
+        // اختيار نوع المستخدم
+        document.querySelectorAll('.user-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.hasAttribute('disabled')) {
+                    // تحديث جميع الأزرار
+                    const isLoginTab = document.getElementById('loginForm').style.display !== 'none';
+                    const userTypeButtons = isLoginTab 
+                        ? document.querySelectorAll('#loginForm .user-type-btn')
+                        : document.querySelectorAll('#registerForm .user-type-btn');
+                    
+                    userTypeButtons.forEach(b => {
+                        b.classList.remove('selected');
+                    });
+                    
+                    // تحديد الزر المختار
+                    this.classList.add('selected');
+                    currentUserType = this.dataset.type;
+                }
+            });
+        });
+
+        // التحقق من صحة البريد الإلكتروني
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // التحقق من صحة رقم الهاتف (يمني)
+        function isValidPhone(phone) {
+            const phoneRegex = /^(967)[0-9]{8}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // معالجة تسجيل الدخول
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // التحقق من صحة البريد الإلكتروني
+            if (!isValidEmail(email)) {
+                showAlert('يرجى إدخال بريد إلكتروني صحيح');
+                return;
+            }
+            
+            // التحقق من كلمة المرور
+            if (password.length < 6) {
+                showAlert('كلمة المرور يجب أن تحتوي على الأقل 6 أحرف');
+                return;
+            }
+            
+            // محاكاة تحميل
+            const submitBtn = event.target.querySelector('.login-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الدخول...';
+            submitBtn.disabled = true;
+            
+            // محاكاة اتصال بالخادم
+            setTimeout(() => {
+                // التحقق من بيانات الدخول
+                let isValid = false;
+                let userData = null;
+                
+                for (const type in users) {
+                    if (users[type].email === email && users[type].password === password) {
+                        isValid = true;
+                        userData = users[type];
+                        break;
+                    }
+                }
+                
+                if (isValid && userData) {
+                    // حفظ بيانات المستخدم في localStorage
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    showAlert('تم تسجيل الدخول بنجاح! جاري التوجيه...', 'success');
+                    
+                    // توجيه المستخدم للوحة التحكم المناسبة بعد تأخير قصير
+                    setTimeout(() => {
+                        redirectToDashboard(userData.type);
+                    }, 1500);
+                } else {
+                    showAlert('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            }, 1500);
+        }
+
+        // معالجة إنشاء حساب
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const phone = document.getElementById('registerPhone').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            
+            // التحقق من صحة البيانات
+            if (!name || name.length < 2) {
+                showAlert('يرجى إدخال اسم صحيح (اسمين على الأقل)');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showAlert('يرجى إدخال بريد إلكتروني صحيح');
+                return;
+            }
+            
+            if (!isValidPhone(phone)) {
+                showAlert('يرجى إدخال رقم هاتف يمني صحيح (مثال: 967772835201)');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showAlert('كلمة المرور يجب أن تحتوي على الأقل 8 أحرف');
+                return;
+            }
+            
+            // محاكاة تحميل
+            const submitBtn = event.target.querySelector('.login-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إنشاء الحساب...';
+            submitBtn.disabled = true;
+            
+            // محاكاة اتصال بالخادم
+            setTimeout(() => {
+                // التحقق من عدم وجود حساب بنفس البريد الإلكتروني
+                let emailExists = false;
+                for (const type in users) {
+                    if (users[type].email === email) {
+                        emailExists = true;
+                        break;
+                    }
+                }
+                
+                if (emailExists) {
+                    showAlert('هذا البريد الإلكتروني مسجل بالفعل');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                // إنشاء حساب جديد
+                const newUser = {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    password: password,
+                    type: currentUserType,
+                    joinDate: new Date().toISOString(),
+                    status: 'active'
+                };
+                
+                // حفظ في localStorage (في التطبيق الحقيقي سيكون API)
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                showAlert('تم إنشاء حسابك بنجاح! جاري التوجيه...', 'success');
+                
+                // توجيه للوحة التحكم بعد تأخير قصير
+                setTimeout(() => {
+                    redirectToDashboard(currentUserType);
+                }, 1500);
+            }, 2000);
+        }
+
+        // توجيه المستخدم للوحة التحكم المناسبة
+        function redirectToDashboard(userType) {
+            switch(userType) {
+                case 'client':
+                    window.location.href = 'client/dashboard-client.html';
+                    break;
+                case 'designer':
+                    window.location.href = 'designer/dashboard-designer.html';
+                    break;
+                case 'admin':
+                    window.location.href = 'admin/dashboard-admin.html';
+                    break;
+                default:
+                    showAlert('نوع المستخدم غير معروف');
+            }
+        }
+
+        // عرض نافذة نسيت كلمة المرور
+        function showForgotPassword() {
+            const email = prompt('أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور:');
+            if (email && isValidEmail(email)) {
+                showAlert(`تم إرسال رابط إعادة التعيين إلى ${email}`, 'success');
+            } else if (email) {
+                showAlert('يرجى إدخال بريد إلكتروني صحيح');
+            }
+        }
+
+        // عرض الحسابات التجريبية
+        function showDemoAccounts() {
+            let message = 'الحسابات التجريبية المتاحة:\n\n';
+            for (const type in users) {
+                const user = users[type];
+                message += `${user.name}\nالبريد: ${user.email}\nكلمة المرور: ${user.password}\n\n`;
+            }
+            
+            alert(message);
+        }
+
+        // عرض الشروط والأحكام
+        function showTerms() {
+            alert('شروط وأحكام استخدام منصة بيكسل آرت:\n\n1. يجب أن تكون المعلومات المقدمة صحيحة وكاملة.\n2. يحق للمنصة تعليق الحساب في حال مخالفة الشروط.\n3. جميع الحقوق محفوظة لمنصة بيكسل آرت.');
+        }
+
+        // عرض سياسة الخصوصية
+        function showPrivacy() {
+            alert('سياسة الخصوصية:\n\n1. نحن نحترم خصوصيتك ونحافظ على سرية بياناتك.\n2. بياناتك الشخصية تستخدم فقط لتحسين تجربتك على المنصة.\n3. لن نشارك بياناتك مع أي طرف ثالث دون موافقتك.');
+        }
+
+        // التحقق من حالة تسجيل الدخول
+        window.addEventListener('load', function() {
+            // محاكاة تحميل الصفحة
+            setTimeout(() => {
+                const isLoggedIn = localStorage.getItem('isLoggedIn');
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                
+                if (isLoggedIn === 'true' && currentUser) {
+                    // عرض رسالة ترحيبية
+                    showAlert(`مرحباً بعودتك ${currentUser.name}!`, 'success');
+                    
+                    // توجيه للوحة التحكم بعد تأخير
+                    setTimeout(() => {
+                        redirectToDashboard(currentUser.type);
+                    }, 2000);
+                }
+            }, 1000);
+        });
+
+        // إضافة تأثيرات تفاعلية للحقول
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+
+        // تهيئة نوع المستخدم حسب النموذج النشط
+        function initUserTypeSelection() {
+            const isLoginTab = document.getElementById('loginForm').style.display !== 'none';
+            const defaultType = isLoginTab ? 'client' : 'client';
+            
+            const userTypeButtons = isLoginTab 
+                ? document.querySelectorAll('#loginForm .user-type-btn')
+                : document.querySelectorAll('#registerForm .user-type-btn');
+            
+            userTypeButtons.forEach(btn => {
+                if (btn.dataset.type === defaultType) {
+                    btn.classList.add('selected');
+                    currentUserType = defaultType;
+                }
+            });
+        }
+
+        // استدعاء تهيئة الاختيار عند التحميل
+        window.addEventListener('load', initUserTypeSelection);
+    </script>
+</body>
+</html>
