@@ -1,0 +1,2936 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إدارة المستخدمين | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* متغيرات التصميم */
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --info-color: #264653;
+            --dark-color: #1a1a2e;
+            --light-color: #f8fafc;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-dark: #1e293b;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --transition-fast: 200ms;
+            --transition-normal: 300ms;
+            --transition-slow: 500ms;
+        }
+
+        /* إعادة الضبط */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* شريط الحالة المخصص */
+        .status-bar {
+            height: 30px;
+            background: var(--dark-color);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .status-time {
+            font-weight: 600;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* الهيدر المحسن */
+        .app-header {
+            height: 70px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .app-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .app-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .app-logo-text h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .app-logo-text span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .user-badge {
+            background: linear-gradient(135deg, var(--info-color), #1d3557);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-badge i {
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-action {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: none;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all var(--transition-fast);
+        }
+
+        .header-action:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* البحث المتقدم */
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 45px 10px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 14px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all var(--transition-normal);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 25px 20px 90px 20px;
+            position: relative;
+        }
+
+        /* بطاقة إحصائيات المستخدمين */
+        .stats-card {
+            background: linear-gradient(135deg, var(--dark-color), var(--info-color));
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            color: white;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+        }
+
+        .stats-header {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-header h2 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .stats-filters {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-select option {
+            background: var(--dark-color);
+            color: white;
+        }
+
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .user-stat-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .user-stat-label i {
+            font-size: 12px;
+        }
+
+        .user-stat-value {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .user-stat-change {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .change-positive {
+            color: #4ade80;
+        }
+
+        .change-negative {
+            color: #f87171;
+        }
+
+        /* شريط أدوات التحكم */
+        .control-bar {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-left {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .control-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .control-btn.primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .control-btn.success {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+
+        .control-btn.warning {
+            background: var(--warning-color);
+            border-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .control-btn.danger {
+            background: var(--danger-color);
+            border-color: var(--danger-color);
+            color: white;
+        }
+
+        .bulk-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bulk-select {
+            width: 140px;
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* جدول المستخدمين المتقدم */
+        .users-table-container {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .users-table thead {
+            background: linear-gradient(135deg, var(--info-color), var(--dark-color));
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .users-table th {
+            padding: 15px;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .users-table th.sortable {
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .users-table th.sortable:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sort-indicator {
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .users-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+        }
+
+        .users-table tbody tr:hover {
+            background: var(--bg-secondary);
+            transform: translateX(-5px);
+        }
+
+        .users-table tbody tr.selected {
+            background: rgba(10, 147, 150, 0.1);
+            border-right: 3px solid var(--primary-color);
+        }
+
+        .users-table td {
+            padding: 15px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        /* خلايا الجدول المخصصة */
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 3px;
+            font-size: 15px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .user-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .type-admin {
+            background: linear-gradient(135deg, var(--danger-color), #d65c40);
+            color: white;
+        }
+
+        .type-designer {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .type-client {
+            background: linear-gradient(135deg, var(--success-color), #218c74);
+            color: white;
+        }
+
+        .type-employee {
+            background: linear-gradient(135deg, var(--warning-color), #d4ac0d);
+            color: var(--dark-color);
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-active {
+            background: rgba(42, 157, 143, 0.15);
+            color: var(--success-color);
+            border: 1px solid rgba(42, 157, 143, 0.3);
+        }
+
+        .status-inactive {
+            background: rgba(231, 111, 81, 0.15);
+            color: var(--danger-color);
+            border: 1px solid rgba(231, 111, 81, 0.3);
+        }
+
+        .status-pending {
+            background: rgba(233, 196, 106, 0.15);
+            color: #b08935;
+            border: 1px solid rgba(233, 196, 106, 0.3);
+        }
+
+        .status-suspended {
+            background: rgba(100, 116, 139, 0.15);
+            color: var(--text-secondary);
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .action-btn.view:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .action-btn.edit:hover {
+            background: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .action-btn.delete:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .action-btn.message:hover {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .action-btn.verify:hover {
+            background: var(--success-color);
+            color: white;
+        }
+
+        /* التبويبات */
+        .tabs-container {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tabs-header {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* تنسيقات الصفحة */
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 2px solid var(--border-color);
+            margin-top: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 5px;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* شريط التحميل */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .loading-bar.active {
+            transform: translateX(0);
+        }
+
+        /* التأثيرات والتحسينات */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: 80px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 20px;
+            box-shadow: 0 -2px 20px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+            padding: 12px 8px;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            width: 40px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .nav-center {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--info-color), var(--dark-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-top: -40px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-center:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* إشعارات */
+        .alert-container {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            right: 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .alert {
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateY(-20px);
+            opacity: 0;
+            animation: slideIn 0.3s forwards;
+            pointer-events: auto;
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .alert-success .alert-icon {
+            background: rgba(42, 157, 143, 0.1);
+            color: var(--success-color);
+        }
+
+        .alert-warning .alert-icon {
+            background: rgba(233, 196, 106, 0.1);
+            color: var(--warning-color);
+        }
+
+        .alert-danger .alert-icon {
+            background: rgba(231, 111, 81, 0.1);
+            color: var(--danger-color);
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .alert-content p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* تعديلات للهواتف */
+        @media (max-width: 1200px) {
+            .user-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-left, .control-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .user-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-container {
+                width: 200px;
+            }
+            
+            .app-header {
+                padding: 0 15px;
+            }
+            
+            .users-table th, .users-table td {
+                padding: 10px;
+            }
+            
+            .control-btn span {
+                display: none;
+            }
+            
+            .control-btn {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-container {
+                display: none;
+            }
+            
+            .main-content {
+                padding: 20px 15px 90px 15px;
+            }
+            
+            .stats-card {
+                padding: 20px;
+            }
+            
+            .user-cell {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .users-table th:nth-child(4),
+            .users-table td:nth-child(4),
+            .users-table th:nth-child(5),
+            .users-table td:nth-child(5) {
+                display: none;
+            }
+            
+            .control-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .bulk-actions {
+                flex: 1;
+            }
+            
+            .bulk-select {
+                flex: 1;
+            }
+        }
+
+        /* زر الإضافة العائم */
+        .fab-button {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 99;
+            transition: all var(--transition-normal);
+        }
+
+        .fab-button:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* نماذج التعديل والإضافة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s forwards;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--dark-color);
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        /* عرض تفاصيل المستخدم */
+        .user-detail-view {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 1003;
+            overflow-y: auto;
+        }
+
+        .detail-header {
+            background: linear-gradient(135deg, var(--info-color), var(--dark-color));
+            color: white;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .detail-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .detail-user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .detail-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .detail-title h2 {
+            margin: 0 0 5px 0;
+            font-size: 24px;
+        }
+
+        .detail-title p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .detail-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-section h3 {
+            margin: 0 0 15px 0;
+            color: var(--dark-color);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-section h3 i {
+            color: var(--primary-color);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التحميل -->
+    <div class="loading-bar" id="loadingBar"></div>
+
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-time" id="currentTime">12:00</div>
+        <div class="status-icons">
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+            <span id="currentDate">الأحد ١ يناير</span>
+        </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="app-header">
+        <div class="header-left">
+            <a href="dashboard-admin.html" class="app-logo">
+                <div class="app-logo-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="app-logo-text">
+                    <h1>بيكسل آرت</h1>
+                    <span>إدارة المستخدمين</span>
+                </div>
+            </a>
+            
+            <div class="user-badge">
+                <i class="fas fa-crown"></i>
+                مدير النظام
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="بحث عن مستخدم..." id="searchInput">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+
+        <div class="header-right">
+            <button class="header-action" onclick="window.location.href='dashboard-admin.html'" title="الرئيسية">
+                <i class="fas fa-home"></i>
+            </button>
+            
+            <button class="header-action" onclick="refreshUsers()" title="تحديث">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            
+            <button class="header-action" onclick="logout()" title="تسجيل الخروج">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- زر الإضافة العائم -->
+    <button class="fab-button" onclick="openAddUserModal()">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content" id="mainContent">
+        <!-- إحصائيات المستخدمين -->
+        <section class="stats-card fade-in">
+            <div class="stats-header">
+                <h2>إحصائيات المستخدمين</h2>
+                <div class="stats-filters">
+                    <select class="filter-select" id="timeFilter" onchange="updateStats()">
+                        <option value="today">اليوم</option>
+                        <option value="week" selected>هذا الأسبوع</option>
+                        <option value="month">هذا الشهر</option>
+                        <option value="year">هذه السنة</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="user-stats">
+                <div class="user-stat-item" onclick="filterUsers('all')">
+                    <div class="user-stat-label">
+                        <i class="fas fa-users"></i>
+                        إجمالي المستخدمين
+                    </div>
+                    <div class="user-stat-value" id="totalUsersCount">1,247</div>
+                    <div class="user-stat-change change-positive">
+                        <i class="fas fa-arrow-up"></i> +24 هذا الأسبوع
+                    </div>
+                </div>
+                
+                <div class="user-stat-item" onclick="filterUsers('active')">
+                    <div class="user-stat-label">
+                        <i class="fas fa-user-check"></i>
+                        نشطون
+                    </div>
+                    <div class="user-stat-value" id="activeUsersCount">1,089</div>
+                    <div class="user-stat-change change-positive">
+                        <i class="fas fa-arrow-up"></i> +18 جديد
+                    </div>
+                </div>
+                
+                <div class="user-stat-item" onclick="filterUsers('pending')">
+                    <div class="user-stat-label">
+                        <i class="fas fa-user-clock"></i>
+                        بانتظار التأكيد
+                    </div>
+                    <div class="user-stat-value" id="pendingUsersCount">45</div>
+                    <div class="user-stat-change change-negative">
+                        <i class="fas fa-arrow-down"></i> -5 تم التأكيد
+                    </div>
+                </div>
+                
+                <div class="user-stat-item" onclick="filterUsers('designers')">
+                    <div class="user-stat-label">
+                        <i class="fas fa-paint-brush"></i>
+                        مصممون
+                    </div>
+                    <div class="user-stat-value" id="designersCount">89</div>
+                    <div class="user-stat-change change-positive">
+                        <i class="fas fa-arrow-up"></i> +5 جديدون
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- التبويبات -->
+        <div class="tabs-container fade-in">
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchTab('allUsers')">
+                    <i class="fas fa-users"></i>
+                    جميع المستخدمين
+                </button>
+                <button class="tab-btn" onclick="switchTab('designers')">
+                    <i class="fas fa-paint-brush"></i>
+                    المصممون
+                </button>
+                <button class="tab-btn" onclick="switchTab('clients')">
+                    <i class="fas fa-user-tie"></i>
+                    العملاء
+                </button>
+                <button class="tab-btn" onclick="switchTab('admins')">
+                    <i class="fas fa-crown"></i>
+                    الإدارة
+                </button>
+                <button class="tab-btn" onclick="switchTab('pending')">
+                    <i class="fas fa-clock"></i>
+                    بانتظار التأكيد
+                </button>
+                <button class="tab-btn" onclick="switchTab('suspended')">
+                    <i class="fas fa-user-slash"></i>
+                    موقوفون
+                </button>
+            </div>
+
+            <!-- جميع المستخدمين -->
+            <div class="tab-content active" id="allUsersTab">
+                <div class="control-bar">
+                    <div class="control-left">
+                        <div class="bulk-actions">
+                            <select class="bulk-select" id="bulkAction">
+                                <option value="">إجراء جماعي...</option>
+                                <option value="activate">تفعيل الحسابات</option>
+                                <option value="deactivate">تعطيل الحسابات</option>
+                                <option value="delete">حذف الحسابات</option>
+                                <option value="export">تصدير البيانات</option>
+                                <option value="send_email">إرسال بريد</option>
+                            </select>
+                            <button class="control-btn" onclick="applyBulkAction()">
+                                <i class="fas fa-play"></i>
+                                تنفيذ
+                            </button>
+                        </div>
+                        
+                        <div class="user-filters">
+                            <select class="filter-select" id="sortFilter" onchange="sortUsers()">
+                                <option value="newest">الأحدث أولاً</option>
+                                <option value="oldest">الأقدم أولاً</option>
+                                <option value="name_asc">الأسم (أ-ي)</option>
+                                <option value="name_desc">الأسم (ي-أ)</option>
+                                <option value="active">النشطون أولاً</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="control-right">
+                        <button class="control-btn" onclick="exportUsers()">
+                            <i class="fas fa-download"></i>
+                            <span>تصدير</span>
+                        </button>
+                        <button class="control-btn" onclick="openImportModal()">
+                            <i class="fas fa-upload"></i>
+                            <span>استيراد</span>
+                        </button>
+                        <button class="control-btn primary" onclick="openAddUserModal()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>إضافة مستخدم</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- جدول المستخدمين -->
+                <div class="users-table-container">
+                    <table class="users-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th width="50">
+                                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                </th>
+                                <th class="sortable" onclick="sortByColumn('name')">
+                                    <span class="sort-indicator">▼</span>
+                                    المستخدم
+                                </th>
+                                <th class="sortable" onclick="sortByColumn('type')">
+                                    <span class="sort-indicator">▼</span>
+                                    النوع
+                                </th>
+                                <th class="sortable" onclick="sortByColumn('joined')">
+                                    <span class="sort-indicator">▼</span>
+                                    تاريخ الانضمام
+                                </th>
+                                <th class="sortable" onclick="sortByColumn('lastActive')">
+                                    <span class="sort-indicator">▼</span>
+                                    آخر نشاط
+                                </th>
+                                <th class="sortable" onclick="sortByColumn('status')">
+                                    <span class="sort-indicator">▼</span>
+                                    الحالة
+                                </th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- سيتم ملؤه بالبيانات -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- تذييل الصفحة -->
+                <div class="page-controls">
+                    <div class="pagination" id="pagination">
+                        <!-- سيتم إنشاء أزرار الصفحات هنا -->
+                    </div>
+                    <div class="results-info">
+                        عرض <span id="startRow">1</span>-<span id="endRow">10</span> من <span id="totalRows">1,247</span> مستخدم
+                    </div>
+                    <select id="pageSize" onchange="changePageSize()" style="padding: 8px 15px; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+                        <option value="10">10 لكل صفحة</option>
+                        <option value="25">25 لكل صفحة</option>
+                        <option value="50">50 لكل صفحة</option>
+                        <option value="100">100 لكل صفحة</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- المصممون -->
+            <div class="tab-content" id="designersTab">
+                <div class="control-bar">
+                    <div class="control-left">
+                        <button class="control-btn success" onclick="verifyAllDesigners()">
+                            <i class="fas fa-check-double"></i>
+                            <span>تأكيد جميع المصممين</span>
+                        </button>
+                    </div>
+                    <div class="control-right">
+                        <button class="control-btn" onclick="exportDesigners()">
+                            <i class="fas fa-download"></i>
+                            <span>تصدير المصممين</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+
+            <!-- تبويبات أخرى -->
+            <div class="tab-content" id="clientsTab">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+            
+            <div class="tab-content" id="adminsTab">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+            
+            <div class="tab-content" id="pendingTab">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+            
+            <div class="tab-content" id="suspendedTab">
+                <!-- سيتم ملؤه بالبيانات -->
+            </div>
+        </div>
+    </main>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-admin.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="users-management.html" class="nav-item active">
+            <i class="fas fa-users"></i>
+            <span>المستخدمين</span>
+        </a>
+        
+        <div class="nav-center" onclick="openQuickActions()">
+            <i class="fas fa-plus"></i>
+        </div>
+        
+        <a href="projects-management.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>المشاريع</span>
+        </a>
+        
+        <a href="reports.html" class="nav-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>التقارير</span>
+        </a>
+    </nav>
+
+    <!-- إشعارات -->
+    <div class="alert-container" id="alertContainer"></div>
+
+    <!-- نموذج إضافة مستخدم -->
+    <div class="modal-overlay" id="addUserModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> إضافة مستخدم جديد</h3>
+                <button class="modal-close" onclick="closeModal('addUserModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm" onsubmit="addNewUser(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">الاسم الأول</label>
+                            <input type="text" class="form-control" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">اسم العائلة</label>
+                            <input type="text" class="form-control" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input type="tel" class="form-control" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">البلد</label>
+                            <select class="form-control" name="country" required>
+                                <option value="">اختر البلد</option>
+                                <option value="SA">السعودية</option>
+                                <option value="AE">الإمارات</option>
+                                <option value="QA">قطر</option>
+                                <option value="KW">الكويت</option>
+                                <option value="BH">البحرين</option>
+                                <option value="OM">عمان</option>
+                                <option value="JO">الأردن</option>
+                                <option value="EG">مصر</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">نوع المستخدم</label>
+                            <select class="form-control" name="userType" required onchange="toggleDesignerFields(this)">
+                                <option value="">اختر النوع</option>
+                                <option value="client">عميل</option>
+                                <option value="designer">مصمم</option>
+                                <option value="employee">موظف</option>
+                                <option value="admin">مدير</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الحالة</label>
+                            <select class="form-control" name="status" required>
+                                <option value="active">نشط</option>
+                                <option value="pending">بانتظار التأكيد</option>
+                                <option value="inactive">غير نشط</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="designerFields" style="display: none;">
+                        <label class="form-label">التخصصات</label>
+                        <input type="text" class="form-control" name="specialties" placeholder="مثال: UI/UX, تصميم شعارات, موشن جرافيك">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">كلمة المرور</label>
+                        <input type="password" class="form-control" name="password" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">تأكيد كلمة المرور</label>
+                        <input type="password" class="form-control" name="confirmPassword" required minlength="6">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('addUserModal')">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            حفظ المستخدم
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- عرض تفاصيل المستخدم -->
+    <div class="user-detail-view" id="userDetailView">
+        <div class="detail-header">
+            <button class="detail-back" onclick="closeUserDetail()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <div class="detail-user-info">
+                <div class="detail-avatar" id="detailAvatar">م</div>
+                <div class="detail-title">
+                    <h2 id="detailName">محمد أحمد</h2>
+                    <p id="detailEmail">mohamed@example.com</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-content">
+            <div class="detail-section">
+                <h3><i class="fas fa-info-circle"></i> المعلومات الأساسية</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">رقم المستخدم</div>
+                        <div class="detail-value" id="detailUserId">USR-001</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">نوع المستخدم</div>
+                        <div class="detail-value" id="detailUserType">عميل</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">الحالة</div>
+                        <div class="detail-value" id="detailStatus">نشط</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">تاريخ التسجيل</div>
+                        <div class="detail-value" id="detailJoinDate">2024-01-15</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">رقم الهاتف</div>
+                        <div class="detail-value" id="detailPhone">+966 50 123 4567</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">البلد</div>
+                        <div class="detail-value" id="detailCountry">السعودية</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section" id="designerInfoSection" style="display: none;">
+                <h3><i class="fas fa-paint-brush"></i> معلومات المصمم</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">التخصصات</div>
+                        <div class="detail-value" id="detailSpecialties">UI/UX, تصميم شعارات</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">مستوى الخبرة</div>
+                        <div class="detail-value" id="detailExperience">3 سنوات</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">عدد المشاريع</div>
+                        <div class="detail-value" id="detailProjects">24</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">متوسط التقييم</div>
+                        <div class="detail-value" id="detailRating">4.8 ★</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h3><i class="fas fa-chart-line"></i> الإحصائيات</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">آخر نشاط</div>
+                        <div class="detail-value" id="detailLastActive">منذ 2 ساعة</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">المشاريع النشطة</div>
+                        <div class="detail-value" id="detailActiveProjects">3</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">المشاريع المكتملة</div>
+                        <div class="detail-value" id="detailCompletedProjects">12</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">مجموع الإنفاق</div>
+                        <div class="detail-value" id="detailTotalSpent">15,800 ريال</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="detail-section">
+                <h3><i class="fas fa-cogs"></i> الإجراءات السريعة</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="action-btn view" onclick="sendMessageToUser()">
+                        <i class="fas fa-envelope"></i>
+                    </button>
+                    <button class="action-btn edit" onclick="editCurrentUser()">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn verify" onclick="verifyUser()">
+                        <i class="fas fa-check-circle"></i>
+                    </button>
+                    <button class="control-btn warning" onclick="suspendUser()">
+                        <i class="fas fa-user-slash"></i>
+                        <span>تعليق الحساب</span>
+                    </button>
+                    <button class="control-btn danger" onclick="deleteCurrentUser()">
+                        <i class="fas fa-trash"></i>
+                        <span>حذف الحساب</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات التطبيق
+        const usersApp = {
+            currentTab: 'allUsers',
+            currentPage: 1,
+            pageSize: 10,
+            totalUsers: 1247,
+            sortField: 'newest',
+            sortDirection: 'desc',
+            selectedUsers: new Set(),
+            allUsers: [],
+            filteredUsers: []
+        };
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initUsersManagement();
+            setupEventListeners();
+            updateDateTime();
+            loadUsersData();
+            setupScrollAnimations();
+        });
+
+        // تهيئة إدارة المستخدمين
+        function initUsersManagement() {
+            // تحميل البيانات الأولية
+            loadInitialStats();
+            setupTabListeners();
+            generateSampleUsers();
+            renderUsersTable();
+            setupPagination();
+        }
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // البحث في الوقت الحقيقي
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                searchUsers(e.target.value);
+            });
+
+            // اختيار جميع المستخدمين
+            document.getElementById('selectAll').addEventListener('change', function(e) {
+                toggleSelectAll();
+            });
+
+            // تحديث تلقائي كل 60 ثانية
+            setInterval(refreshUsers, 60000);
+        }
+
+        // تحديث التاريخ والوقت
+        function updateDateTime() {
+            const now = new Date();
+            const timeEl = document.getElementById('currentTime');
+            const dateEl = document.getElementById('currentDate');
+            
+            const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            
+            const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+            let timeText = now.toLocaleTimeString('ar-SA', timeOptions);
+            
+            timeText = timeText.replace(/\d/g, d => arabicNumbers[d]);
+            
+            timeEl.textContent = timeText;
+            dateEl.textContent = now.toLocaleDateString('ar-SA', dateOptions);
+            
+            setTimeout(updateDateTime, 60000);
+        }
+
+        // توليد بيانات مستخدمين عينة
+        function generateSampleUsers() {
+            const sampleUsers = [];
+            const names = [
+                { first: 'محمد', last: 'أحمد' },
+                { first: 'أحمد', last: 'علي' },
+                { first: 'سارة', last: 'محمد' },
+                { first: 'فاطمة', last: 'خالد' },
+                { first: 'خالد', last: 'سعيد' },
+                { first: 'نور', last: 'عمر' },
+                { first: 'عمر', last: 'راشد' },
+                { first: 'ريم', last: 'عبدالله' },
+                { first: 'عبدالله', last: 'فهد' },
+                { first: 'لينا', last: 'ماجد' }
+            ];
+            
+            const userTypes = ['client', 'designer', 'employee', 'admin'];
+            const statuses = ['active', 'pending', 'inactive', 'suspended'];
+            const countries = ['السعودية', 'الإمارات', 'قطر', 'الكويت', 'مصر', 'الأردن'];
+            
+            for (let i = 1; i <= 50; i++) {
+                const name = names[Math.floor(Math.random() * names.length)];
+                const userType = userTypes[Math.floor(Math.random() * userTypes.length)];
+                const status = statuses[Math.floor(Math.random() * statuses.length)];
+                const country = countries[Math.floor(Math.random() * countries.length)];
+                
+                sampleUsers.push({
+                    id: i,
+                    firstName: name.first,
+                    lastName: name.last,
+                    email: `${name.first.toLowerCase()}.${name.last.toLowerCase()}@example.com`,
+                    phone: `+966 5${Math.floor(Math.random() * 90) + 10} ${Math.floor(Math.random() * 1000)} ${Math.floor(Math.random() * 10000)}`,
+                    userType: userType,
+                    status: status,
+                    country: country,
+                    joinDate: new Date(2023, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
+                    lastActive: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000),
+                    avatarColor: getRandomColor(),
+                    specialties: userType === 'designer' ? ['UI/UX', 'تصميم شعارات', 'موشن جرافيك'][Math.floor(Math.random() * 3)] : null,
+                    experience: userType === 'designer' ? `${Math.floor(Math.random() * 5) + 1} سنوات` : null,
+                    rating: userType === 'designer' ? (Math.random() * 1 + 4).toFixed(1) : null,
+                    activeProjects: Math.floor(Math.random() * 5),
+                    completedProjects: Math.floor(Math.random() * 20),
+                    totalSpent: Math.floor(Math.random() * 50000)
+                });
+            }
+            
+            usersApp.allUsers = sampleUsers;
+            usersApp.filteredUsers = [...sampleUsers];
+        }
+
+        // الحصول على لون عشوائي للصورة الرمزية
+        function getRandomColor() {
+            const colors = ['#0a9396', '#ee9b00', '#2a9d8f', '#e76f51', '#264653', '#1a1a2e'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // تحميل بيانات المستخدمين
+        function loadUsersData() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                renderUsersTable();
+                updateStats();
+                showLoading(false);
+            }, 1000);
+        }
+
+        // عرض جدول المستخدمين
+        function renderUsersTable() {
+            const tableBody = document.getElementById('usersTableBody');
+            const startIndex = (usersApp.currentPage - 1) * usersApp.pageSize;
+            const endIndex = Math.min(startIndex + usersApp.pageSize, usersApp.filteredUsers.length);
+            
+            let html = '';
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const user = usersApp.filteredUsers[i];
+                const fullName = `${user.firstName} ${user.lastName}`;
+                const initials = user.firstName[0] + user.lastName[0];
+                const joinDate = user.joinDate.toLocaleDateString('ar-SA');
+                const lastActive = getTimeAgo(user.lastActive);
+                
+                html += `
+                    <tr id="userRow-${user.id}" ${usersApp.selectedUsers.has(user.id) ? 'class="selected"' : ''}>
+                        <td>
+                            <input type="checkbox" class="user-checkbox" 
+                                   data-user-id="${user.id}" 
+                                   ${usersApp.selectedUsers.has(user.id) ? 'checked' : ''}
+                                   onchange="toggleUserSelection(${user.id})">
+                        </td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar" style="background: ${user.avatarColor}">
+                                    ${initials}
+                                </div>
+                                <div class="user-info">
+                                    <div class="user-name">${fullName}</div>
+                                    <div class="user-email">${user.email}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-type type-${user.userType}">
+                                ${getUserTypeArabic(user.userType)}
+                            </span>
+                        </td>
+                        <td>${joinDate}</td>
+                        <td>${lastActive}</td>
+                        <td>
+                            <span class="user-status status-${user.status}">
+                                ${getStatusArabic(user.status)}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="user-actions">
+                                <button class="action-btn view" onclick="viewUserDetails(${user.id})" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit" onclick="editUser(${user.id})" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn message" onclick="sendMessage(${user.id})" title="رسالة">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                                ${user.userType === 'designer' && user.status === 'pending' ? 
+                                    `<button class="action-btn verify" onclick="verifyUser(${user.id})" title="تأكيد">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>` : ''
+                                }
+                                <button class="action-btn delete" onclick="deleteUser(${user.id})" title="حذف">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            tableBody.innerHTML = html;
+            
+            // تحديث معلومات الصفحة
+            document.getElementById('startRow').textContent = startIndex + 1;
+            document.getElementById('endRow').textContent = endIndex;
+            document.getElementById('totalRows').textContent = usersApp.filteredUsers.length.toLocaleString('ar-SA');
+            
+            // تحديث الترقيم
+            updatePagination();
+        }
+
+        // الحصول على النوع بالعربية
+        function getUserTypeArabic(type) {
+            const types = {
+                'client': 'عميل',
+                'designer': 'مصمم',
+                'employee': 'موظف',
+                'admin': 'مدير'
+            };
+            return types[type] || type;
+        }
+
+        // الحصول على الحالة بالعربية
+        function getStatusArabic(status) {
+            const statuses = {
+                'active': 'نشط',
+                'inactive': 'غير نشط',
+                'pending': 'بانتظار التأكيد',
+                'suspended': 'موقوف'
+            };
+            return statuses[status] || status;
+        }
+
+        // حساب الوقت المنقضي
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 60) {
+                return `منذ ${diffMins} دقيقة`;
+            } else if (diffHours < 24) {
+                return `منذ ${diffHours} ساعة`;
+            } else if (diffDays < 7) {
+                return `منذ ${diffDays} يوم`;
+            } else {
+                return date.toLocaleDateString('ar-SA');
+            }
+        }
+
+        // تحديث الإحصائيات
+        function updateStats() {
+            const totalUsers = usersApp.allUsers.length;
+            const activeUsers = usersApp.allUsers.filter(u => u.status === 'active').length;
+            const pendingUsers = usersApp.allUsers.filter(u => u.status === 'pending').length;
+            const designers = usersApp.allUsers.filter(u => u.userType === 'designer').length;
+            
+            document.getElementById('totalUsersCount').textContent = totalUsers.toLocaleString('ar-SA');
+            document.getElementById('activeUsersCount').textContent = activeUsers.toLocaleString('ar-SA');
+            document.getElementById('pendingUsersCount').textContent = pendingUsers.toLocaleString('ar-SA');
+            document.getElementById('designersCount').textContent = designers.toLocaleString('ar-SA');
+        }
+
+        // البحث عن المستخدمين
+        function searchUsers(query) {
+            if (!query.trim()) {
+                usersApp.filteredUsers = [...usersApp.allUsers];
+            } else {
+                const searchLower = query.toLowerCase();
+                usersApp.filteredUsers = usersApp.allUsers.filter(user => 
+                    `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchLower) ||
+                    user.email.toLowerCase().includes(searchLower) ||
+                    user.phone.includes(query)
+                );
+            }
+            
+            usersApp.currentPage = 1;
+            renderUsersTable();
+        }
+
+        // تبديل التبويبات
+        function switchTab(tabId) {
+            // تحديث أزرار التبويبات
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // تحديث محتويات التبويبات
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabId}Tab`).classList.add('active');
+            
+            // تحديث الفلترة
+            usersApp.currentTab = tabId;
+            filterUsers(tabId);
+        }
+
+        // فلترة المستخدمين
+        function filterUsers(filter) {
+            switch(filter) {
+                case 'all':
+                    usersApp.filteredUsers = [...usersApp.allUsers];
+                    break;
+                case 'active':
+                    usersApp.filteredUsers = usersApp.allUsers.filter(u => u.status === 'active');
+                    break;
+                case 'pending':
+                    usersApp.filteredUsers = usersApp.allUsers.filter(u => u.status === 'pending');
+                    break;
+                case 'designers':
+                    usersApp.filteredUsers = usersApp.allUsers.filter(u => u.userType === 'designer');
+                    break;
+                case 'clients':
+                    usersApp.filteredUsers = usersApp.allUsers.filter(u => u.userType === 'client');
+                    break;
+                case 'admins':
+                    usersApp.filteredUsers = usersApp.allUsers.filter(u => u.userType === 'admin');
+                    break;
+                case 'suspended':
+                    usersApp.filteredUsers = usersApp.allUsers.filter(u => u.status === 'suspended');
+                    break;
+            }
+            
+            usersApp.currentPage = 1;
+            renderUsersTable();
+        }
+
+        // ترتيب المستخدمين
+        function sortUsers() {
+            const sortValue = document.getElementById('sortFilter').value;
+            
+            usersApp.filteredUsers.sort((a, b) => {
+                switch(sortValue) {
+                    case 'newest':
+                        return b.joinDate - a.joinDate;
+                    case 'oldest':
+                        return a.joinDate - b.joinDate;
+                    case 'name_asc':
+                        return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+                    case 'name_desc':
+                        return `${b.firstName} ${b.lastName}`.localeCompare(`${a.firstName} ${a.lastName}`);
+                    case 'active':
+                        return (b.status === 'active') - (a.status === 'active');
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderUsersTable();
+        }
+
+        // ترتيب حسب العمود
+        function sortByColumn(column) {
+            // تنفيذ منطق الترتيب حسب العمود
+            renderUsersTable();
+        }
+
+        // اختيار/إلغاء اختيار جميع المستخدمين
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll').checked;
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            
+            if (selectAll) {
+                const startIndex = (usersApp.currentPage - 1) * usersApp.pageSize;
+                const endIndex = Math.min(startIndex + usersApp.pageSize, usersApp.filteredUsers.length);
+                
+                for (let i = startIndex; i < endIndex; i++) {
+                    const user = usersApp.filteredUsers[i];
+                    usersApp.selectedUsers.add(user.id);
+                }
+            } else {
+                usersApp.selectedUsers.clear();
+            }
+            
+            checkboxes.forEach(cb => cb.checked = selectAll);
+            updateSelectedRows();
+        }
+
+        // تبديل اختيار مستخدم
+        function toggleUserSelection(userId) {
+            if (usersApp.selectedUsers.has(userId)) {
+                usersApp.selectedUsers.delete(userId);
+            } else {
+                usersApp.selectedUsers.add(userId);
+            }
+            
+            const row = document.getElementById(`userRow-${userId}`);
+            if (row) {
+                if (usersApp.selectedUsers.has(userId)) {
+                    row.classList.add('selected');
+                } else {
+                    row.classList.remove('selected');
+                }
+            }
+            
+            updateSelectAllCheckbox();
+        }
+
+        // تحديث زر اختيار الكل
+        function updateSelectAllCheckbox() {
+            const totalOnPage = Math.min(usersApp.pageSize, usersApp.filteredUsers.length - (usersApp.currentPage - 1) * usersApp.pageSize);
+            const selectedOnPage = Array.from(usersApp.selectedUsers).filter(id => {
+                const userIndex = usersApp.filteredUsers.findIndex(u => u.id === id);
+                const startIndex = (usersApp.currentPage - 1) * usersApp.pageSize;
+                const endIndex = startIndex + usersApp.pageSize;
+                return userIndex >= startIndex && userIndex < endIndex;
+            }).length;
+            
+            const selectAllCheckbox = document.getElementById('selectAll');
+            selectAllCheckbox.checked = selectedOnPage === totalOnPage && totalOnPage > 0;
+            selectAllCheckbox.indeterminate = selectedOnPage > 0 && selectedOnPage < totalOnPage;
+        }
+
+        // تحديث الصفوف المختارة
+        function updateSelectedRows() {
+            usersApp.filteredUsers.forEach(user => {
+                const row = document.getElementById(`userRow-${user.id}`);
+                if (row) {
+                    if (usersApp.selectedUsers.has(user.id)) {
+                        row.classList.add('selected');
+                    } else {
+                        row.classList.remove('selected');
+                    }
+                }
+            });
+        }
+
+        // تطبيق الإجراء الجماعي
+        function applyBulkAction() {
+            const action = document.getElementById('bulkAction').value;
+            const selectedIds = Array.from(usersApp.selectedUsers);
+            
+            if (!action || selectedIds.length === 0) {
+                showAlert('warning', 'تنبيه', 'يرجى اختيار إجراء ومستخدمين');
+                return;
+            }
+            
+            const actionNames = {
+                'activate': 'تفعيل',
+                'deactivate': 'تعطيل',
+                'delete': 'حذف',
+                'export': 'تصدير',
+                'send_email': 'إرسال بريد'
+            };
+            
+            if (confirm(`هل تريد ${actionNames[action]} ${selectedIds.length} مستخدم؟`)) {
+                showLoading(true);
+                
+                setTimeout(() => {
+                    switch(action) {
+                        case 'activate':
+                            selectedIds.forEach(id => {
+                                const user = usersApp.allUsers.find(u => u.id === id);
+                                if (user) user.status = 'active';
+                            });
+                            break;
+                        case 'deactivate':
+                            selectedIds.forEach(id => {
+                                const user = usersApp.allUsers.find(u => u.id === id);
+                                if (user) user.status = 'inactive';
+                            });
+                            break;
+                        case 'delete':
+                            usersApp.allUsers = usersApp.allUsers.filter(u => !selectedIds.includes(u.id));
+                            usersApp.selectedUsers.clear();
+                            break;
+                        case 'export':
+                            exportSelectedUsers(selectedIds);
+                            break;
+                        case 'send_email':
+                            sendBulkEmail(selectedIds);
+                            break;
+                    }
+                    
+                    filterUsers(usersApp.currentTab);
+                    showLoading(false);
+                    showAlert('success', 'تم التنفيذ', `تم ${actionNames[action]} ${selectedIds.length} مستخدم بنجاح`);
+                }, 1500);
+            }
+        }
+
+        // تصدير المستخدمين المختارين
+        function exportSelectedUsers(userIds) {
+            const selectedUsers = usersApp.allUsers.filter(u => userIds.includes(u.id));
+            const csvContent = convertToCSV(selectedUsers);
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `users-export-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showAlert('success', 'تم التصدير', `تم تصدير ${selectedUsers.length} مستخدم بنجاح`);
+        }
+
+        // تحويل البيانات إلى CSV
+        function convertToCSV(users) {
+            const headers = ['الاسم', 'البريد الإلكتروني', 'رقم الهاتف', 'النوع', 'الحالة', 'البلد', 'تاريخ التسجيل'];
+            const rows = users.map(user => [
+                `${user.firstName} ${user.lastName}`,
+                user.email,
+                user.phone,
+                getUserTypeArabic(user.userType),
+                getStatusArabic(user.status),
+                user.country,
+                user.joinDate.toLocaleDateString('ar-SA')
+            ]);
+            
+            return [headers, ...rows].map(row => 
+                row.map(cell => `"${cell}"`).join(',')
+            ).join('\n');
+        }
+
+        // إرسال بريد جماعي
+        function sendBulkEmail(userIds) {
+            const subject = prompt('أدخل موضوع البريد الإلكتروني:');
+            if (!subject) return;
+            
+            const message = prompt('أدخل محتوى البريد الإلكتروني:');
+            if (!message) return;
+            
+            showLoading(true);
+            setTimeout(() => {
+                showLoading(false);
+                showAlert('success', 'تم الإرسال', `تم إرسال البريد إلى ${userIds.length} مستخدم`);
+            }, 2000);
+        }
+
+        // فتح نموذج إضافة مستخدم
+        function openAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+
+        // إغلاق النموذج
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            if (modalId === 'addUserModal') {
+                document.getElementById('addUserForm').reset();
+            }
+        }
+
+        // تبديل حقول المصمم
+        function toggleDesignerFields(select) {
+            const designerFields = document.getElementById('designerFields');
+            designerFields.style.display = select.value === 'designer' ? 'block' : 'none';
+        }
+
+        // إضافة مستخدم جديد
+        function addNewUser(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            if (password !== confirmPassword) {
+                showAlert('error', 'خطأ', 'كلمات المرور غير متطابقة');
+                return;
+            }
+            
+            const newUser = {
+                id: usersApp.allUsers.length + 1,
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                country: formData.get('country'),
+                userType: formData.get('userType'),
+                status: formData.get('status'),
+                joinDate: new Date(),
+                lastActive: new Date(),
+                avatarColor: getRandomColor(),
+                specialties: formData.get('userType') === 'designer' ? formData.get('specialties') : null,
+                activeProjects: 0,
+                completedProjects: 0,
+                totalSpent: 0
+            };
+            
+            usersApp.allUsers.unshift(newUser);
+            filterUsers(usersApp.currentTab);
+            
+            closeModal('addUserModal');
+            showAlert('success', 'تمت الإضافة', 'تم إضافة المستخدم بنجاح');
+        }
+
+        // عرض تفاصيل المستخدم
+        function viewUserDetails(userId) {
+            const user = usersApp.allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            // تعبئة البيانات
+            document.getElementById('detailAvatar').textContent = user.firstName[0] + user.lastName[0];
+            document.getElementById('detailAvatar').style.background = user.avatarColor;
+            document.getElementById('detailName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('detailEmail').textContent = user.email;
+            document.getElementById('detailUserId').textContent = `USR-${userId.toString().padStart(3, '0')}`;
+            document.getElementById('detailUserType').textContent = getUserTypeArabic(user.userType);
+            document.getElementById('detailStatus').textContent = getStatusArabic(user.status);
+            document.getElementById('detailJoinDate').textContent = user.joinDate.toLocaleDateString('ar-SA');
+            document.getElementById('detailPhone').textContent = user.phone;
+            document.getElementById('detailCountry').textContent = user.country;
+            document.getElementById('detailLastActive').textContent = getTimeAgo(user.lastActive);
+            document.getElementById('detailActiveProjects').textContent = user.activeProjects;
+            document.getElementById('detailCompletedProjects').textContent = user.completedProjects;
+            document.getElementById('detailTotalSpent').textContent = user.totalSpent.toLocaleString('ar-SA') + ' ريال';
+            
+            // معلومات المصمم
+            const designerSection = document.getElementById('designerInfoSection');
+            if (user.userType === 'designer' && user.specialties) {
+                designerSection.style.display = 'block';
+                document.getElementById('detailSpecialties').textContent = user.specialties;
+                document.getElementById('detailExperience').textContent = user.experience || 'غير محدد';
+                document.getElementById('detailProjects').textContent = user.completedProjects;
+                document.getElementById('detailRating').textContent = user.rating ? `${user.rating} ★` : 'غير متوفر';
+            } else {
+                designerSection.style.display = 'none';
+            }
+            
+            // حفظ معرف المستخدم الحالي
+            document.getElementById('userDetailView').dataset.currentUserId = userId;
+            
+            // عرض صفحة التفاصيل
+            document.getElementById('userDetailView').style.display = 'block';
+        }
+
+        // إغلاق عرض التفاصيل
+        function closeUserDetail() {
+            document.getElementById('userDetailView').style.display = 'none';
+        }
+
+        // تعديل المستخدم الحالي
+        function editCurrentUser() {
+            const userId = document.getElementById('userDetailView').dataset.currentUserId;
+            editUser(parseInt(userId));
+        }
+
+        // تعديل مستخدم
+        function editUser(userId) {
+            const user = usersApp.allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            // في التطبيق الحقيقي، افتح نموذج التعديل
+            closeUserDetail();
+            
+            // محاكاة التعديل
+            const newName = prompt('أدخل الاسم الجديد:', `${user.firstName} ${user.lastName}`);
+            if (newName) {
+                const [firstName, lastName] = newName.split(' ');
+                user.firstName = firstName || user.firstName;
+                user.lastName = lastName || user.lastName;
+                
+                filterUsers(usersApp.currentTab);
+                showAlert('success', 'تم التعديل', 'تم تحديث بيانات المستخدم بنجاح');
+            }
+        }
+
+        // تأكيد مستخدم
+        function verifyUser(userId) {
+            const user = usersApp.allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            if (confirm('هل تريد تأكيد هذا المستخدم؟')) {
+                user.status = 'active';
+                filterUsers(usersApp.currentTab);
+                showAlert('success', 'تم التأكيد', 'تم تأكيد المستخدم بنجاح');
+            }
+        }
+
+        // تعليق مستخدم
+        function suspendUser() {
+            const userId = document.getElementById('userDetailView').dataset.currentUserId;
+            const user = usersApp.allUsers.find(u => u.id === parseInt(userId));
+            if (!user) return;
+            
+            const reason = prompt('أدخل سبب التعليق:');
+            if (reason) {
+                user.status = 'suspended';
+                filterUsers(usersApp.currentTab);
+                closeUserDetail();
+                showAlert('warning', 'تم التعليق', `تم تعليق الحساب بسبب: ${reason}`);
+            }
+        }
+
+        // حذف المستخدم الحالي
+        function deleteCurrentUser() {
+            const userId = document.getElementById('userDetailView').dataset.currentUserId;
+            deleteUser(parseInt(userId));
+        }
+
+        // حذف مستخدم
+        function deleteUser(userId) {
+            if (confirm('هل تريد حذف هذا المستخدم نهائياً؟')) {
+                usersApp.allUsers = usersApp.allUsers.filter(u => u.id !== userId);
+                usersApp.selectedUsers.delete(userId);
+                filterUsers(usersApp.currentTab);
+                closeUserDetail();
+                showAlert('danger', 'تم الحذف', 'تم حذف المستخدم بنجاح');
+            }
+        }
+
+        // إرسال رسالة لمستخدم
+        function sendMessage(userId) {
+            const user = usersApp.allUsers.find(u => u.id === userId);
+            if (!user) return;
+            
+            const message = prompt(`أدخل رسالة لـ ${user.firstName}:`);
+            if (message) {
+                showLoading(true);
+                setTimeout(() => {
+                    showLoading(false);
+                    showAlert('success', 'تم الإرسال', 'تم إرسال الرسالة بنجاح');
+                }, 1000);
+            }
+        }
+
+        // إرسال رسالة للمستخدم الحالي
+        function sendMessageToUser() {
+            const userId = document.getElementById('userDetailView').dataset.currentUserId;
+            sendMessage(parseInt(userId));
+        }
+
+        // تأكيد جميع المصممين
+        function verifyAllDesigners() {
+            const pendingDesigners = usersApp.allUsers.filter(u => 
+                u.userType === 'designer' && u.status === 'pending'
+            );
+            
+            if (pendingDesigners.length === 0) {
+                showAlert('info', 'لا يوجد مصممين', 'لا يوجد مصممين بانتظار التأكيد');
+                return;
+            }
+            
+            if (confirm(`هل تريد تأكيد جميع المصممين (${pendingDesigners.length})؟`)) {
+                pendingDesigners.forEach(user => user.status = 'active');
+                filterUsers('designers');
+                showAlert('success', 'تم التأكيد', `تم تأكيد ${pendingDesigners.length} مصمم بنجاح`);
+            }
+        }
+
+        // إعداد الترقيم
+        function setupPagination() {
+            updatePagination();
+        }
+
+        // تحديث الترقيم
+        function updatePagination() {
+            const totalPages = Math.ceil(usersApp.filteredUsers.length / usersApp.pageSize);
+            const pagination = document.getElementById('pagination');
+            
+            let html = '';
+            
+            // زر السابق
+            html += `
+                <button class="page-btn ${usersApp.currentPage === 1 ? 'disabled' : ''}" 
+                        onclick="changePage(${usersApp.currentPage - 1})" 
+                        ${usersApp.currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            
+            // أزرار الصفحات
+            const maxVisible = 5;
+            let startPage = Math.max(1, usersApp.currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                html += `
+                    <button class="page-btn ${i === usersApp.currentPage ? 'active' : ''}" 
+                            onclick="changePage(${i})">
+                        ${i.toLocaleString('ar-SA')}
+                    </button>
+                `;
+            }
+            
+            // زر التالي
+            html += `
+                <button class="page-btn ${usersApp.currentPage === totalPages ? 'disabled' : ''}" 
+                        onclick="changePage(${usersApp.currentPage + 1})" 
+                        ${usersApp.currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+            
+            pagination.innerHTML = html;
+        }
+
+        // تغيير الصفحة
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(usersApp.filteredUsers.length / usersApp.pageSize)) {
+                return;
+            }
+            
+            usersApp.currentPage = page;
+            renderUsersTable();
+        }
+
+        // تغيير حجم الصفحة
+        function changePageSize() {
+            usersApp.pageSize = parseInt(document.getElementById('pageSize').value);
+            usersApp.currentPage = 1;
+            renderUsersTable();
+        }
+
+        // تحديث المستخدمين
+        function refreshUsers() {
+            showLoading(true);
+            
+            // محاكاة تحديث البيانات
+            setTimeout(() => {
+                // تحديث إحصائيات عشوائية
+                usersApp.allUsers.forEach(user => {
+                    if (Math.random() > 0.7) {
+                        user.lastActive = new Date();
+                    }
+                });
+                
+                renderUsersTable();
+                updateStats();
+                showLoading(false);
+                showAlert('info', 'تم التحديث', 'تم تحديث بيانات المستخدمين بنجاح');
+            }, 1500);
+        }
+
+        // تصدير المستخدمين
+        function exportUsers() {
+            const csvContent = convertToCSV(usersApp.filteredUsers);
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `users-${usersApp.currentTab}-export-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showAlert('success', 'تم التصدير', `تم تصدير ${usersApp.filteredUsers.length} مستخدم بنجاح`);
+        }
+
+        // تصدير المصممين
+        function exportDesigners() {
+            const designers = usersApp.allUsers.filter(u => u.userType === 'designer');
+            const csvContent = convertToCSV(designers);
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `designers-export-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showAlert('success', 'تم التصدير', `تم تصدير ${designers.length} مصمم بنجاح`);
+        }
+
+        // فتح نموذج الاستيراد
+        function openImportModal() {
+            // في التطبيق الحقيقي، افتح نموذج الاستيراد
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.csv,.xlsx';
+            
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    importUsers(file);
+                }
+            };
+            
+            fileInput.click();
+        }
+
+        // استيراد المستخدمين
+        function importUsers(file) {
+            showLoading(true);
+            
+            setTimeout(() => {
+                showLoading(false);
+                showAlert('success', 'تم الاستيراد', `تم استيراد 25 مستخدم جديد من ${file.name}`);
+                
+                // محاكاة إضافة مستخدمين جدد
+                for (let i = 0; i < 25; i++) {
+                    const newId = usersApp.allUsers.length + 1;
+                    usersApp.allUsers.push({
+                        id: newId,
+                        firstName: `مستخدم`,
+                        lastName: `جديد ${newId}`,
+                        email: `user${newId}@example.com`,
+                        phone: `+966 5${Math.floor(Math.random() * 90) + 10} ${Math.floor(Math.random() * 1000)} ${Math.floor(Math.random() * 10000)}`,
+                        userType: 'client',
+                        status: 'active',
+                        country: 'السعودية',
+                        joinDate: new Date(),
+                        lastActive: new Date(),
+                        avatarColor: getRandomColor(),
+                        activeProjects: 0,
+                        completedProjects: 0,
+                        totalSpent: 0
+                    });
+                }
+                
+                filterUsers(usersApp.currentTab);
+            }, 2000);
+        }
+
+        // إعداد تأثيرات التمرير
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
+
+        // عرض/إخفاء شريط التحميل
+        function showLoading(show) {
+            const loadingBar = document.getElementById('loadingBar');
+            if (show) {
+                loadingBar.classList.add('active');
+            } else {
+                loadingBar.classList.remove('active');
+            }
+        }
+
+        // عرض تنبيه
+        function showAlert(type, title, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertHTML = `
+                <div class="alert alert-${type}" id="${alertId}">
+                    <div class="alert-icon">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'danger' ? 'times-circle' : 'info-circle'}"></i>
+                    </div>
+                    <div class="alert-content">
+                        <h4>${title}</h4>
+                        <p>${message}</p>
+                    </div>
+                    <button class="alert-close" onclick="document.getElementById('${alertId}').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            alertContainer.insertAdjacentHTML('afterbegin', alertHTML);
+            
+            // إزالة التنبيه تلقائياً
+            setTimeout(() => {
+                const alertEl = document.getElementById(alertId);
+                if (alertEl) {
+                    alertEl.style.opacity = '0';
+                    alertEl.style.transform = 'translateY(-20px)';
+                    setTimeout(() => alertEl.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        // تحميل الإحصائيات الأولية
+        function loadInitialStats() {
+            updateStats();
+        }
+
+        // إعداد مستمعي التبويبات
+        function setupTabListeners() {
+            // تم التعامل معها في switchTab
+        }
+
+        // فتح الإجراءات السريعة
+        function openQuickActions() {
+            const actions = [
+                { icon: 'fa-user-plus', text: 'إضافة مستخدم', action: 'openAddUserModal' },
+                { icon: 'fa-download', text: 'تصدير الكل', action: 'exportUsers' },
+                { icon: 'fa-sync-alt', text: 'تحديث البيانات', action: 'refreshUsers' },
+                { icon: 'fa-filter', text: 'فلتر متقدم', action: 'openAdvancedFilter' },
+                { icon: 'fa-chart-pie', text: 'تقارير المستخدمين', action: 'openUserReports' },
+                { icon: 'fa-cog', text: 'إعدادات الإدارة', action: 'openManagementSettings' }
+            ];
+            
+            let actionsHTML = `
+                <div style="position: fixed; bottom: 90px; right: 20px; left: 20px; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); z-index: 1000; padding: 20px;">
+                    <h3 style="margin: 0 0 20px 0; text-align: center; color: var(--dark-color);">الإجراءات السريعة</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+            `;
+            
+            actions.forEach(action => {
+                actionsHTML += `
+                    <button onclick="${action.action}(); this.parentElement.parentElement.parentElement.remove(); this.nextElementSibling.remove();" 
+                            style="padding: 15px; background: var(--bg-secondary); border: none; border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;">
+                        <i class="fas ${action.icon}" style="font-size: 24px; color: var(--primary-color);"></i>
+                        <span style="font-size: 13px; font-weight: 600; color: var(--dark-color);">${action.text}</span>
+                    </button>
+                `;
+            });
+            
+            actionsHTML += `
+                    </div>
+                    <button onclick="this.parentElement.remove(); this.nextElementSibling.remove();" 
+                            style="display: block; width: 100%; padding: 15px; margin-top: 20px; background: var(--danger-color); color: white; border: none; border-radius: var(--radius-md); font-weight: 600; cursor: pointer;">
+                        إلغاء
+                    </button>
+                </div>
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999;" 
+                     onclick="this.remove(); this.previousElementSibling.remove();"></div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', actionsHTML);
+        }
+
+        // فتح فلتر متقدم
+        function openAdvancedFilter() {
+            // في التطبيق الحقيقي، افتح نموذج الفلتر المتقدم
+            alert('فتح شاشة الفلتر المتقدم...');
+        }
+
+        // فتح تقارير المستخدمين
+        function openUserReports() {
+            window.location.href = 'user-reports.html';
+        }
+
+        // فتح إعدادات الإدارة
+        function openManagementSettings() {
+            window.location.href = 'user-management-settings.html';
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                localStorage.removeItem('pixelArtAdmin');
+                localStorage.removeItem('isLoggedIn');
+                showLoading(true);
+                
+                setTimeout(() => {
+                    showLoading(false);
+                    window.location.href = 'index.html';
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
