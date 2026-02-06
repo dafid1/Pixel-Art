@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a9396">
+    <title>طلب تصميم جديد | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --transition-fast: 200ms;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overscroll-behavior: contain;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: env(safe-area-inset-top, 24px);
+            background: var(--primary-gradient);
+            flex-shrink: 0;
+        }
+
+        /* الهيدر */
+        .app-header {
+            height: 60px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 20px 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* خطوات المشروع */
+        .project-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .project-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 0;
+            left: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .step.active .step-circle {
+            background: var(--primary-gradient);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            background: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* نماذج المشروع */
+        .project-form {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .project-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .form-header {
+            margin-bottom: 20px;
+        }
+
+        .form-header h3 {
+            font-size: 18px;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* أنواع التصميم */
+        .design-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .design-type {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .design-type:active {
+            transform: scale(0.98);
+        }
+
+        .design-type.selected {
+            border-color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .design-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .design-type h4 {
+            font-size: 14px;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+
+        .design-type p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* المدخلات والنماذج */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            transition: all var(--transition-fast);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .character-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: left;
+            margin-top: 4px;
+        }
+
+        /* مرفقات الملفات */
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-bottom: 16px;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.05);
+        }
+
+        .file-upload-area i {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+
+        .file-upload-area h4 {
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .file-upload-area p {
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+            font-size: 14px;
+        }
+
+        .browse-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 10px 24px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .browse-btn:active {
+            transform: scale(0.95);
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .file-remove {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* شريط الميزانية */
+        .budget-slider {
+            margin: 30px 0;
+        }
+
+        .budget-range {
+            width: 100%;
+            margin: 10px 0;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--border-color);
+            outline: none;
+        }
+
+        .budget-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .budget-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .budget-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .budget-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* جدول التسليم */
+        .delivery-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .delivery-option {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .delivery-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .delivery-days {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .delivery-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .delivery-price {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px;
+            color: var(--text-primary);
+        }
+
+        /* مصممون مقترحون */
+        .suggested-designers {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .suggested-designer {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .suggested-designer.selected {
+            border-color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.05);
+        }
+
+        .suggested-designer:active {
+            transform: scale(0.98);
+        }
+
+        .designer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 3px solid var(--border-color);
+        }
+
+        .suggested-designer.selected .designer-avatar {
+            border-color: var(--primary-color);
+        }
+
+        .designer-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+
+        .designer-specialty {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+        }
+
+        .designer-rating {
+            font-size: 12px;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+
+        .designer-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* أزرار التنقل */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 14px;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+            background: var(--primary-dark);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ملخص الطلب */
+        .order-summary {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .summary-total {
+            font-size: 18px;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* مؤشر التحميل */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--bg-secondary);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* تحسينات للجوال */
+        @media (max-width: 768px) {
+            .design-types {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .delivery-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .suggested-designers {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .design-types {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            input, select, textarea, button {
+                font-size: 16px !important; /* منع التكبير في iOS */
+            }
+            
+            .design-type:active,
+            .delivery-option:active,
+            .suggested-designer:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* الوضع الداكن */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a202c;
+                --bg-secondary: #2d3748;
+                --text-primary: #f7fafc;
+                --text-secondary: #cbd5e0;
+                --border-color: #4a5568;
+            }
+            
+            .form-card,
+            .design-type,
+            .suggested-designer,
+            .delivery-option {
+                background: var(--bg-secondary);
+            }
+            
+            .file-upload-area {
+                background: rgba(255, 255, 255, 0.05);
+            }
+            
+            .budget-range {
+                background: var(--border-color);
+            }
+            
+            .budget-range::-webkit-slider-thumb {
+                background: var(--primary-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar"></div>
+
+    <!-- مؤشر التحميل -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h1 class="page-title">طلب تصميم جديد</h1>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- خطوات المشروع -->
+        <div class="project-steps">
+            <div class="step active" id="step1">
+                <div class="step-circle">1</div>
+                <span class="step-label">نوع التصميم</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-circle">2</div>
+                <span class="step-label">تفاصيل المشروع</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-circle">3</div>
+                <span class="step-label">المرفقات</span>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-circle">4</div>
+                <span class="step-label">الميزانية والجدول</span>
+            </div>
+            <div class="step" id="step5">
+                <div class="step-circle">5</div>
+                <span class="step-label">المراجعة</span>
+            </div>
+        </div>
+
+        <!-- الخطوة 1: نوع التصميم -->
+        <div class="project-form active" id="step1Form">
+            <div class="form-card">
+                <div class="form-header">
+                    <h3>ما نوع التصميم الذي تريده؟</h3>
+                    <p>اختر نوع التصميم المناسب لمشروعك</p>
+                </div>
+
+                <div class="design-types">
+                    <div class="design-type" data-type="logo" onclick="selectDesignType('logo')">
+                        <div class="design-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h4>تصميم شعار</h4>
+                        <p>شعار احترافي لعلامتك التجارية</p>
+                    </div>
+
+                    <div class="design-type" data-type="branding" onclick="selectDesignType('branding')">
+                        <div class="design-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h4>هوية بصرية</h4>
+                        <p>هوية متكاملة للعلامة التجارية</p>
+                    </div>
+
+                    <div class="design-type" data-type="ui-ux" onclick="selectDesignType('ui-ux')">
+                        <div class="design-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>UI/UX تصميم</h4>
+                        <p>واجهات تطبيقات ومواقع إلكترونية</p>
+                    </div>
+
+                    <div class="design-type" data-type="print" onclick="selectDesignType('print')">
+                        <div class="design-icon">
+                            <i class="fas fa-print"></i>
+                        </div>
+                        <h4>مواد مطبوعة</h4>
+                        <p>بروشورات، فلايرات، كروت عمل</p>
+                    </div>
+
+                    <div class="design-type" data-type="social" onclick="selectDesignType('social')">
+                        <div class="design-icon">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <h4>تصميم وسائل تواصل</h4>
+                        <p>منشورات، بانرات، إعلانات</p>
+                    </div>
+
+                    <div class="design-type" data-type="illustration" onclick="selectDesignType('illustration')">
+                        <div class="design-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h4>رسوم توضيحية</h4>
+                        <p>رسومات وأيقونات مخصصة</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">تحديد نوع آخر</label>
+                    <input type="text" class="form-control" id="customDesignType" 
+                           placeholder="اكتب نوع التصميم المطلوب (اختياري)">
+                </div>
+            </div>
+
+            <div class="form-navigation">
+                <button class="nav-btn btn-secondary" onclick="goBack()">
+                    رجوع
+                </button>
+                <button class="nav-btn btn-primary" onclick="nextStep()">
+                    التالي <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الخطوة 2: تفاصيل المشروع -->
+        <div class="project-form" id="step2Form">
+            <div class="form-card">
+                <div class="form-header">
+                    <h3>تفاصيل المشروع</h3>
+                    <p>أخبرنا المزيد عن مشروعك</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="projectTitle">عنوان المشروع *</label>
+                    <input type="text" class="form-control" id="projectTitle" 
+                           placeholder="مثال: تصميم شعار لمطعم عربي" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="projectDescription">وصف المشروع *</label>
+                    <textarea class="form-control" id="projectDescription" 
+                              placeholder="صف مشروعك بالتفصيل، بما في ذلك:
+- الغرض من التصميم
+- الجمهور المستهدف
+- المتطلبات الخاصة
+- أي أفكار أو إلهام لديك" required></textarea>
+                    <div class="character-count">
+                        <span id="descriptionCount">0</span> / 1000 حرف
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="brandName">اسم العلامة التجارية</label>
+                    <input type="text" class="form-control" id="brandName" 
+                           placeholder="اسم الشركة أو المنتج">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="industry">المجال/الصناعة</label>
+                    <select class="form-control" id="industry">
+                        <option value="">اختر المجال</option>
+                        <option value="technology">تكنولوجيا</option>
+                        <option value="food">مطاعم وغذاء</option>
+                        <option value="health">صحة وطب</option>
+                        <option value="education">تعليم</option>
+                        <option value="retail">تجزئة</option>
+                        <option value="entertainment">ترفيه</option>
+                        <option value="real-estate">عقارات</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="targetAudience">الجمهور المستهدف</label>
+                    <input type="text" class="form-control" id="targetAudience" 
+                           placeholder="مثال: شباب 18-35 سنة">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="colorPreferences">تفضيلات الألوان</label>
+                    <input type="text" class="form-control" id="colorPreferences" 
+                           placeholder="مثال: ألوان زرقاء وبيضاء">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="competitors">المنافسون أو المرجعيات</label>
+                    <textarea class="form-control" id="competitors" 
+                              placeholder="اذكر أي مواقع أو تصاميم تعجبك (يمكن إضافة روابط)"></textarea>
+                </div>
+            </div>
+
+            <div class="form-navigation">
+                <button class="nav-btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-right"></i> السابق
+                </button>
+                <button class="nav-btn btn-primary" onclick="nextStep()">
+                    التالي <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الخطوة 3: المرفقات -->
+        <div class="project-form" id="step3Form">
+            <div class="form-card">
+                <div class="form-header">
+                    <h3>المرفقات</h3>
+                    <p>أرفق أي ملفات تساعد في فهم مشروعك</p>
+                </div>
+
+                <div class="file-upload-area" onclick="triggerFileUpload()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h4>اسحب وأفلت الملفات هنا</h4>
+                    <p>أو انقر لاختيار الملفات</p>
+                    <button class="browse-btn" onclick="triggerFileUpload()">
+                        تصفح الملفات
+                    </button>
+                    <p style="font-size: 12px; margin-top: 12px;">
+                        يمكنك رفع: صور، PDF، Word، PowerPoint (الحجم الأقصى: 10MB لكل ملف)
+                    </p>
+                </div>
+
+                <input type="file" id="fileInput" multiple style="display: none;" 
+                       accept="image/*,.pdf,.doc,.docx,.ppt,.pptx">
+
+                <div class="file-list" id="fileList">
+                    <!-- سيتم إضافة الملفات هنا -->
+                </div>
+
+                <div class="form-group" style="margin-top: 24px;">
+                    <label class="form-label">روابط إضافية</label>
+                    <input type="text" class="form-control" id="referenceLinks" 
+                           placeholder="أضف روابط للصور أو المواقع المرجعية (افصل بينها بفاصلة)">
+                </div>
+            </div>
+
+            <div class="form-navigation">
+                <button class="nav-btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-right"></i> السابق
+                </button>
+                <button class="nav-btn btn-primary" onclick="nextStep()">
+                    التالي <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الخطوة 4: الميزانية والجدول -->
+        <div class="project-form" id="step4Form">
+            <div class="form-card">
+                <div class="form-header">
+                    <h3>الميزانية والجدول الزمني</h3>
+                    <p>حدد ميزانيتك وجدول التسليم المطلوب</p>
+                </div>
+
+                <div class="budget-slider">
+                    <h4 style="margin-bottom: 20px;">ميزانية المشروع</h4>
+                    <input type="range" class="budget-range" id="budgetSlider" 
+                           min="100" max="5000" step="50" value="500">
+                    
+                    <div class="budget-display">
+                        <div>
+                            <div class="budget-value" id="budgetValue">500</div>
+                            <div class="budget-label">ريال سعودي</div>
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="font-size: 14px; color: var(--text-secondary);">
+                                متوسط سعر هذا النوع: 750 ريال
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4 style="margin-bottom: 16px;">جدول التسليم</h4>
+                    <div class="delivery-options">
+                        <div class="delivery-option" data-days="3" onclick="selectDeliveryOption(3)">
+                            <div class="delivery-days">3</div>
+                            <div class="delivery-label">أيام</div>
+                            <div class="delivery-price">+15%</div>
+                        </div>
+                        <div class="delivery-option selected" data-days="7" onclick="selectDeliveryOption(7)">
+                            <div class="delivery-days">7</div>
+                            <div class="delivery-label">أيام</div>
+                            <div class="delivery-price">قيمة أساسية</div>
+                        </div>
+                        <div class="delivery-option" data-days="14" onclick="selectDeliveryOption(14)">
+                            <div class="delivery-days">14</div>
+                            <div class="delivery-label">أيام</div>
+                            <div class="delivery-price">-10%</div>
+                        </div>
+                        <div class="delivery-option" data-days="30" onclick="selectDeliveryOption(30)">
+                            <div class="delivery-days">30</div>
+                            <div class="delivery-label">أيام</div>
+                            <div class="delivery-price">-20%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4 style="margin-bottom: 16px;">اختر مصمم (اختياري)</h4>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 16px;">
+                        يمكنك اختيار مصمم معين أو نختار لك الأفضل بناءً على متطلباتك
+                    </p>
+                    
+                    <div class="suggested-designers" id="suggestedDesigners">
+                        <!-- سيتم إضافة المصممين المقترحين هنا -->
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="autoSelectDesigner" checked>
+                            <span style="font-size: 14px;">اختيار أفضل مصمم لي تلقائياً</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-navigation">
+                <button class="nav-btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-right"></i> السابق
+                </button>
+                <button class="nav-btn btn-primary" onclick="nextStep()">
+                    التالي <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الخطوة 5: المراجعة -->
+        <div class="project-form" id="step5Form">
+            <div class="form-card">
+                <div class="form-header">
+                    <h3>مراجعة الطلب</h3>
+                    <p>راجع طلبك قبل الإرسال</p>
+                </div>
+
+                <div class="order-summary" id="orderSummary">
+                    <!-- سيتم ملء الملخص هنا -->
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                    <textarea class="form-control" id="finalNotes" 
+                              placeholder="أضف أي ملاحظات إضافية للمصمم"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: flex-start; gap: 8px;">
+                        <input type="checkbox" id="termsAgreement" required>
+                        <span style="font-size: 14px;">
+                            أوافق على <a href="terms.html" style="color: var(--primary-color);">الشروط والأحكام</a> 
+                            وأعطي الموافقة لبدء المشروع
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-navigation">
+                <button class="nav-btn btn-secondary" onclick="prevStep()">
+                    <i class="fas fa-arrow-right"></i> السابق
+                </button>
+                <button class="nav-btn btn-primary" id="submitBtn" onclick="submitProject()">
+                    <i class="fas fa-paper-plane"></i> إرسال الطلب
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // بيانات المشروع
+        let projectData = {
+            designType: '',
+            customDesignType: '',
+            title: '',
+            description: '',
+            brandName: '',
+            industry: '',
+            targetAudience: '',
+            colorPreferences: '',
+            competitors: '',
+            files: [],
+            links: '',
+            budget: 500,
+            deliveryDays: 7,
+            selectedDesigner: null,
+            autoSelectDesigner: true,
+            finalNotes: ''
+        };
+
+        // حالة التطبيق
+        let currentStep = 1;
+        let selectedFiles = [];
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initForm();
+            loadSuggestedDesigners();
+            setupEventListeners();
+        });
+
+        function initForm() {
+            // تحديث عداد الوصف
+            const descriptionTextarea = document.getElementById('projectDescription');
+            const descriptionCount = document.getElementById('descriptionCount');
+            
+            descriptionTextarea.addEventListener('input', function() {
+                descriptionCount.textContent = this.value.length;
+                projectData.description = this.value;
+            });
+
+            // تحديث شريط الميزانية
+            const budgetSlider = document.getElementById('budgetSlider');
+            const budgetValue = document.getElementById('budgetValue');
+            
+            budgetSlider.addEventListener('input', function() {
+                budgetValue.textContent = this.value;
+                projectData.budget = parseInt(this.value);
+                updateOrderSummary();
+            });
+
+            // تحميل المصممين المقترحين
+            loadSuggestedDesigners();
+        }
+
+        function setupEventListeners() {
+            // حفظ البيانات عند تغيير الحقول
+            document.getElementById('projectTitle').addEventListener('input', function() {
+                projectData.title = this.value;
+            });
+
+            document.getElementById('brandName').addEventListener('input', function() {
+                projectData.brandName = this.value;
+            });
+
+            document.getElementById('industry').addEventListener('change', function() {
+                projectData.industry = this.value;
+            });
+
+            document.getElementById('targetAudience').addEventListener('input', function() {
+                projectData.targetAudience = this.value;
+            });
+
+            document.getElementById('colorPreferences').addEventListener('input', function() {
+                projectData.colorPreferences = this.value;
+            });
+
+            document.getElementById('competitors').addEventListener('input', function() {
+                projectData.competitors = this.value;
+            });
+
+            document.getElementById('referenceLinks').addEventListener('input', function() {
+                projectData.links = this.value;
+            });
+
+            document.getElementById('finalNotes').addEventListener('input', function() {
+                projectData.finalNotes = this.value;
+            });
+
+            document.getElementById('autoSelectDesigner').addEventListener('change', function() {
+                projectData.autoSelectDesigner = this.checked;
+            });
+        }
+
+        function selectDesignType(type) {
+            // إزالة التحديد من جميع الأنواع
+            document.querySelectorAll('.design-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // إضافة التحديد للنوع المختار
+            const selected = document.querySelector(`[data-type="${type}"]`);
+            selected.classList.add('selected');
+            
+            projectData.designType = type;
+            
+            // تحديث متوسط السعر بناءً على النوع
+            updateAveragePrice(type);
+        }
+
+        function updateAveragePrice(type) {
+            const prices = {
+                'logo': 750,
+                'branding': 1500,
+                'ui-ux': 2000,
+                'print': 500,
+                'social': 400,
+                'illustration': 800
+            };
+            
+            const avgPrice = prices[type] || 750;
+            const priceElement = document.querySelector('.budget-display div:last-child div:first-child');
+            if (priceElement) {
+                priceElement.textContent = `متوسط سعر هذا النوع: ${avgPrice} ريال`;
+            }
+        }
+
+        function nextStep() {
+            // التحقق من صحة البيانات في الخطوة الحالية
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            // حفظ البيانات من الخطوة الحالية
+            saveCurrentStepData();
+
+            // الانتقال للخطوة التالية
+            document.getElementById(`step${currentStep}Form`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            currentStep++;
+            
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.getElementById(`step${currentStep}Form`).classList.add('active');
+
+            // تحديث واجهة الخطوة الجديدة
+            updateStepUI();
+        }
+
+        function prevStep() {
+            document.getElementById(`step${currentStep}Form`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            currentStep--;
+            
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.getElementById(`step${currentStep}Form`).classList.add('active');
+        }
+
+        function validateCurrentStep() {
+            switch(currentStep) {
+                case 1:
+                    if (!projectData.designType && !document.getElementById('customDesignType').value) {
+                        showError('الرجاء اختيار نوع التصميم');
+                        return false;
+                    }
+                    break;
+                    
+                case 2:
+                    const title = document.getElementById('projectTitle').value.trim();
+                    const description = document.getElementById('projectDescription').value.trim();
+                    
+                    if (!title) {
+                        showError('الرجاء إدخال عنوان المشروع');
+                        return false;
+                    }
+                    
+                    if (!description) {
+                        showError('الرجاء إدخال وصف المشروع');
+                        return false;
+                    }
+                    
+                    if (description.length < 50) {
+                        showError('وصف المشروع يجب أن يكون على الأقل 50 حرفاً');
+                        return false;
+                    }
+                    break;
+                    
+                case 5:
+                    if (!document.getElementById('termsAgreement').checked) {
+                        showError('الرجاء الموافقة على الشروط والأحكام');
+                        return false;
+                    }
+                    break;
+            }
+            
+            return true;
+        }
+
+        function saveCurrentStepData() {
+            switch(currentStep) {
+                case 1:
+                    projectData.customDesignType = document.getElementById('customDesignType').value;
+                    break;
+                case 2:
+                    projectData.title = document.getElementById('projectTitle').value;
+                    projectData.description = document.getElementById('projectDescription').value;
+                    projectData.brandName = document.getElementById('brandName').value;
+                    projectData.industry = document.getElementById('industry').value;
+                    projectData.targetAudience = document.getElementById('targetAudience').value;
+                    projectData.colorPreferences = document.getElementById('colorPreferences').value;
+                    projectData.competitors = document.getElementById('competitors').value;
+                    break;
+                case 3:
+                    projectData.links = document.getElementById('referenceLinks').value;
+                    projectData.files = selectedFiles;
+                    break;
+                case 4:
+                    projectData.budget = parseInt(document.getElementById('budgetSlider').value);
+                    projectData.deliveryDays = projectData.deliveryDays || 7;
+                    break;
+            }
+        }
+
+        function updateStepUI() {
+            if (currentStep === 5) {
+                updateOrderSummary();
+            }
+        }
+
+        function selectDeliveryOption(days) {
+            // إزالة التحديد من جميع الخيارات
+            document.querySelectorAll('.delivery-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // إضافة التحديد للخيار المختار
+            const selected = document.querySelector(`[data-days="${days}"]`);
+            selected.classList.add('selected');
+            
+            projectData.deliveryDays = days;
+            updateOrderSummary();
+        }
+
+        function triggerFileUpload() {
+            document.getElementById('fileInput').click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (validateFile(file)) {
+                    addFileToList(file);
+                }
+            });
+        });
+
+        function validateFile(file) {
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 
+                                  'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                  'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+
+            if (file.size > maxSize) {
+                showError(`الملف ${file.name} كبير جداً. الحد الأقصى 10MB`);
+                return false;
+            }
+
+            if (!allowedTypes.includes(file.type)) {
+                showError(`نوع الملف ${file.name} غير مسموح به`);
+                return false;
+            }
+
+            return true;
+        }
+
+        function addFileToList(file) {
+            const fileId = Date.now() + Math.random();
+            selectedFiles.push({
+                id: fileId,
+                file: file
+            });
+
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.id = `file-${fileId}`;
+            
+            const fileSize = formatFileSize(file.size);
+            
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-icon">
+                        <i class="fas ${getFileIcon(file.type)}"></i>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${fileSize}</div>
+                    </div>
+                </div>
+                <button class="file-remove" onclick="removeFile('${fileId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            document.getElementById('fileList').appendChild(fileItem);
+            updateFileUploadArea();
+        }
+
+        function removeFile(fileId) {
+            selectedFiles = selectedFiles.filter(f => f.id != fileId);
+            const fileElement = document.getElementById(`file-${fileId}`);
+            if (fileElement) {
+                fileElement.remove();
+            }
+            updateFileUploadArea();
+        }
+
+        function updateFileUploadArea() {
+            const uploadArea = document.querySelector('.file-upload-area h4');
+            if (uploadArea) {
+                uploadArea.textContent = selectedFiles.length > 0 
+                    ? `${selectedFiles.length} ملف مرفوع` 
+                    : 'اسحب وأفلت الملفات هنا';
+            }
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.startsWith('image/')) return 'fa-image';
+            if (fileType === 'application/pdf') return 'fa-file-pdf';
+            if (fileType.includes('word')) return 'fa-file-word';
+            if (fileType.includes('powerpoint')) return 'fa-file-powerpoint';
+            return 'fa-file';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        async function loadSuggestedDesigners() {
+            // بيانات وهمية للمصممين المقترحين
+            const designers = [
+                {
+                    id: 1,
+                    name: 'أحمد المصمم',
+                    specialty: 'تصميم شعارات وهوية بصرية',
+                    rating: 4.7,
+                    reviews: 127,
+                    price: 800,
+                    avatar: 'https://ui-avatars.com/api/?name=أحمد+المصمم&background=005f73&color=fff&size=80'
+                },
+                {
+                    id: 2,
+                    name: 'سارة المصممة',
+                    specialty: 'UI/UX وتطبيقات الجوال',
+                    rating: 5.0,
+                    reviews: 89,
+                    price: 1200,
+                    avatar: 'https://ui-avatars.com/api/?name=سارة+المصممة&background=9a031e&color=fff&size=80'
+                },
+                {
+                    id: 3,
+                    name: 'خالد المصمم',
+                    specialty: 'موشن جرافيك وتحرير الفيديو',
+                    rating: 4.5,
+                    reviews: 203,
+                    price: 1500,
+                    avatar: 'https://ui-avatars.com/api/?name=خالد+المصمم&background=bb3e03&color=fff&size=80'
+                }
+            ];
+
+            const container = document.getElementById('suggestedDesigners');
+            container.innerHTML = '';
+
+            designers.forEach(designer => {
+                const designerElement = document.createElement('div');
+                designerElement.className = 'suggested-designer';
+                designerElement.dataset.id = designer.id;
+                designerElement.onclick = () => selectDesigner(designer);
+                
+                const stars = '★'.repeat(Math.floor(designer.rating)) + 
+                             (designer.rating % 1 >= 0.5 ? '½' : '') +
+                             '☆'.repeat(5 - Math.ceil(designer.rating));
+                
+                designerElement.innerHTML = `
+                    <img src="${designer.avatar}" alt="${designer.name}" class="designer-avatar">
+                    <div class="designer-name">${designer.name}</div>
+                    <div class="designer-specialty">${designer.specialty}</div>
+                    <div class="designer-rating">
+                        ${stars} (${designer.reviews} تقييم)
+                    </div>
+                    <div class="designer-price">${designer.price} ريال</div>
+                `;
+                
+                container.appendChild(designerElement);
+            });
+        }
+
+        function selectDesigner(designer) {
+            // إزالة التحديد من جميع المصممين
+            document.querySelectorAll('.suggested-designer').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            // إضافة التحديد للمصمم المختار
+            const selected = document.querySelector(`[data-id="${designer.id}"]`);
+            selected.classList.add('selected');
+            
+            projectData.selectedDesigner = designer;
+            projectData.autoSelectDesigner = false;
+            document.getElementById('autoSelectDesigner').checked = false;
+            
+            updateOrderSummary();
+        }
+
+        function updateOrderSummary() {
+            const container = document.getElementById('orderSummary');
+            
+            // حساب السعر النهائي
+            let total = projectData.budget;
+            
+            // تطبيق خصم/زيادة حسب مدة التسليم
+            let deliveryAdjustment = 0;
+            let deliveryText = '';
+            
+            switch(projectData.deliveryDays) {
+                case 3:
+                    deliveryAdjustment = total * 0.15;
+                    deliveryText = 'تسليم سريع (+15%)';
+                    break;
+                case 7:
+                    deliveryAdjustment = 0;
+                    deliveryText = 'تسليم قياسي';
+                    break;
+                case 14:
+                    deliveryAdjustment = -(total * 0.10);
+                    deliveryText = 'تسليم مريح (-10%)';
+                    break;
+                case 30:
+                    deliveryAdjustment = -(total * 0.20);
+                    deliveryText = 'تسليم مريح جداً (-20%)';
+                    break;
+            }
+            
+            total += deliveryAdjustment;
+            
+            const designTypeText = {
+                'logo': 'تصميم شعار',
+                'branding': 'هوية بصرية',
+                'ui-ux': 'تصميم UI/UX',
+                'print': 'مواد مطبوعة',
+                'social': 'تصميم وسائل تواصل',
+                'illustration': 'رسوم توضيحية'
+            }[projectData.designType] || projectData.customDesignType || 'تصميم مخصص';
+            
+            const designerText = projectData.selectedDesigner 
+                ? projectData.selectedDesigner.name
+                : 'سيتم اختيار أفضل مصمم لك';
+            
+            container.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-label">نوع التصميم</span>
+                    <span class="summary-value">${designTypeText}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">المصمم</span>
+                    <span class="summary-value">${designerText}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">مدة التسليم</span>
+                    <span class="summary-value">${projectData.deliveryDays} يوم (${deliveryText})</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">السعر الأساسي</span>
+                    <span class="summary-value">${projectData.budget} ريال</span>
+                </div>
+                ${deliveryAdjustment !== 0 ? `
+                <div class="summary-item">
+                    <span class="summary-label">تعديل التسليم</span>
+                    <span class="summary-value ${deliveryAdjustment > 0 ? 'text-danger' : 'text-success'}">
+                        ${deliveryAdjustment > 0 ? '+' : ''}${deliveryAdjustment} ريال
+                    </span>
+                </div>
+                ` : ''}
+                <div class="summary-item" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--border-color);">
+                    <span class="summary-label summary-total">المبلغ الإجمالي</span>
+                    <span class="summary-value summary-total">${total} ريال</span>
+                </div>
+            `;
+        }
+
+        async function submitProject() {
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            saveCurrentStepData();
+
+            // إظهار مؤشر التحميل
+            showLoading(true);
+
+            try {
+                // محاكاة إرسال الطلب إلى الخادم
+                await simulateApiCall();
+                
+                // حفظ المشروع محلياً
+                saveProjectToLocalStorage();
+                
+                // إظهار رسالة النجاح
+                showSuccess('تم إرسال طلب التصميم بنجاح!');
+                
+                // الانتقال إلى صفحة المشاريع بعد 2 ثانية
+                setTimeout(() => {
+                    window.location.href = 'my-projects.html';
+                }, 2000);
+                
+            } catch (error) {
+                showError('حدث خطأ أثناء إرسال الطلب. الرجاء المحاولة مرة أخرى.');
+                showLoading(false);
+            }
+        }
+
+        async function simulateApiCall() {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // محاكاة نجاح الإرسال
+                    resolve({ success: true, projectId: Date.now() });
+                }, 1500);
+            });
+        }
+
+        function saveProjectToLocalStorage() {
+            // الحصول على المشاريع الحالية
+            const projects = JSON.parse(localStorage.getItem('clientProjects') || '[]');
+            
+            // إنشاء مشروع جديد
+            const newProject = {
+                id: Date.now(),
+                ...projectData,
+                status: 'pending',
+                createdAt: new Date().toISOString(),
+                progress: 0,
+                files: selectedFiles.map(f => ({ name: f.file.name, size: f.file.size, type: f.file.type }))
+            };
+            
+            // إضافة المشروع الجديد
+            projects.unshift(newProject);
+            
+            // حفظ في التخزين المحلي
+            localStorage.setItem('clientProjects', JSON.stringify(projects));
+            
+            // تحديث العداد
+            updateProjectCount();
+        }
+
+        function updateProjectCount() {
+            const projects = JSON.parse(localStorage.getItem('clientProjects') || '[]');
+            const activeCount = projects.filter(p => p.status === 'in_progress').length;
+            
+            // تحديث العداد في الصفحة الرئيسية
+            localStorage.setItem('projectStats', JSON.stringify({
+                total: projects.length,
+                active: activeCount,
+                completed: projects.filter(p => p.status === 'completed').length
+            }));
+        }
+
+        function showLoading(show) {
+            document.getElementById('loader').style.display = show ? 'flex' : 'none';
+        }
+
+        function showError(message) {
+            // إنشاء عنصر الخطأ
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                left: 20px;
+                background: var(--danger-color);
+                color: white;
+                padding: 16px;
+                border-radius: var(--radius-md);
+                z-index: 1000;
+                text-align: center;
+                animation: slideIn 0.3s ease;
+                font-family: inherit;
+                box-shadow: var(--shadow-lg);
+            `;
+            
+            errorDiv.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(errorDiv);
+            
+            // إزالة الرسالة بعد 3 ثواني
+            setTimeout(() => {
+                errorDiv.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => errorDiv.remove(), 300);
+            }, 3000);
+            
+            // إضافة أنيميشن CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateY(-100px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateY(0); opacity: 1; }
+                    to { transform: translateY(-100px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function showSuccess(message) {
+            // إنشاء عنصر النجاح
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                left: 20px;
+                background: var(--success-color);
+                color: white;
+                padding: 16px;
+                border-radius: var(--radius-md);
+                z-index: 1000;
+                text-align: center;
+                animation: slideIn 0.3s ease;
+                font-family: inherit;
+                box-shadow: var(--shadow-lg);
+            `;
+            
+            successDiv.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            // إزالة الرسالة بعد 3 ثواني
+            setTimeout(() => {
+                successDiv.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => successDiv.remove(), 300);
+            }, 3000);
+        }
+
+        function goBack() {
+            if (currentStep === 1) {
+                window.history.back();
+            } else {
+                prevStep();
+            }
+        }
+
+        // إضافة أنيميشن CSS
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                .text-danger { color: var(--danger-color) !important; }
+                .text-success { color: var(--success-color) !important; }
+                
+                @media (max-width: 768px) {
+                    .main-content {
+                        padding: 15px;
+                    }
+                    
+                    .form-card {
+                        padding: 20px;
+                    }
+                }
+            </style>
+        `);
+    </script>
+</body>
+</html>

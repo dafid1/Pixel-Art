@@ -1,0 +1,2884 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#005f73">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>تفاصيل المشروع | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --primary-dark: #0a9396;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --accent-color: #bb3e03;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --info-color: #4a7cff;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            overscroll-behavior: contain;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: env(safe-area-inset-top, 24px);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* الهيدر المتقدم */
+        .app-header {
+            height: 60px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 10px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        /* شريط الحالة السريع */
+        .quick-status-bar {
+            background: var(--bg-primary);
+            padding: 12px 16px;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 60px;
+            z-index: 90;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .status-badge {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge.active {
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.1), rgba(10, 147, 150, 0.05));
+            color: var(--success-color);
+            border: 1px solid rgba(10, 147, 150, 0.2);
+        }
+
+        .status-badge.pending {
+            background: linear-gradient(135deg, rgba(233, 196, 106, 0.1), rgba(233, 196, 106, 0.05));
+            color: var(--warning-color);
+            border: 1px solid rgba(233, 196, 106, 0.2);
+        }
+
+        .status-badge.completed {
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.1), rgba(42, 157, 143, 0.05));
+            color: var(--success-color);
+            border: 1px solid rgba(42, 157, 143, 0.2);
+        }
+
+        .status-badge.delayed {
+            background: linear-gradient(135deg, rgba(231, 111, 81, 0.1), rgba(231, 111, 81, 0.05));
+            color: var(--danger-color);
+            border: 1px solid rgba(231, 111, 81, 0.2);
+        }
+
+        .priority-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .priority-badge.high {
+            background: linear-gradient(135deg, rgba(231, 111, 81, 0.1), rgba(231, 111, 81, 0.05));
+            color: var(--danger-color);
+        }
+
+        .priority-badge.medium {
+            background: linear-gradient(135deg, rgba(233, 196, 106, 0.1), rgba(233, 196, 106, 0.05));
+            color: var(--warning-color);
+        }
+
+        .priority-badge.low {
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.1), rgba(10, 147, 150, 0.05));
+            color: var(--success-color);
+        }
+
+        /* شريط التقدم */
+        .progress-tracker {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-info {
+            flex: 1;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .progress-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary-color));
+            border-radius: 4px;
+            transition: width var(--transition-slow) cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 16px calc(80px + env(safe-area-inset-bottom, 0px)) 16px;
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+        }
+
+        /* بطاقة الصورة الرئيسية */
+        .project-hero {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 24px;
+            height: 240px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .hero-category {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* إحصائيات سريعة */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* أقسام المعلومات */
+        .info-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            flex: 1;
+        }
+
+        /* بطاقة المصمم */
+        .designer-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .designer-card:active {
+            transform: scale(0.99);
+            background: var(--primary-light);
+        }
+
+        .designer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .designer-info {
+            flex: 1;
+        }
+
+        .designer-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .designer-specialty {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+            color: var(--warning-color);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .rating-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 8px;
+        }
+
+        /* خط زمني للمشروع */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 24px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-right: 60px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item.completed::before {
+            background: var(--success-color);
+            box-shadow: 0 0 0 3px var(--success-color);
+        }
+
+        .timeline-item.current::before {
+            background: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-item.upcoming::before {
+            background: var(--border-color);
+            box-shadow: 0 0 0 3px var(--bg-primary);
+        }
+
+        .timeline-item.delayed::before {
+            background: var(--danger-color);
+            box-shadow: 0 0 0 3px var(--danger-color);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: 18px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .timeline-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(10, 147, 150, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(10, 147, 150, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(10, 147, 150, 0); }
+        }
+
+        /* معرض الملفات */
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .file-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .file-card:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .file-icon {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .file-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .file-size {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* الدردشة والمراجعات */
+        .messages-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .message.sent {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            max-width: 70%;
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message.sent .message-content {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            color: white;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0 0 4px 0;
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        /* النفقات والمدفوعات */
+        .payments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .payment-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .payment-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--success-color), #34d399);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .payment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .payment-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .payment-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .payment-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        /* القائمة المنسدلة للأفعال */
+        .action-menu {
+            position: fixed;
+            bottom: 80px;
+            left: 16px;
+            right: 16px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            display: none;
+            animation: slideUp 0.3s ease;
+            overflow: hidden;
+        }
+
+        .action-menu.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .action-item:last-child {
+            border-bottom: none;
+        }
+
+        .action-item:active {
+            background: var(--bg-secondary);
+        }
+
+        .action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .action-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .action-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: calc(70px + env(safe-area-inset-bottom, 0px));
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px env(safe-area-inset-bottom, 0px) 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 20px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-center {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-top: -28px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-center:active {
+            transform: scale(0.95);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--bg-secondary);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            z-index: 1;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:active {
+            background: var(--bg-secondary);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* زر الإجراءات العائم */
+        .fab-actions {
+            position: fixed;
+            bottom: 90px;
+            left: 16px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            transition: all var(--transition-medium);
+        }
+
+        .fab-actions:active {
+            transform: scale(0.9) rotate(45deg);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* أزرار التبويب */
+        .tab-buttons {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-radius: var(--radius-sm);
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* التحسينات للشاشات الصغيرة */
+        @media (max-width: 360px) {
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .files-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .project-hero {
+                height: 200px;
+            }
+        }
+
+        /* تحسينات الوضع الداكن */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a202c;
+                --bg-secondary: #2d3748;
+                --bg-card: #2d3748;
+                --text-primary: #f7fafc;
+                --text-secondary: #cbd5e0;
+                --border-color: #4a5568;
+            }
+            
+            .hero-overlay {
+                background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            }
+            
+            .timeline-content {
+                background: var(--bg-card);
+            }
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .stat-card:hover,
+            .designer-card:hover {
+                transform: none;
+            }
+            
+            .stat-card:active,
+            .designer-card:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* أنيميشن للمهام المكتملة */
+        .completed-task {
+            animation: completedAnimation 0.5s ease;
+        }
+
+        @keyframes completedAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* شريط المهمة العاجلة */
+        .urgent-alert {
+            background: linear-gradient(135deg, rgba(231, 111, 81, 0.1), rgba(231, 111, 81, 0.05));
+            border-right: 4px solid var(--danger-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .urgent-alert i {
+            color: var(--danger-color);
+            font-size: 20px;
+        }
+
+        .urgent-alert p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        /* مساحة آمنة للشاشات مع Notch */
+        .safe-area-bottom {
+            height: env(safe-area-inset-bottom, 0px);
+            background: var(--bg-primary);
+        }
+
+        /* أزرار العمل السريع */
+        .quick-action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .quick-action-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .quick-action-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .quick-action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--primary-color);
+        }
+
+        .quick-action-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h1 class="page-title" id="pageTitle">تفاصيل المشروع</h1>
+        </div>
+        <div class="header-right">
+            <button class="icon-btn" onclick="toggleFavorite()" id="favoriteBtn">
+                <i class="far fa-star"></i>
+            </button>
+            <button class="icon-btn" onclick="shareProject()">
+                <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="icon-btn" onclick="showMoreOptions()">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- شريط الحالة السريع -->
+    <section class="quick-status-bar">
+        <div class="status-indicator">
+            <span class="status-badge active" id="projectStatus">
+                <i class="fas fa-play-circle"></i> قيد التنفيذ
+            </span>
+            <span class="priority-badge high" id="projectPriority">عالية</span>
+        </div>
+        <div class="progress-tracker">
+            <div class="progress-info">
+                <div class="progress-header">
+                    <span class="progress-label">التقدم</span>
+                    <span class="progress-value" id="progressValue">75%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 75%"></div>
+                </div>
+            </div>
+            <button class="icon-btn" onclick="updateProgress()">
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content" id="mainContent">
+        <!-- بطاقة الصورة الرئيسية -->
+        <div class="project-hero">
+            <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                 alt="تصميم شعار" 
+                 id="projectImage"
+                 loading="lazy">
+            <div class="hero-overlay">
+                <h2 class="hero-title" id="projectTitle">تصميم شعار لشركة التقنية</h2>
+                <p class="hero-category">
+                    <i class="fas fa-tag"></i>
+                    <span id="projectCategory">تصميم شعار</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- أزرار العمل السريع -->
+        <div class="quick-action-buttons">
+            <button class="quick-action-btn" onclick="contactDesigner()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-comment-dots"></i>
+                </div>
+                <span class="quick-action-label">مراسلة</span>
+            </button>
+            <button class="quick-action-btn" onclick="viewFiles()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <span class="quick-action-label">الملفات</span>
+            </button>
+            <button class="quick-action-btn" onclick="requestUpdate()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <span class="quick-action-label">تحديث</span>
+            </button>
+            <button class="quick-action-btn" onclick="addPayment()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <span class="quick-action-label">دفع</span>
+            </button>
+            <button class="quick-action-btn" onclick="viewTimeline()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-stream"></i>
+                </div>
+                <span class="quick-action-label">الجدول</span>
+            </button>
+            <button class="quick-action-btn" onclick="downloadAll()">
+                <div class="quick-action-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <span class="quick-action-label">تحميل</span>
+            </button>
+        </div>
+
+        <!-- إحصائيات سريعة -->
+        <div class="quick-stats">
+            <div class="stat-card" onclick="viewBudgetDetails()">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-value" id="projectBudget">1500 ر.س</div>
+                <div class="stat-label">الميزانية</div>
+            </div>
+            <div class="stat-card" onclick="viewTimeDetails()">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value" id="daysLeft">15 يوم</div>
+                <div class="stat-label">متبقي</div>
+            </div>
+            <div class="stat-card" onclick="viewFilesModal()">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-value" id="filesCount">8</div>
+                <div class="stat-label">ملف</div>
+            </div>
+            <div class="stat-card" onclick="viewMessages()">
+                <div class="stat-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="stat-value" id="messagesCount">24</div>
+                <div class="stat-label">رسالة</div>
+            </div>
+        </div>
+
+        <!-- تبويبات المحتوى -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('details')" id="detailsTab">التفاصيل</button>
+            <button class="tab-btn" onclick="showTab('timeline')" id="timelineTab">الجدول الزمني</button>
+            <button class="tab-btn" onclick="showTab('files')" id="filesTab">الملفات</button>
+        </div>
+
+        <!-- محتوى التبويبات -->
+        <div id="tabContent">
+            <!-- تبويب التفاصيل -->
+            <div class="tab-pane active" id="detailsPane">
+                <!-- تنبيه عاجل -->
+                <div class="urgent-alert" id="urgentAlert" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>يتبقى 3 أيام فقط على الموعد النهائي للمشروع!</p>
+                    <button class="icon-btn" onclick="requestExtension()" style="background: var(--danger-color); color: white;">
+                        <i class="fas fa-clock"></i>
+                    </button>
+                </div>
+
+                <!-- معلومات المشروع -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h3 class="section-title">معلومات المشروع</h3>
+                    </div>
+                    <p id="projectDescription" style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 20px;">
+                        تصميم شعار عصري ومبتكر لشركة تقنية ناشئة متخصصة في حلول الذكاء الاصطناعي. الشعار يجب أن يعبر عن الابتكار والتقنية مع الحفاظ على البساطة وسهولة التذكر.
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">تاريخ البدء</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);" id="startDate">1 يناير 2024</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">الموعد النهائي</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--danger-color);" id="deadlineDate">25 يناير 2024</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">المدة</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);" id="projectDuration">25 يوم</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">رقم المشروع</div>
+                            <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);" id="projectNumber">#PRJ-2024-001</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المصمم المسؤول -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="section-title">المصمم المسؤول</h3>
+                    </div>
+                    
+                    <div class="designer-card" onclick="viewDesignerProfile()">
+                        <img src="https://ui-avatars.com/api/?name=أحمد+المصمم&background=005f73&color=fff&size=80" 
+                             alt="المصمم" 
+                             class="designer-avatar"
+                             id="designerAvatar">
+                        <div class="designer-info">
+                            <h4 class="designer-name" id="designerName">أحمد المصمم</h4>
+                            <p class="designer-specialty" id="designerSpecialty">متخصص في تصميم الشعارات والهوية البصرية</p>
+                            <div>
+                                <div class="rating-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="rating-value" id="designerRating">4.7 (127 تقييم)</span>
+                            </div>
+                            <div style="display: flex; gap: 8px; margin-top: 12px;">
+                                <button class="icon-btn" style="width: auto; padding: 0 16px; background: var(--primary-color); color: white;" onclick="contactDesigner(event)">
+                                    <i class="fas fa-comment"></i> مراسلة
+                                </button>
+                                <button class="icon-btn" style="width: auto; padding: 0 16px; background: var(--bg-secondary); color: var(--text-primary);" onclick="viewPortfolio(event)">
+                                    <i class="fas fa-images"></i> الأعمال
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المخرجات المطلوبة -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3 class="section-title">المخرجات المطلوبة</h3>
+                    </div>
+                    
+                    <div id="deliverablesList">
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 8px;">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <span style="flex: 1; font-size: 14px;">شعار رئيسي باللونين</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">مكتمل</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 8px;">
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            <span style="flex: 1; font-size: 14px;">شعار فرعي أحادي اللون</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">مكتمل</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 8px;">
+                            <i class="fas fa-spinner fa-spin" style="color: var(--primary-color);"></i>
+                            <span style="flex: 1; font-size: 14px;">دليل الاستخدام والتنفيذ</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">قيد العمل</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                            <i class="far fa-circle" style="color: var(--text-secondary);"></i>
+                            <span style="flex: 1; font-size: 14px;">ملفات متعددة التنسيقات</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">قيد الانتظار</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الملاحظات والتعديلات -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <h3 class="section-title">الملاحظات والتعديلات</h3>
+                    </div>
+                    
+                    <div id="notesList" style="margin-bottom: 16px;">
+                        <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">طلب تعديل الألوان</span>
+                                <span style="font-size: 12px; color: var(--text-secondary);">قبل يومين</span>
+                            </div>
+                            <p style="font-size: 14px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                                الرجاء تعديل الألوان لتكون أكثر تناسقاً مع العلامة التجارية
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <button class="icon-btn" style="width: 100%; background: var(--bg-secondary); color: var(--text-primary);" onclick="addNote()">
+                        <i class="fas fa-plus"></i> إضافة ملاحظة جديدة
+                    </button>
+                </div>
+            </div>
+
+            <!-- تبويب الجدول الزمني -->
+            <div class="tab-pane" id="timelinePane" style="display: none;">
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-stream"></i>
+                        </div>
+                        <h3 class="section-title">الجدول الزمني للمشروع</h3>
+                    </div>
+                    
+                    <div class="timeline" id="projectTimeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h4 class="timeline-title">بداية المشروع</h4>
+                                    <span class="timeline-date">1 يناير 2024</span>
+                                </div>
+                                <p class="timeline-description">بداية العمل على المشروع وتوقيع العقد</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item completed">
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h4 class="timeline-title">التصميم الأولي</h4>
+                                    <span class="timeline-date">5 يناير 2024</span>
+                                </div>
+                                <p class="timeline-description">تقديم أول نموذج للتصميم</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item completed">
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h4 class="timeline-title">التعديلات الأولى</h4>
+                                    <span class="timeline-date">10 يناير 2024</span>
+                                </div>
+                                <p class="timeline-description">تطبيق التعديلات المطلوبة</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item current">
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h4 class="timeline-title">المراجعة النهائية</h4>
+                                    <span class="timeline-date">20 يناير 2024</span>
+                                </div>
+                                <p class="timeline-description">مراجعة التصميم النهائي</p>
+                                <div style="margin-top: 12px;">
+                                    <button class="icon-btn" style="width: auto; padding: 8px 16px; background: var(--primary-color); color: white; font-size: 12px;" onclick="reviewDesign()">
+                                        <i class="fas fa-eye"></i> بدء المراجعة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item upcoming">
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h4 class="timeline-title">التسليم النهائي</h4>
+                                    <span class="timeline-date">25 يناير 2024</span>
+                                </div>
+                                <p class="timeline-description">تسليم الملفات النهائية</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويب الملفات -->
+            <div class="tab-pane" id="filesPane" style="display: none;">
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <h3 class="section-title">ملفات المشروع</h3>
+                        <button class="icon-btn" style="background: var(--primary-color); color: white;" onclick="uploadFile()">
+                            <i class="fas fa-upload"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="files-grid" id="filesGrid">
+                        <div class="file-card" onclick="viewFile(1)">
+                            <div class="file-icon">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="file-name">الشعار الرئيسي</div>
+                            <div class="file-size">2.5 MB</div>
+                        </div>
+                        
+                        <div class="file-card" onclick="viewFile(2)">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-name">دليل الاستخدام</div>
+                            <div class="file-size">1.8 MB</div>
+                        </div>
+                        
+                        <div class="file-card" onclick="viewFile(3)">
+                            <div class="file-icon">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="file-name">ملفات التصميم</div>
+                            <div class="file-size">15.2 MB</div>
+                        </div>
+                        
+                        <div class="file-card" onclick="viewFile(4)">
+                            <div class="file-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="file-name">العقد</div>
+                            <div class="file-size">0.8 MB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المدفوعات -->
+                <div class="info-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3 class="section-title">سجل المدفوعات</h3>
+                        <button class="icon-btn" style="background: var(--success-color); color: white;" onclick="addPayment()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="payments-list" id="paymentsList">
+                        <div class="payment-item">
+                            <div class="payment-info">
+                                <div class="payment-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="payment-details">
+                                    <div class="payment-title">الدفعة الأولى</div>
+                                    <div class="payment-date">5 يناير 2024</div>
+                                </div>
+                            </div>
+                            <div class="payment-amount">500 ر.س</div>
+                        </div>
+                        
+                        <div class="payment-item">
+                            <div class="payment-info">
+                                <div class="payment-icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="payment-details">
+                                    <div class="payment-title">الدفعة الثانية</div>
+                                    <div class="payment-date">15 يناير 2024</div>
+                                </div>
+                            </div>
+                            <div class="payment-amount">700 ر.س</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-top: 16px;">
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">المتبقي</div>
+                            <div style="font-size: 18px; font-weight: 700; color: var(--danger-color);" id="remainingAmount">300 ر.س</div>
+                        </div>
+                        <button class="icon-btn" style="background: var(--danger-color); color: white;" onclick="payRemaining()">
+                            <i class="fas fa-money-bill-wave"></i> دفع المتبقي
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- زر الإجراءات العائم -->
+    <button class="fab-actions" onclick="toggleActionMenu()">
+        <i class="fas fa-plus" id="fabIcon"></i>
+    </button>
+
+    <!-- قائمة الإجراءات -->
+    <div class="action-menu" id="actionMenu">
+        <div class="action-item" onclick="requestUpdate()">
+            <div class="action-icon" style="background: linear-gradient(135deg, var(--primary-light), var(--primary-color));">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+            <div>
+                <div class="action-text">طلب تحديث</div>
+                <div class="action-description">اطلب تحديثاً حول تقدم المشروع</div>
+            </div>
+        </div>
+        
+        <div class="action-item" onclick="requestModification()">
+            <div class="action-icon" style="background: linear-gradient(135deg, var(--warning-color), #fbbf24);">
+                <i class="fas fa-edit"></i>
+            </div>
+            <div>
+                <div class="action-text">طلب تعديل</div>
+                <div class="action-description">اطلب تعديلات على التصميم الحالي</div>
+            </div>
+        </div>
+        
+        <div class="action-item" onclick="extendDeadline()">
+            <div class="action-icon" style="background: linear-gradient(135deg, var(--info-color), #6c8cff);">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div>
+                <div class="action-text">تمديد الموعد</div>
+                <div class="action-description">اطلب تمديد الموعد النهائي</div>
+            </div>
+        </div>
+        
+        <div class="action-item" onclick="downloadAll()">
+            <div class="action-icon" style="background: linear-gradient(135deg, var(--success-color), #34d399);">
+                <i class="fas fa-download"></i>
+            </div>
+            <div>
+                <div class="action-text">تحميل الكل</div>
+                <div class="action-description">تحميل جميع ملفات المشروع</div>
+            </div>
+        </div>
+        
+        <div class="action-item" onclick="generateReport()">
+            <div class="action-icon" style="background: linear-gradient(135deg, var(--secondary-color), #ffb224);">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div>
+                <div class="action-text">تقرير المشروع</div>
+                <div class="action-description">إنشاء تقرير مفصل عن المشروع</div>
+            </div>
+        </div>
+        
+        <div class="action-item" onclick="closeProject()" style="border-bottom: none;">
+            <div class="action-icon" style="background: linear-gradient(135deg, var(--danger-color), #f87171);">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <div>
+                <div class="action-text">إنهاء المشروع</div>
+                <div class="action-description">إنهاء المشروع واعتباره مكتملاً</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-client.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>المشاريع</span>
+        </a>
+        <div class="nav-center" onclick="openChat()">
+            <i class="fas fa-comment"></i>
+        </div>
+        <a href="designers.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>المصممون</span>
+        </a>
+        <a href="notifications.html" class="nav-item">
+            <i class="fas fa-bell"></i>
+            <span>الإشعارات</span>
+        </a>
+    </nav>
+
+    <!-- مساحة آمنة -->
+    <div class="safe-area-bottom"></div>
+
+    <!-- Modal تعديل التقدم -->
+    <div class="modal" id="progressModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تحديث التقدم</h3>
+                <button class="modal-close" onclick="closeProgressModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">
+                        نسبة الإنجاز الحالية
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <input type="range" 
+                               min="0" 
+                               max="100" 
+                               value="75" 
+                               style="flex: 1;"
+                               id="progressSlider"
+                               oninput="updateProgressValue(this.value)">
+                        <span style="font-size: 20px; font-weight: 700; color: var(--primary-color); min-width: 50px; text-align: center;" id="progressDisplay">75%</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">
+                        ملاحظات حول التقدم
+                    </label>
+                    <textarea style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary); font-family: inherit; font-size: 14px; color: var(--text-primary); resize: vertical; min-height: 100px;"
+                              placeholder="اكتب ملاحظات حول تقدم المشروع..."
+                              id="progressNotes"></textarea>
+                </div>
+                
+                <button class="icon-btn" style="width: 100%; background: var(--primary-color); color: white;" onclick="saveProgress()">
+                    <i class="fas fa-save"></i> حفظ التحديث
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal إضافة ملاحظة -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة ملاحظة جديدة</h3>
+                <button class="modal-close" onclick="closeNoteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">
+                        عنوان الملاحظة
+                    </label>
+                    <input type="text" 
+                           style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary); font-family: inherit; font-size: 14px; color: var(--text-primary);"
+                           placeholder="مثال: طلب تعديل الألوان"
+                           id="noteTitle">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">
+                        تفاصيل الملاحظة
+                    </label>
+                    <textarea style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary); font-family: inherit; font-size: 14px; color: var(--text-primary); resize: vertical; min-height: 150px;"
+                              placeholder="اكتف تفاصيل الملاحظة أو الطلب..."
+                              id="noteContent"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">
+                        الأولوية
+                    </label>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="icon-btn priority-btn" data-priority="low" onclick="selectPriority(this)" style="flex: 1; background: var(--bg-secondary);">
+                            <i class="fas fa-arrow-down"></i> منخفضة
+                        </button>
+                        <button class="icon-btn priority-btn active" data-priority="medium" onclick="selectPriority(this)" style="flex: 1; background: var(--warning-color); color: white;">
+                            <i class="fas fa-minus"></i> متوسطة
+                        </button>
+                        <button class="icon-btn priority-btn" data-priority="high" onclick="selectPriority(this)" style="flex: 1; background: var(--danger-color); color: white;">
+                            <i class="fas fa-arrow-up"></i> عالية
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="icon-btn" style="width: 100%; background: var(--primary-color); color: white;" onclick="saveNote()">
+                    <i class="fas fa-paper-plane"></i> إرسال الملاحظة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal رفع ملف -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>رفع ملف جديد</h3>
+                <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; margin-bottom: 20px; cursor: pointer;"
+                     onclick="document.getElementById('fileUpload').click()"
+                     id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: var(--text-secondary); margin-bottom: 16px;"></i>
+                    <p style="margin: 0; color: var(--text-secondary); font-size: 16px;">
+                        اسحب وأفلت الملفات هنا أو انقر للاختيار
+                    </p>
+                    <p style="margin: 8px 0 0 0; color: var(--text-secondary); font-size: 14px;">
+                        الحد الأقصى: 50MB لكل ملف
+                    </p>
+                    <input type="file" id="fileUpload" style="display: none;" onchange="handleFileUpload(event)">
+                </div>
+                
+                <div id="uploadProgress" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 14px; color: var(--text-primary);" id="fileName">جاري الرفع...</span>
+                        <span style="font-size: 14px; color: var(--primary-color);" id="uploadPercentage">0%</span>
+                    </div>
+                    <div style="height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                        <div id="uploadBar" style="height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+                
+                <div id="uploadedFiles" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal معاينة الملف -->
+    <div class="modal" id="filePreviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="filePreviewTitle">معاينة الملف</h3>
+                <button class="modal-close" onclick="closeFilePreview()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="filePreviewContent" style="text-align: center; padding: 20px 0;">
+                    <!-- سيتم تحميل محتوى الملف هنا -->
+                </div>
+                
+                <div style="display: flex; gap: 8px; margin-top: 20px;">
+                    <button class="icon-btn" style="flex: 1; background: var(--primary-color); color: white;" onclick="downloadCurrentFile()">
+                        <i class="fas fa-download"></i> تحميل
+                    </button>
+                    <button class="icon-btn" style="flex: 1; background: var(--bg-secondary); color: var(--text-primary);" onclick="shareFile()">
+                        <i class="fas fa-share-alt"></i> مشاركة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مؤشر التحميل -->
+    <div class="refresh-indicator" id="refreshIndicator">
+        <i class="fas fa-sync-alt fa-spin"></i> جاري تحديث البيانات...
+    </div>
+
+    <script>
+        // البيانات والمتغيرات
+        let projectData = {};
+        let currentTab = 'details';
+        let selectedPriority = 'medium';
+        let uploadedFiles = [];
+        let currentFileId = null;
+        let isFavorite = false;
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initProjectPage();
+            setupEventListeners();
+            loadProjectData();
+            checkUrgentAlerts();
+            setupDragAndDrop();
+        });
+
+        function initProjectPage() {
+            // الحصول على معرف المشروع من URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id') || 1;
+            
+            // تحديث عنوان الصفحة
+            document.title = `المشروع #${projectId} | بيكسل آرت`;
+            document.getElementById('pageTitle').textContent = `المشروع #${projectId}`;
+            
+            // تحميل بيانات المشروع
+            setTimeout(() => {
+                updateProjectUI();
+                setupTabNavigation();
+                updateProgressAnimation();
+            }, 500);
+        }
+
+        function loadProjectData() {
+            // بيانات المشروع النموذجية
+            projectData = {
+                id: 1,
+                title: 'تصميم شعار لشركة التقنية',
+                description: 'تصميم شعار عصري ومبتكر لشركة تقنية ناشئة متخصصة في حلول الذكاء الاصطناعي. الشعار يجب أن يعبر عن الابتكار والتقنية مع الحفاظ على البساطة وسهولة التذكر.',
+                category: 'تصميم شعار',
+                status: 'active',
+                progress: 75,
+                budget: 1500,
+                paid: 1200,
+                remaining: 300,
+                startDate: '2024-01-01',
+                deadline: '2024-01-25',
+                duration: '25 يوم',
+                projectNumber: '#PRJ-2024-001',
+                priority: 'high',
+                designer: {
+                    id: 1,
+                    name: 'أحمد المصمم',
+                    specialty: 'متخصص في تصميم الشعارات والهوية البصرية',
+                    rating: 4.7,
+                    ratingCount: 127,
+                    avatar: 'https://ui-avatars.com/api/?name=أحمد+المصمم&background=005f73&color=fff&size=80'
+                },
+                deliverables: [
+                    { name: 'شعار رئيسي باللونين', status: 'completed' },
+                    { name: 'شعار فرعي أحادي اللون', status: 'completed' },
+                    { name: 'دليل الاستخدام والتنفيذ', status: 'in-progress' },
+                    { name: 'ملفات متعددة التنسيقات', status: 'pending' }
+                ],
+                timeline: [
+                    { title: 'بداية المشروع', date: '1 يناير 2024', status: 'completed', description: 'بداية العمل على المشروع وتوقيع العقد' },
+                    { title: 'التصميم الأولي', date: '5 يناير 2024', status: 'completed', description: 'تقديم أول نموذج للتصميم' },
+                    { title: 'التعديلات الأولى', date: '10 يناير 2024', status: 'completed', description: 'تطبيق التعديلات المطلوبة' },
+                    { title: 'المراجعة النهائية', date: '20 يناير 2024', status: 'current', description: 'مراجعة التصميم النهائي' },
+                    { title: 'التسليم النهائي', date: '25 يناير 2024', status: 'upcoming', description: 'تسليم الملفات النهائية' }
+                ],
+                files: [
+                    { id: 1, name: 'الشعار الرئيسي', type: 'image', size: '2.5 MB', icon: 'fa-file-image' },
+                    { id: 2, name: 'دليل الاستخدام', type: 'pdf', size: '1.8 MB', icon: 'fa-file-pdf' },
+                    { id: 3, name: 'ملفات التصميم', type: 'archive', size: '15.2 MB', icon: 'fa-file-archive' },
+                    { id: 4, name: 'العقد', type: 'document', size: '0.8 MB', icon: 'fa-file-contract' }
+                ],
+                payments: [
+                    { title: 'الدفعة الأولى', date: '5 يناير 2024', amount: 500 },
+                    { title: 'الدفعة الثانية', date: '15 يناير 2024', amount: 700 }
+                ],
+                notes: [
+                    { title: 'طلب تعديل الألوان', date: 'قبل يومين', content: 'الرجاء تعديل الألوان لتكون أكثر تناسقاً مع العلامة التجارية' }
+                ],
+                messages: 24,
+                daysLeft: 15,
+                isFavorite: false
+            };
+        }
+
+        function updateProjectUI() {
+            // تحديث العنوان الرئيسي
+            document.getElementById('projectTitle').textContent = projectData.title;
+            document.getElementById('projectDescription').textContent = projectData.description;
+            document.getElementById('projectCategory').textContent = projectData.category;
+            
+            // تحديث الحالة والأولوية
+            updateStatusBadge();
+            
+            // تحديث التقدم
+            document.getElementById('progressValue').textContent = `${projectData.progress}%`;
+            document.getElementById('progressFill').style.width = `${projectData.progress}%`;
+            
+            // تحديث الإحصائيات
+            document.getElementById('projectBudget').textContent = `${projectData.budget} ر.س`;
+            document.getElementById('daysLeft').textContent = `${projectData.daysLeft} يوم`;
+            document.getElementById('filesCount').textContent = projectData.files.length;
+            document.getElementById('messagesCount').textContent = projectData.messages;
+            
+            // تحديث التواريخ
+            document.getElementById('startDate').textContent = formatDate(projectData.startDate);
+            document.getElementById('deadlineDate').textContent = formatDate(projectData.deadline);
+            document.getElementById('projectDuration').textContent = projectData.duration;
+            document.getElementById('projectNumber').textContent = projectData.projectNumber;
+            
+            // تحديث معلومات المصمم
+            document.getElementById('designerName').textContent = projectData.designer.name;
+            document.getElementById('designerSpecialty').textContent = projectData.designer.specialty;
+            document.getElementById('designerRating').textContent = `${projectData.designer.rating} (${projectData.designer.ratingCount} تقييم)`;
+            
+            // تحديث المخرجات
+            updateDeliverablesList();
+            
+            // تحديث المدفوعات
+            updatePaymentsList();
+            
+            // تحديث المفضلة
+            isFavorite = projectData.isFavorite;
+            updateFavoriteButton();
+        }
+
+        function updateStatusBadge() {
+            const statusBadge = document.getElementById('projectStatus');
+            const priorityBadge = document.getElementById('projectPriority');
+            
+            // تحديث شارة الحالة
+            switch(projectData.status) {
+                case 'active':
+                    statusBadge.className = 'status-badge active';
+                    statusBadge.innerHTML = '<i class="fas fa-play-circle"></i> قيد التنفيذ';
+                    break;
+                case 'pending':
+                    statusBadge.className = 'status-badge pending';
+                    statusBadge.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                    break;
+                case 'completed':
+                    statusBadge.className = 'status-badge completed';
+                    statusBadge.innerHTML = '<i class="fas fa-check-circle"></i> مكتمل';
+                    break;
+                case 'delayed':
+                    statusBadge.className = 'status-badge delayed';
+                    statusBadge.innerHTML = '<i class="fas fa-exclamation-triangle"></i> متأخر';
+                    break;
+            }
+            
+            // تحديث شارة الأولوية
+            switch(projectData.priority) {
+                case 'high':
+                    priorityBadge.className = 'priority-badge high';
+                    priorityBadge.textContent = 'عالية';
+                    break;
+                case 'medium':
+                    priorityBadge.className = 'priority-badge medium';
+                    priorityBadge.textContent = 'متوسطة';
+                    break;
+                case 'low':
+                    priorityBadge.className = 'priority-badge low';
+                    priorityBadge.textContent = 'منخفضة';
+                    break;
+            }
+        }
+
+        function updateDeliverablesList() {
+            const deliverablesList = document.getElementById('deliverablesList');
+            deliverablesList.innerHTML = '';
+            
+            projectData.deliverables.forEach(deliverable => {
+                const item = document.createElement('div');
+                item.style.cssText = 'display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 8px;';
+                
+                let icon, statusText, statusColor;
+                
+                switch(deliverable.status) {
+                    case 'completed':
+                        icon = 'fa-check-circle';
+                        statusText = 'مكتمل';
+                        statusColor = 'var(--success-color)';
+                        break;
+                    case 'in-progress':
+                        icon = 'fa-spinner fa-spin';
+                        statusText = 'قيد العمل';
+                        statusColor = 'var(--primary-color)';
+                        break;
+                    case 'pending':
+                        icon = 'fa-circle';
+                        statusText = 'قيد الانتظار';
+                        statusColor = 'var(--text-secondary)';
+                        break;
+                }
+                
+                item.innerHTML = `
+                    <i class="fas ${icon}" style="color: ${statusColor};"></i>
+                    <span style="flex: 1; font-size: 14px;">${deliverable.name}</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">${statusText}</span>
+                `;
+                
+                deliverablesList.appendChild(item);
+            });
+        }
+
+        function updatePaymentsList() {
+            const paymentsList = document.getElementById('paymentsList');
+            paymentsList.innerHTML = '';
+            
+            projectData.payments.forEach(payment => {
+                const item = document.createElement('div');
+                item.className = 'payment-item';
+                item.innerHTML = `
+                    <div class="payment-info">
+                        <div class="payment-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="payment-details">
+                            <div class="payment-title">${payment.title}</div>
+                            <div class="payment-date">${payment.date}</div>
+                        </div>
+                    </div>
+                    <div class="payment-amount">${payment.amount} ر.س</div>
+                `;
+                paymentsList.appendChild(item);
+            });
+            
+            // تحديث المبلغ المتبقي
+            document.getElementById('remainingAmount').textContent = `${projectData.remaining} ر.س`;
+        }
+
+        function updateFavoriteButton() {
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            if (isFavorite) {
+                favoriteBtn.innerHTML = '<i class="fas fa-star"></i>';
+                favoriteBtn.style.color = 'var(--warning-color)';
+            } else {
+                favoriteBtn.innerHTML = '<i class="far fa-star"></i>';
+                favoriteBtn.style.color = 'var(--text-primary)';
+            }
+        }
+
+        // إدارة التبويبات
+        function setupTabNavigation() {
+            showTab('details');
+        }
+
+        function showTab(tabName) {
+            currentTab = tabName;
+            
+            // تحديث أزرار التبويب
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.style.display = 'none';
+                pane.classList.remove('active');
+            });
+            
+            // تفعيل التبويب المحدد
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            const pane = document.getElementById(`${tabName}Pane`);
+            pane.style.display = 'block';
+            pane.classList.add('active');
+            
+            // تحميل محتوى التبويب إذا لزم
+            if (tabName === 'timeline') {
+                loadTimeline();
+            } else if (tabName === 'files') {
+                loadFiles();
+            }
+        }
+
+        function loadTimeline() {
+            const timeline = document.getElementById('projectTimeline');
+            timeline.innerHTML = '';
+            
+            projectData.timeline.forEach(item => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = `timeline-item ${item.status}`;
+                
+                timelineItem.innerHTML = `
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h4 class="timeline-title">${item.title}</h4>
+                            <span class="timeline-date">${item.date}</span>
+                        </div>
+                        <p class="timeline-description">${item.description}</p>
+                        ${item.status === 'current' ? `
+                            <div style="margin-top: 12px;">
+                                <button class="icon-btn" style="width: auto; padding: 8px 16px; background: var(--primary-color); color: white; font-size: 12px;" onclick="reviewDesign()">
+                                    <i class="fas fa-eye"></i> بدء المراجعة
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                timeline.appendChild(timelineItem);
+            });
+        }
+
+        function loadFiles() {
+            const filesGrid = document.getElementById('filesGrid');
+            filesGrid.innerHTML = '';
+            
+            projectData.files.forEach(file => {
+                const fileCard = document.createElement('div');
+                fileCard.className = 'file-card';
+                fileCard.onclick = () => viewFile(file.id);
+                
+                fileCard.innerHTML = `
+                    <div class="file-icon">
+                        <i class="fas ${file.icon}"></i>
+                    </div>
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${file.size}</div>
+                `;
+                
+                filesGrid.appendChild(fileCard);
+            });
+        }
+
+        // الوظائف الرئيسية
+        function updateProgress() {
+            document.getElementById('progressModal').style.display = 'flex';
+        }
+
+        function closeProgressModal() {
+            document.getElementById('progressModal').style.display = 'none';
+        }
+
+        function updateProgressValue(value) {
+            document.getElementById('progressDisplay').textContent = `${value}%`;
+        }
+
+        function saveProgress() {
+            const newProgress = parseInt(document.getElementById('progressSlider').value);
+            const notes = document.getElementById('progressNotes').value;
+            
+            // تحديث البيانات المحلية
+            projectData.progress = newProgress;
+            
+            // تحديث واجهة المستخدم
+            document.getElementById('progressValue').textContent = `${newProgress}%`;
+            document.getElementById('progressFill').style.width = `${newProgress}%`;
+            
+            // محاكاة حفظ البيانات
+            showLoading(true);
+            setTimeout(() => {
+                closeProgressModal();
+                showLoading(false);
+                showToast('تم تحديث التقدم بنجاح', 'success');
+                
+                // إضافة ملاحظة إذا كانت موجودة
+                if (notes.trim()) {
+                    addNewNote('تحديث التقدم', notes, 'low');
+                }
+            }, 1000);
+        }
+
+        function toggleFavorite() {
+            isFavorite = !isFavorite;
+            updateFavoriteButton();
+            
+            // محاكاة حفظ المفضلة
+            showToast(isFavorite ? 'تم إضافة المشروع إلى المفضلة' : 'تم إزالة المشروع من المفضلة', 'success');
+        }
+
+        function shareProject() {
+            if (navigator.share) {
+                navigator.share({
+                    title: projectData.title,
+                    text: projectData.description,
+                    url: `${window.location.origin}/project-details.html?id=${projectData.id}`
+                })
+                .then(() => showToast('تم مشاركة المشروع', 'success'))
+                .catch(() => {
+                    navigator.clipboard.writeText(`${projectData.title}\n${projectData.description}\n${window.location.href}`);
+                    showToast('تم نسخ رابط المشروع', 'success');
+                });
+            } else {
+                navigator.clipboard.writeText(`${projectData.title}\n${projectData.description}\n${window.location.href}`);
+                showToast('تم نسخ رابط المشروع', 'success');
+            }
+        }
+
+        function showMoreOptions() {
+            // يمكن إضافة قائمة منسدلة إضافية هنا
+            const options = [
+                { icon: 'fa-print', text: 'طباعة التفاصيل', action: printDetails },
+                { icon: 'fa-archive', text: 'أرشفة المشروع', action: archiveProject },
+                { icon: 'fa-flag', text: 'الإبلاغ عن مشكلة', action: reportIssue },
+                { icon: 'fa-trash', text: 'حذف المشروع', action: deleteProject, danger: true }
+            ];
+            
+            showActionMenu(options);
+        }
+
+        function toggleActionMenu() {
+            const menu = document.getElementById('actionMenu');
+            const fabIcon = document.getElementById('fabIcon');
+            
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                fabIcon.style.transform = 'rotate(0deg)';
+            } else {
+                menu.classList.add('active');
+                fabIcon.style.transform = 'rotate(45deg)';
+            }
+        }
+
+        // وظائف الملفات
+        function uploadFile() {
+            document.getElementById('uploadModal').style.display = 'flex';
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+            resetUploadForm();
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // التحقق من حجم الملف (50MB كحد أقصى)
+            if (file.size > 50 * 1024 * 1024) {
+                showToast('حجم الملف كبير جداً (الحد الأقصى 50MB)', 'warning');
+                return;
+            }
+            
+            // عرض مؤشر التقدم
+            document.getElementById('uploadProgress').style.display = 'block';
+            document.getElementById('fileName').textContent = file.name;
+            
+            // محاكاة عملية الرفع
+            simulateUpload(file);
+        }
+
+        function simulateUpload(file) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                document.getElementById('uploadPercentage').textContent = `${progress}%`;
+                document.getElementById('uploadBar').style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // إضافة الملف إلى القائمة
+                    const fileId = projectData.files.length + 1;
+                    const newFile = {
+                        id: fileId,
+                        name: file.name,
+                        type: getFileType(file.name),
+                        size: formatFileSize(file.size),
+                        icon: getFileIcon(file.name)
+                    };
+                    
+                    projectData.files.push(newFile);
+                    
+                    // تحديث الواجهة
+                    updateFileCount();
+                    showToast('تم رفع الملف بنجاح', 'success');
+                    
+                    // إعادة تعيين النموذج
+                    setTimeout(() => {
+                        document.getElementById('uploadProgress').style.display = 'none';
+                        document.getElementById('uploadBar').style.width = '0%';
+                        document.getElementById('fileUpload').value = '';
+                        
+                        // إضافة الملف إلى القائمة
+                        const uploadedFilesDiv = document.getElementById('uploadedFiles');
+                        const fileItem = document.createElement('div');
+                        fileItem.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 8px;';
+                        fileItem.innerHTML = `
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fas ${newFile.icon}" style="color: var(--primary-color);"></i>
+                                <span style="font-size: 14px; color: var(--text-primary);">${newFile.name}</span>
+                            </div>
+                            <span style="font-size: 12px; color: var(--text-secondary);">${newFile.size}</span>
+                        `;
+                        uploadedFilesDiv.appendChild(fileItem);
+                    }, 500);
+                }
+            }, 100);
+        }
+
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const imageExt = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+            const docExt = ['pdf', 'doc', 'docx', 'txt', 'rtf'];
+            const archiveExt = ['zip', 'rar', '7z', 'tar', 'gz'];
+            
+            if (imageExt.includes(ext)) return 'image';
+            if (docExt.includes(ext)) return 'document';
+            if (archiveExt.includes(ext)) return 'archive';
+            return 'other';
+        }
+
+        function getFileIcon(filename) {
+            const type = getFileType(filename);
+            switch(type) {
+                case 'image': return 'fa-file-image';
+                case 'document': return 'fa-file-pdf';
+                case 'archive': return 'fa-file-archive';
+                default: return 'fa-file';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+        }
+
+        function viewFile(fileId) {
+            currentFileId = fileId;
+            const file = projectData.files.find(f => f.id === fileId);
+            if (!file) return;
+            
+            document.getElementById('filePreviewTitle').textContent = file.name;
+            const previewContent = document.getElementById('filePreviewContent');
+            
+            // محاكاة معاينة الملف
+            previewContent.innerHTML = `
+                <i class="fas ${file.icon}" style="font-size: 80px; color: var(--primary-color); margin-bottom: 20px;"></i>
+                <h4 style="margin: 0 0 8px 0; color: var(--text-primary);">${file.name}</h4>
+                <p style="margin: 0; color: var(--text-secondary);">الحجم: ${file.size}</p>
+                <p style="margin: 8px 0 20px 0; color: var(--text-secondary);">النوع: ${file.type === 'image' ? 'صورة' : file.type === 'document' ? 'وثيقة' : file.type === 'archive' ? 'أرشيف' : 'ملف'}</p>
+                <button class="icon-btn" style="background: var(--primary-color); color: white;" onclick="openFile('${file.name}')">
+                    <i class="fas fa-external-link-alt"></i> فتح الملف
+                </button>
+            `;
+            
+            document.getElementById('filePreviewModal').style.display = 'flex';
+        }
+
+        function closeFilePreview() {
+            document.getElementById('filePreviewModal').style.display = 'none';
+        }
+
+        function downloadCurrentFile() {
+            const file = projectData.files.find(f => f.id === currentFileId);
+            if (file) {
+                showLoading(true);
+                setTimeout(() => {
+                    showLoading(false);
+                    showToast(`جاري تحميل ${file.name}`, 'success');
+                    closeFilePreview();
+                }, 1000);
+            }
+        }
+
+        function shareFile() {
+            const file = projectData.files.find(f => f.id === currentFileId);
+            if (file && navigator.share) {
+                navigator.share({
+                    title: file.name,
+                    text: `ملف من مشروع ${projectData.title}`,
+                    url: '#'
+                }).then(() => showToast('تم مشاركة الملف', 'success'));
+            } else {
+                navigator.clipboard.writeText(file.name);
+                showToast('تم نسخ اسم الملف', 'success');
+            }
+        }
+
+        function openFile(filename) {
+            // محاكاة فتح الملف
+            showToast(`جاري فتح ${filename}`, 'info');
+        }
+
+        // الملاحظات
+        function addNote() {
+            document.getElementById('noteModal').style.display = 'flex';
+        }
+
+        function closeNoteModal() {
+            document.getElementById('noteModal').style.display = 'none';
+            resetNoteForm();
+        }
+
+        function selectPriority(button) {
+            document.querySelectorAll('.priority-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'var(--bg-secondary)';
+                btn.style.color = 'var(--text-primary)';
+            });
+            
+            button.classList.add('active');
+            selectedPriority = button.dataset.priority;
+            
+            // تحديث لون الزر المحدد
+            switch(selectedPriority) {
+                case 'low':
+                    button.style.background = 'var(--success-color)';
+                    button.style.color = 'white';
+                    break;
+                case 'medium':
+                    button.style.background = 'var(--warning-color)';
+                    button.style.color = 'white';
+                    break;
+                case 'high':
+                    button.style.background = 'var(--danger-color)';
+                    button.style.color = 'white';
+                    break;
+            }
+        }
+
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            
+            if (!title || !content) {
+                showToast('يرجى ملء جميع الحقول', 'warning');
+                return;
+            }
+            
+            // إضافة الملاحظة الجديدة
+            const newNote = {
+                title: title,
+                date: 'الآن',
+                content: content,
+                priority: selectedPriority
+            };
+            
+            addNewNote(title, content, selectedPriority);
+            
+            // إعادة تعيين النموذج وإغلاقه
+            closeNoteModal();
+            showToast('تم إرسال الملاحظة بنجاح', 'success');
+        }
+
+        function addNewNote(title, content, priority) {
+            const notesList = document.getElementById('notesList');
+            const priorityColors = {
+                low: 'var(--success-color)',
+                medium: 'var(--warning-color)',
+                high: 'var(--danger-color)'
+            };
+            
+            const noteDiv = document.createElement('div');
+            noteDiv.style.cssText = 'background: var(--bg-secondary); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px;';
+            noteDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">${title}</span>
+                        <span style="padding: 2px 8px; border-radius: 12px; font-size: 10px; background: ${priorityColors[priority]}; color: white;">${priority === 'low' ? 'منخفضة' : priority === 'medium' ? 'متوسطة' : 'عالية'}</span>
+                    </div>
+                    <span style="font-size: 12px; color: var(--text-secondary);">الآن</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-secondary); margin: 0; line-height: 1.5;">${content}</p>
+            `;
+            
+            notesList.insertBefore(noteDiv, notesList.firstChild);
+        }
+
+        // الوظائف المساعدة
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function updateFileCount() {
+            document.getElementById('filesCount').textContent = projectData.files.length;
+        }
+
+        function checkUrgentAlerts() {
+            if (projectData.daysLeft <= 3 && projectData.status === 'active') {
+                document.getElementById('urgentAlert').style.display = 'flex';
+            }
+        }
+
+        function updateProgressAnimation() {
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.transition = 'width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        }
+
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('uploadArea');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                uploadArea.style.borderColor = 'var(--primary-color)';
+                uploadArea.style.background = 'var(--bg-secondary)';
+            }
+            
+            function unhighlight() {
+                uploadArea.style.borderColor = 'var(--border-color)';
+                uploadArea.style.background = 'transparent';
+            }
+            
+            uploadArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    const file = files[0];
+                    document.getElementById('fileUpload').files = files;
+                    handleFileUpload({ target: { files: [file] } });
+                }
+            }
+        }
+
+        function resetUploadForm() {
+            document.getElementById('uploadProgress').style.display = 'none';
+            document.getElementById('uploadBar').style.width = '0%';
+            document.getElementById('uploadedFiles').innerHTML = '';
+            document.getElementById('fileUpload').value = '';
+        }
+
+        function resetNoteForm() {
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            document.querySelectorAll('.priority-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'var(--bg-secondary)';
+                btn.style.color = 'var(--text-primary)';
+            });
+            document.querySelector('.priority-btn[data-priority="medium"]').classList.add('active');
+            document.querySelector('.priority-btn[data-priority="medium"]').style.background = 'var(--warning-color)';
+            document.querySelector('.priority-btn[data-priority="medium"]').style.color = 'white';
+            selectedPriority = 'medium';
+        }
+
+        // وظائف الإجراءات
+        function contactDesigner(event) {
+            if (event) event.stopPropagation();
+            window.location.href = `chat.html?designerId=${projectData.designer.id}&projectId=${projectData.id}`;
+        }
+
+        function viewDesignerProfile() {
+            window.location.href = `designer-profile.html?id=${projectData.designer.id}`;
+        }
+
+        function viewPortfolio(event) {
+            if (event) event.stopPropagation();
+            window.location.href = `portfolio.html?designerId=${projectData.designer.id}`;
+        }
+
+        function requestUpdate() {
+            toggleActionMenu();
+            showToast('تم إرسال طلب التحديث للمصمم', 'success');
+        }
+
+        function requestModification() {
+            toggleActionMenu();
+            window.location.href = `request-modification.html?projectId=${projectData.id}`;
+        }
+
+        function extendDeadline() {
+            toggleActionMenu();
+            window.location.href = `extend-deadline.html?projectId=${projectData.id}`;
+        }
+
+        function downloadAll() {
+            toggleActionMenu();
+            showLoading(true);
+            setTimeout(() => {
+                showLoading(false);
+                showToast('جاري تحميل جميع ملفات المشروع', 'success');
+            }, 1500);
+        }
+
+        function generateReport() {
+            toggleActionMenu();
+            window.location.href = `generate-report.html?projectId=${projectData.id}`;
+        }
+
+        function closeProject() {
+            toggleActionMenu();
+            if (confirm('هل تريد إنهاء المشروع واعتباره مكتملاً؟')) {
+                projectData.status = 'completed';
+                projectData.progress = 100;
+                updateProjectUI();
+                showToast('تم إنهاء المشروع بنجاح', 'success');
+            }
+        }
+
+        function requestExtension() {
+            window.location.href = `extend-deadline.html?projectId=${projectData.id}`;
+        }
+
+        function reviewDesign() {
+            window.location.href = `review-design.html?projectId=${projectData.id}`;
+        }
+
+        function addPayment() {
+            window.location.href = `add-payment.html?projectId=${projectData.id}`;
+        }
+
+        function payRemaining() {
+            if (confirm(`هل تريد دفع المبلغ المتبقي البالغ ${projectData.remaining} ر.س؟`)) {
+                showLoading(true);
+                setTimeout(() => {
+                    projectData.paid = projectData.budget;
+                    projectData.remaining = 0;
+                    updateProjectUI();
+                    showLoading(false);
+                    showToast('تم الدفع بنجاح', 'success');
+                }, 1500);
+            }
+        }
+
+        function viewBudgetDetails() {
+            window.location.href = `budget-details.html?projectId=${projectData.id}`;
+        }
+
+        function viewTimeDetails() {
+            window.location.href = `timeline-details.html?projectId=${projectData.id}`;
+        }
+
+        function viewFilesModal() {
+            showTab('files');
+        }
+
+        function viewMessages() {
+            window.location.href = `messages.html?projectId=${projectData.id}`;
+        }
+
+        function viewTimeline() {
+            showTab('timeline');
+        }
+
+        function openChat() {
+            window.location.href = `chat.html?designerId=${projectData.designer.id}&projectId=${projectData.id}`;
+        }
+
+        // وظائف عامة
+        function goBack() {
+            window.history.back();
+        }
+
+        function showLoading(show) {
+            document.getElementById('loader').style.display = show ? 'block' : 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? 'var(--success-color)' : 
+                            type === 'warning' ? 'var(--warning-color)' : 
+                            type === 'error' ? 'var(--danger-color)' : 
+                            'var(--primary-color)'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                font-family: inherit;
+                animation: slideDown 0.3s ease forwards;
+            `;
+            
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                     type === 'warning' ? 'exclamation-triangle' : 
+                                     type === 'error' ? 'times-circle' : 
+                                     'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+            
+            // إضافة الأنيميشن
+            if (!document.querySelector('#toast-animations')) {
+                const style = document.createElement('style');
+                style.id = 'toast-animations';
+                style.textContent = `
+                    @keyframes slideDown {
+                        from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                        to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        function setupEventListeners() {
+            // إغلاق المودالات بالنقر خارجها
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+            
+            // إغلاق قائمة الإجراءات بالنقر خارجها
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.fab-actions') && !e.target.closest('.action-menu')) {
+                    const menu = document.getElementById('actionMenu');
+                    if (menu.classList.contains('active')) {
+                        toggleActionMenu();
+                    }
+                }
+            });
+            
+            // التعامل مع مفاتيح الهاتف
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                    const menu = document.getElementById('actionMenu');
+                    if (menu.classList.contains('active')) {
+                        toggleActionMenu();
+                    }
+                }
+            });
+            
+            // تحديث التنبيهات بشكل دوري
+            setInterval(checkUrgentAlerts, 60000); // كل دقيقة
+            
+            // تحديث التقدم بشكل دوري (محاكاة)
+            setInterval(() => {
+                if (projectData.status === 'active' && projectData.progress < 100) {
+                    projectData.progress = Math.min(100, projectData.progress + 1);
+                    updateProjectUI();
+                }
+            }, 300000); // كل 5 دقائق
+        }
+
+        // تحميل البيانات عند فتح الصفحة
+        updateProjectUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,2650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#005f73">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>الملف الشخصي | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --primary-dark: #0a9396;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --accent-color: #bb3e03;اليمن
+            --success-color: #2a9d8f;اليمن
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;انث
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-xxl: 32px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            overscroll-behavior: contain;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: env(safe-area-inset-top, 24px);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* الهيدر الثابت */
+        .app-header {
+            height: 60px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .header-right {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 10px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 0 calc(80px + env(safe-area-inset-bottom, 0px)) 0;
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+        }
+
+        /* قسم الملف الشخصي الرئيسي */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            padding: 24px 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path fill="%23ffffff10" d="M0,100 Q250,50 500,100 T1000,100 L1000,0 L0,0 Z"/></svg>') bottom center no-repeat;
+            background-size: 100% auto;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .profile-info {
+            flex: 1;
+            color: white;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .profile-title {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .action-btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn-secondary:active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* علامات التبويب */
+        .tabs-container {
+            background: var(--bg-primary);
+            position: sticky;
+            top: 60px;
+            z-index: 90;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 16px;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 16px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: -3px;
+            right: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform var(--transition-medium);
+        }
+
+        .tab.active .tab-indicator {
+            transform: scaleX(1);
+        }
+
+        /* محتوى التبويبات */
+        .tab-content {
+            padding: 20px 16px;
+        }
+
+        /* تبويب الأعمال */
+        .portfolio-section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .section-link {
+            color: var(--primary-color);
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .portfolio-slider {
+            margin: 0 -16px;
+            padding: 0 16px;
+        }
+
+        .portfolio-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-medium);
+        }
+
+        .portfolio-item:active {
+            transform: scale(0.98);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .portfolio-info {
+            padding: 16px;
+        }
+
+        .portfolio-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .portfolio-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 12px 0;
+            line-height: 1.5;
+        }
+
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* تبويب التقييمات */
+        .reviews-section {
+            margin-bottom: 30px;
+        }
+
+        .overall-rating {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .rating-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .rating-stars {
+            color: var(--secondary-color);
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .rating-count {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .rating-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            width: 40px;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .bar-percentage {
+            font-size: 12px;
+            color: var(--text-secondary);
+            width: 30px;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .review-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .reviewer-info {
+            flex: 1;
+        }
+
+        .reviewer-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .review-rating {
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+
+        .review-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .review-images {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            overflow-x: auto;
+        }
+
+        .review-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* تبويب الخدمات */
+        .services-section {
+            margin-bottom: 30px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--border-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .service-card:active {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .service-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .service-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+            line-height: 1.5;
+        }
+
+        .service-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .service-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* تبويب المعلومات */
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: 16px;
+            top: 0;
+            bottom: -20px;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+
+        .timeline-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+        }
+
+        .timeline-desc {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        /* Floating Action Button */
+        .fab-container {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .fab {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition-medium);
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+            box-shadow: var(--shadow-md);
+        }
+
+        .fab-label {
+            background: var(--text-primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all var(--transition-medium);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .fab:hover .fab-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: calc(70px + env(safe-area-inset-bottom, 0px));
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px env(safe-area-inset-bottom, 0px) 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 20px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-center {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-top: -28px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-center:active {
+            transform: scale(0.95);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--bg-secondary);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Rating Modal */
+        .rating-input {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .rating-stars-input {
+            font-size: 32px;
+            color: var(--border-color);
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .rating-stars-input .star {
+            margin: 0 2px;
+            transition: all var(--transition-fast);
+        }
+
+        .rating-stars-input .star.active {
+            color: var(--secondary-color);
+        }
+
+        .rating-stars-input .star:hover {
+            transform: scale(1.2);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .image-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .image-upload:active {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .image-upload i {
+            font-size: 40px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .image-upload p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* تحسينات الوضع الداكن */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a202c;
+                --bg-secondary: #2d3748;
+                --bg-card: #2d3748;
+                --text-primary: #f7fafc;
+                --text-secondary: #cbd5e0;
+                --border-color: #4a5568;
+            }
+        }
+
+        /* Swiper Customization */
+        .swiper {
+            padding: 0 0 30px 0 !important;
+        }
+
+        .swiper-pagination-bullet {
+            background: var(--text-secondary);
+            opacity: 0.3;
+            width: 8px;
+            height: 8px;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--primary-color);
+            opacity: 1;
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .fab:hover .fab-label {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .profile-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h1 class="page-title">الملف الشخصي</h1>
+        </div>
+        <div class="header-right">
+            <button class="icon-btn" onclick="toggleFavorite()" id="favoriteBtn">
+                <i class="far fa-heart"></i>
+            </button>
+            <button class="icon-btn" onclick="shareProfile()">
+                <i class="fas fa-share-alt"></i>
+            </button>
+            <button class="icon-btn" onclick="openSettings()">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-top">
+                <img src="" alt="الصورة الشخصية" 
+                     class="profile-avatar"
+                     id="profileAvatar"
+                     loading="eager">
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profileName">جاري التحميل...</h1>
+                    <p class="profile-title" id="profileTitle">
+                        <i class="fas fa-briefcase"></i> 
+                        <span id="profileSpecialty">-</span>
+                    </p>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="projectsCount">0</span>
+                            <span class="stat-label">مشروع</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="ratingValue">0.0</span>
+                            <span class="stat-label">تقييم</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="experienceYears">0</span>
+                            <span class="stat-label">سنة خبرة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="action-btn action-btn-primary" onclick="openChat()">
+                    <i class="fas fa-comment-dots"></i> محادثة
+                </button>
+                <button class="action-btn action-btn-secondary" onclick="openHireModal()">
+                    <i class="fas fa-handshake"></i> توظيف
+                </button>
+            </div>
+        </section>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('portfolio')">
+                    <span>الأعمال</span>
+                    <div class="tab-indicator"></div>
+                </div>
+                <div class="tab" onclick="switchTab('reviews')">
+                    <span>التقييمات</span>
+                    <div class="tab-indicator"></div>
+                </div>
+                <div class="tab" onclick="switchTab('services')">
+                    <span>الخدمات</span>
+                    <div class="tab-indicator"></div>
+                </div>
+                <div class="tab" onclick="switchTab('info')">
+                    <span>المعلومات</span>
+                    <div class="tab-indicator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="tab-content">
+            <!-- Portfolio Tab -->
+            <div id="portfolioTab" class="tab-pane active">
+                <section class="portfolio-section animate-in">
+                    <div class="section-header">
+                        <h2 class="section-title">معرض الأعمال</h2>
+                        <a href="javascript:void(0)" class="section-link" onclick="viewAllPortfolio()">
+                            عرض الكل <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="portfolio-slider">
+                        <div class="swiper" id="portfolioSwiper">
+                            <div class="swiper-wrapper" id="portfolioWrapper">
+                                <!-- Portfolio items will be loaded here -->
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="services-section animate-in">
+                    <h2 class="section-title" style="margin-bottom: 20px;">أحدث الخدمات</h2>
+                    <div class="services-grid" id="servicesGrid">
+                        <!-- Services will be loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div id="reviewsTab" class="tab-pane" style="display: none;">
+                <section class="reviews-section animate-in">
+                    <div class="overall-rating">
+                        <div class="rating-score" id="overallRating">0.0</div>
+                        <div class="rating-stars" id="overallStars"></div>
+                        <div class="rating-count" id="totalReviews">0 تقييم</div>
+                        
+                        <div class="rating-bars">
+                            <div class="rating-bar">
+                                <span class="bar-label">5 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 75%"></div>
+                                </div>
+                                <span class="bar-percentage">75%</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span class="bar-label">4 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 15%"></div>
+                                </div>
+                                <span class="bar-percentage">15%</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span class="bar-label">3 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 5%"></div>
+                                </div>
+                                <span class="bar-percentage">5%</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span class="bar-label">2 نجوم</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 3%"></div>
+                                </div>
+                                <span class="bar-percentage">3%</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span class="bar-label">نجمة</span>
+                                <div class="bar-container">
+                                    <div class="bar-fill" style="width: 2%"></div>
+                                </div>
+                                <span class="bar-percentage">2%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <h2 class="section-title">آراء العملاء</h2>
+                        <button class="action-btn action-btn-primary" 
+                                style="padding: 8px 16px; font-size: 14px;"
+                                onclick="openReviewModal()">
+                            <i class="fas fa-plus"></i> إضافة تقييم
+                        </button>
+                    </div>
+
+                    <div class="reviews-list" id="reviewsList">
+                        <!-- Reviews will be loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Services Tab -->
+            <div id="servicesTab" class="tab-pane" style="display: none;">
+                <section class="services-section animate-in">
+                    <div class="section-header">
+                        <h2 class="section-title">جميع الخدمات</h2>
+                        <div class="filter-chip" style="display: inline-flex; padding: 8px 16px;" onclick="filterServices()">
+                            <i class="fas fa-filter"></i> تصفية
+                        </div>
+                    </div>
+                    
+                    <div class="services-grid" id="allServicesGrid">
+                        <!-- All services will be loaded here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Info Tab -->
+            <div id="infoTab" class="tab-pane" style="display: none;">
+                <section class="info-section animate-in">
+                    <div class="info-card">
+                        <h3 class="info-title">
+                            <i class="fas fa-user-circle"></i> معلومات شخصية
+                        </h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">البلد</span>
+                                <span class="info-value" id="infoCountry">اليمن</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">المدينة</span>
+                                <span class="info-value" id="infoCity">صنعاء</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">العمر</span>
+                                <span class="info-value" id="infoAge">25 سنة</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">الجنس</span>
+                                <span class="info-value" id="infoGender">انثى</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">اللغة</span>
+                                <span class="info-value" id="infoLanguage">العربية، الإنجليزية</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">التوفر</span>
+                                <span class="info-value" id="infoAvailability">متاح للعمل</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 class="info-title">
+                            <i class="fas fa-star"></i> المهارات
+                        </h3>
+                        <div class="skills-list" id="skillsList">
+                            <!-- Skills will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 class="info-title">
+                            <i class="fas fa-graduation-cap"></i> التعليم والخبرة
+                        </h3>
+                        <div class="timeline" id="educationTimeline">
+                            <!-- Education timeline will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 class="info-title">
+                            <i class="fas fa-certificate"></i> الشهادات
+                        </h3>
+                        <div class="timeline" id="certificatesTimeline">
+                            <!-- Certificates will be loaded here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab" onclick="openChat()">
+            <i class="fas fa-comment-dots"></i>
+            <span class="fab-label">محادثة</span>
+        </button>
+        <button class="fab" onclick="openHireModal()" style="background: linear-gradient(135deg, var(--secondary-color), #ff9e00);">
+            <i class="fas fa-handshake"></i>
+            <span class="fab-label">توظيف</span>
+        </button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard-client.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        <div class="nav-center" onclick="openNewProject()">
+            <i class="fas fa-plus"></i>
+        </div>
+        <a href="designers.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>المصممون</span>
+        </a>
+        <a href="messages.html" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>الرسائل</span>
+        </a>
+    </nav>
+
+    <!-- Hire Modal -->
+    <div class="modal" id="hireModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>توظيف المصمم</h3>
+                <button class="modal-close" onclick="closeHireModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">نوع المشروع</label>
+                    <select class="form-input" id="projectType">
+                        <option value="">اختر نوع المشروع</option>
+                        <option value="logo">تصميم شعار</option>
+                        <option value="branding">هوية بصرية</option>
+                        <option value="ui">تصميم واجهات</option>
+                        <option value="motion">موشن جرافيك</option>
+                        <option value="print">مواد مطبوعة</option>
+                        <option value="other">مشروع آخر</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">وصف المشروع</label>
+                    <textarea class="form-input form-textarea" 
+                              id="projectDescription"
+                              placeholder="صف مشروعك بالتفصيل..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الميزانية (ر.س)</label>
+                    <input type="number" 
+                           class="form-input" 
+                           id="projectBudget"
+                           placeholder="الميزانية المتوقعة"
+                           min="100"
+                           step="50">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">الموعد النهائي</label>
+                    <input type="date" 
+                           class="form-input" 
+                           id="projectDeadline">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">مرفقات</label>
+                    <div class="image-upload" onclick="uploadAttachment()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>انقر لرفع الملفات</p>
+                    </div>
+                </div>
+                
+                <button class="action-btn action-btn-primary" 
+                        style="width: 100%; margin-top: 20px;"
+                        onclick="submitHireRequest()">
+                    <i class="fas fa-paper-plane"></i> إرسال طلب التوظيف
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة تقييم</h3>
+                <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="rating-input">
+                    <div class="rating-stars-input" id="ratingStarsInput">
+                        <i class="fas fa-star star" data-rating="1"></i>
+                        <i class="fas fa-star star" data-rating="2"></i>
+                        <i class="fas fa-star star" data-rating="3"></i>
+                        <i class="fas fa-star star" data-rating="4"></i>
+                        <i class="fas fa-star star" data-rating="5"></i>
+                    </div>
+                    <div id="ratingText">اضغط لتقييم</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">التعليق</label>
+                    <textarea class="form-input form-textarea" 
+                              id="reviewComment"
+                              placeholder="اكتب رأيك عن المصمم..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">مرفقات (اختياري)</label>
+                    <div class="image-upload" onclick="uploadReviewImage()">
+                        <i class="fas fa-image"></i>
+                        <p>انقر لإضافة صور</p>
+                    </div>
+                    <div id="reviewImagesPreview" style="display: none; margin-top: 10px;"></div>
+                </div>
+                
+                <button class="action-btn action-btn-primary" 
+                        style="width: 100%; margin-top: 20px;"
+                        onclick="submitReview()">
+                    <i class="fas fa-check"></i> نشر التقييم
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>محادثة مع <span id="chatDesignerName">المصمم</span></h3>
+                <button class="modal-close" onclick="closeChatModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="chatMessages" style="height: 300px; overflow-y: auto; margin-bottom: 20px; padding: 10px; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <!-- Chat messages will appear here -->
+                </div>
+                
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <input type="text" 
+                           class="form-input" 
+                           id="chatInput"
+                           placeholder="اكتب رسالتك..."
+                           style="flex: 1;">
+                    <button class="action-btn action-btn-primary" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>مشاركة الملف الشخصي</h3>
+                <button class="modal-close" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="" alt="QR Code" 
+                         id="qrCodeImage"
+                         style="width: 150px; height: 150px; margin: 0 auto 20px; display: block;">
+                    <p style="color: var(--text-secondary); font-size: 14px;">مسح الكود لمشاركة الملف</p>
+                </div>
+                
+                <div class="share-options" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <button class="action-btn action-btn-secondary" onclick="shareVia('whatsapp')">
+                        <i class="fab fa-whatsapp"></i>
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="shareVia('twitter')">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="shareVia('facebook')">
+                        <i class="fab fa-facebook"></i>
+                    </button>
+                    <button class="action-btn action-btn-secondary" onclick="copyProfileLink()">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Menu -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>الإعدادات</h3>
+                <button class="modal-close" onclick="closeSettingsModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-list">
+                    <button class="action-btn action-btn-secondary" 
+                            style="width: 100%; margin-bottom: 10px; justify-content: flex-start;"
+                            onclick="reportDesigner()">
+                        <i class="fas fa-flag" style="margin-left: 10px;"></i>
+                        <span>الإبلاغ عن المصمم</span>
+                    </button>
+                    
+                    <button class="action-btn action-btn-secondary" 
+                            style="width: 100%; margin-bottom: 10px; justify-content: flex-start;"
+                            onclick="blockDesigner()">
+                        <i class="fas fa-ban" style="margin-left: 10px;"></i>
+                        <span>حظر المصمم</span>
+                    </button>
+                    
+                    <button class="action-btn action-btn-secondary" 
+                            style="width: 100%; margin-bottom: 10px; justify-content: flex-start;"
+                            onclick="saveDesigner()">
+                        <i class="fas fa-bookmark" style="margin-left: 10px;"></i>
+                        <span>حفظ للمفضلة</span>
+                    </button>
+                    
+                    <button class="action-btn action-btn-secondary" 
+                            style="width: 100%; margin-bottom: 10px; justify-content: flex-start;"
+                            onclick="downloadPortfolio()">
+                        <i class="fas fa-download" style="margin-left: 10px;"></i>
+                        <span>تحميل المعرض</span>
+                    </button>
+                    
+                    <button class="action-btn action-btn-secondary" 
+                            style="width: 100%; justify-content: flex-start; color: var(--danger-color);"
+                            onclick="hideDesigner()">
+                        <i class="fas fa-eye-slash" style="margin-left: 10px;"></i>
+                        <span>إخفاء من النتائج</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script>
+        // البيانات والمتغيرات
+        let designerData = {};
+        let currentTab = 'portfolio';
+        let isFavorite = false;
+        let chatMessages = [];
+        let currentRating = 0;
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initProfilePage();
+            setupSwiper();
+            setupEventListeners();
+        });
+
+        function initProfilePage() {
+            showLoading(true);
+            
+            // الحصول على معرف المصمم من URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const designerId = urlParams.get('id') || 1;
+            
+            // محاكاة جلب البيانات
+            setTimeout(() => {
+                loadDesignerData(designerId);
+                loadPortfolioData(designerId);
+                loadServicesData(designerId);
+                loadReviewsData(designerId);
+                loadInfoData(designerId);
+                
+                showLoading(false);
+            }, 1500);
+        }
+
+        function loadDesignerData(id) {
+            // بيانات مصمم نموذجية
+            designerData = {
+                id: id,
+                name: "هيام. حسن",
+                specialty: "مصممة جرافيك محترف - متخصصة في الشعارات والهوية البصرية",
+                avatar: `https://ui-avatars.com/api/?name=أحمد+المصمم&background=005f73&color=fff&size=400`,
+                coverImage: "../logo.jpg",
+                rating: 4.7,
+                ratingCount: 127,
+                projects: 89,
+                experience: 5,
+                online: true,
+                joined: "2020-03-15",
+                responseRate: 95,
+                responseTime: "2 ساعات",
+                completionRate: 98,
+                revenue: 125000
+            };
+            
+            // تحديث واجهة المستخدم
+            updateProfileUI();
+            
+            // التحقق من المفضلة
+            checkFavoriteStatus();
+        }
+
+        function updateProfileUI() {
+            document.getElementById('profileName').textContent = designerData.name;
+            document.getElementById('profileTitle').textContent = designerData.specialty;
+            document.getElementById('profileAvatar').src = designerData.avatar;
+            document.getElementById('profileSpecialty').textContent = designerData.specialty;
+            document.getElementById('projectsCount').textContent = designerData.projects;
+            document.getElementById('ratingValue').textContent = designerData.rating.toFixed(1);
+            document.getElementById('experienceYears').textContent = designerData.experience;
+            
+            // تحديث النجوم
+            updateStars('overallStars', designerData.rating);
+            document.getElementById('overallRating').textContent = designerData.rating.toFixed(1);
+            document.getElementById('totalReviews').textContent = `${designerData.ratingCount} تقييم`;
+            
+            // تحديث اسم المصمم في المحادثة
+            document.getElementById('chatDesignerName').textContent = designerData.name;
+        }
+
+        function updateStars(elementId, rating) {
+            const starsContainer = document.getElementById(elementId);
+            starsContainer.innerHTML = generateStars(rating);
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (halfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        function loadPortfolioData(designerId) {
+            const portfolioItems = [
+                {
+                    id: 1,
+                    title: "شعار شركة تقنية",
+                    description: "تصميم شعار احترافي لشركة تقنية ناشئة",
+                    image: "https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["شعار", "هوية بصرية", "شركة"],
+                    date: "2024-01-15"
+                },
+                {
+                    id: 2,
+                    title: "تطبيق توصيل طعام",
+                    description: "تصميم واجهة مستخدم كاملة لتطبيق توصيل",
+                    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["UI/UX", "تطبيق", "جوال"],
+                    date: "2024-02-20"
+                },
+                {
+                    id: 3,
+                    title: "هوية بصرية لمطعم",
+                    description: "تصميم هوية بصرية كاملة لمطعم عائلي",
+                    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["هوية بصرية", "مطعم", "براندينج"],
+                    date: "2024-03-10"
+                },
+                {
+                    id: 4,
+                    title: "موشن جرافيك تعريفي",
+                    description: "فيديو موشن جرافيك لشركة عقارية",
+                    image: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    tags: ["موشن جرافيك", "فيديو", "شركة"],
+                    date: "2024-04-05"
+                }
+            ];
+            
+            const wrapper = document.getElementById('portfolioWrapper');
+            wrapper.innerHTML = '';
+            
+            portfolioItems.forEach(item => {
+                const portfolioHTML = `
+                    <div class="swiper-slide">
+                        <div class="portfolio-item" onclick="viewPortfolioItem(${item.id})">
+                            <img src="${item.image}" 
+                                 alt="${item.title}" 
+                                 class="portfolio-image"
+                                 loading="lazy">
+                            <div class="portfolio-info">
+                                <h3 class="portfolio-title">${item.title}</h3>
+                                <p class="portfolio-desc">${item.description}</p>
+                                <div class="portfolio-tags">
+                                    ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                wrapper.insertAdjacentHTML('beforeend', portfolioHTML);
+            });
+        }
+
+        function loadServicesData(designerId) {
+            const services = [
+                {
+                    id: 1,
+                    title: "تصميم شعار احترافي",
+                    description: "تصميم شعار مبتكر وعصري لعلامتك التجارية مع 3 اقتراحات أولية",
+                    price: "500-1500",
+                    icon: "fas fa-pen-nib",
+                    delivery: "3-5 أيام",
+                    revisions: 3,
+                    type: "logo"
+                },
+                {
+                    id: 2,
+                    title: "هوية بصرية كاملة",
+                    description: "تصميم هوية بصرية متكاملة تشمل الشعار، الألوان، الخطوط، والاستخدامات",
+                    price: "2000-5000",
+                    icon: "fas fa-palette",
+                    delivery: "7-10 أيام",
+                    revisions: 5,
+                    type: "branding"
+                },
+                {
+                    id: 3,
+                    title: "تصميم واجهة تطبيق",
+                    description: "تصميم واجهة مستخدم كاملة لتطبيق جوال مع تصميم تجربة المستخدم",
+                    price: "3000-8000",
+                    icon: "fas fa-mobile-alt",
+                    delivery: "10-14 أيام",
+                    revisions: 4,
+                    type: "ui"
+                },
+                {
+                    id: 4,
+                    title: "موشن جرافيك 60 ثانية",
+                    description: "فيديو موشن جرافيك احترافي بطول 60 ثانية مع صوت ومؤثرات",
+                    price: "1500-4000",
+                    icon: "fas fa-video",
+                    delivery: "5-7 أيام",
+                    revisions: 3,
+                    type: "motion"
+                }
+            ];
+            
+            const grid = document.getElementById('servicesGrid');
+            const allGrid = document.getElementById('allServicesGrid');
+            
+            grid.innerHTML = '';
+            allGrid.innerHTML = '';
+            
+            services.forEach(service => {
+                const serviceHTML = `
+                    <div class="service-card" onclick="viewService(${service.id})">
+                        <div class="service-icon">
+                            <i class="${service.icon}"></i>
+                        </div>
+                        <h3 class="service-title">${service.title}</h3>
+                        <p class="service-desc">${service.description}</p>
+                        <div class="service-meta">
+                            <span><i class="fas fa-clock"></i> ${service.delivery}</span>
+                            <span><i class="fas fa-redo"></i> ${service.revisions} مراجعات</span>
+                        </div>
+                        <h4 class="service-price">${service.price} ر.س</h4>
+                    </div>
+                `;
+                
+                grid.insertAdjacentHTML('beforeend', serviceHTML);
+                allGrid.insertAdjacentHTML('beforeend', serviceHTML);
+            });
+        }
+
+        function loadReviewsData(designerId) {
+            const reviews = [
+                {
+                    id: 1,
+                    name: "محمد العميل",
+                    avatar: "https://ui-avatars.com/api/?name=محمد+العميل&background=0a9396&color=fff&size=100",
+                    rating: 5,
+                    date: "قبل 3 أيام",
+                    comment: "مصمم ممتاز ومحترف، قام بتسليم العمل قبل الموعد وبجودة عالية. أنصح بالتعامل معه.",
+                    images: [
+                        "https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "سارة العميلة",
+                    avatar: "https://ui-avatars.com/api/?name=سارة+العميلة&background=9a031e&color=fff&size=100",
+                    rating: 4.5,
+                    date: "قبل أسبوع",
+                    comment: "التصميم جميل ومتناسب مع فكرتي، كانت المراجعات سريعة والمصمم متجاوب جداً.",
+                    images: []
+                },
+                {
+                    id: 3,
+                    name: "خالد رجل الأعمال",
+                    avatar: "https://ui-avatars.com/api/?name=خالد+رجل+الأعمال&background=bb3e03&color=fff&size=100",
+                    rating: 4,
+                    date: "قبل شهر",
+                    comment: "عمل احترافي وتنفيذ دقيق للمتطلبات. سأعاود التعامل معه في مشاريع قادمة.",
+                    images: [
+                        "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+                        "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                    ]
+                }
+            ];
+            
+            const list = document.getElementById('reviewsList');
+            list.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const reviewHTML = `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="${review.avatar}" 
+                                 alt="${review.name}" 
+                                 class="reviewer-avatar"
+                                 loading="lazy">
+                            <div class="reviewer-info">
+                                <h4 class="reviewer-name">${review.name}</h4>
+                                <p class="review-date">${review.date}</p>
+                            </div>
+                            <div class="review-rating">
+                                ${generateStars(review.rating)}
+                            </div>
+                        </div>
+                        <p class="review-content">${review.comment}</p>
+                        ${review.images.length > 0 ? `
+                            <div class="review-images">
+                                ${review.images.map(img => `
+                                    <img src="${img}" 
+                                         alt="صورة التقييم" 
+                                         class="review-image"
+                                         onclick="viewReviewImage('${img}')"
+                                         loading="lazy">
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                list.insertAdjacentHTML('beforeend', reviewHTML);
+            });
+        }
+
+        function loadInfoData(designerId) {
+            // تحديث المعلومات الشخصية
+            document.getElementById('infoCountry').textContent = "اليمن";
+            document.getElementById('infoCity').textContent = "صنعاء";
+            document.getElementById('infoAge').textContent = "25 سنة";
+            document.getElementById('infoGender').textContent = "ذكر";
+            document.getElementById('infoLanguage').textContent = "العربية، الإنجليزية";
+            document.getElementById('infoAvailability').textContent = "متاح للعمل";
+            
+            // المهارات
+            const skills = ["Adobe Photoshop", "Adobe Illustrator", "Figma", "After Effects", "UI/UX Design", "Brand Identity", "Logo Design", "Motion Graphics"];
+            const skillsList = document.getElementById('skillsList');
+            skillsList.innerHTML = skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+            
+            // التعليم
+            const education = [
+                {
+                    title: "بكالوريوس تصميم جرافيك",
+                    subtitle: "جامعة الملك سعود | 2018",
+                    desc: "تخرجت بامتياز مع مرتبة الشرف"
+                },
+                {
+                    title: "دورة UI/UX المتقدمة",
+                    subtitle: "أكاديمية التصميم | 2020",
+                    desc: "شهادة احترافية في تصميم واجهات المستخدم"
+                },
+                {
+                    title: "دورة موشن جرافيك",
+                    subtitle: "معهد الإبداع الرقمي | 2021",
+                    desc: "تصميم الرسوم المتحركة والمؤثرات البصرية"
+                }
+            ];
+            
+            const educationTimeline = document.getElementById('educationTimeline');
+            educationTimeline.innerHTML = education.map(item => `
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">${item.title}</h4>
+                        <p class="timeline-subtitle">${item.subtitle}</p>
+                        <p class="timeline-desc">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            // الشهادات
+            const certificates = [
+                {
+                    title: "شهادة Adobe Certified Expert",
+                    subtitle: "Adobe | 2022",
+                    desc: "خبير معتمد في برامج Adobe للإبداع"
+                },
+                {
+                    title: "شهادة Google UX Design",
+                    subtitle: "Google | 2021",
+                    desc: "تصميم تجربة المستخدم من جوجل"
+                }
+            ];
+            
+            const certificatesTimeline = document.getElementById('certificatesTimeline');
+            certificatesTimeline.innerHTML = certificates.map(item => `
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">${item.title}</h4>
+                        <p class="timeline-subtitle">${item.subtitle}</p>
+                        <p class="timeline-desc">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupSwiper() {
+            const swiper = new Swiper('#portfolioSwiper', {
+                slidesPerView: 1.2,
+                spaceBetween: 16,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    480: {
+                        slidesPerView: 1.5,
+                    },
+                    768: {
+                        slidesPerView: 2.2,
+                    }
+                }
+            });
+        }
+
+        // تبديل التبويبات
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // تحديث التبويبات النشطة
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.tab').classList.add('active');
+            
+            // إخفاء جميع المحتويات
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.style.display = 'none';
+            });
+            
+            // إظهار المحتوى المختار
+            document.getElementById(`${tabName}Tab`).style.display = 'block';
+            
+            // تحميل بيانات إضافية حسب التبويب
+            if (tabName === 'services') {
+                // يمكن تحميل المزيد من الخدمات
+            } else if (tabName === 'reviews') {
+                // يمكن تحميل المزيد من التقييمات
+            }
+        }
+
+        // المفضلة
+        function checkFavoriteStatus() {
+            const favorites = JSON.parse(localStorage.getItem('designer_favorites') || '[]');
+            isFavorite = favorites.includes(designerData.id);
+            
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            if (isFavorite) {
+                favoriteBtn.innerHTML = '<i class="fas fa-heart" style="color: #e76f51;"></i>';
+            } else {
+                favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+            }
+        }
+
+        function toggleFavorite() {
+            const favorites = JSON.parse(localStorage.getItem('designer_favorites') || '[]');
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            
+            if (isFavorite) {
+                // إزالة من المفضلة
+                const index = favorites.indexOf(designerData.id);
+                if (index > -1) {
+                    favorites.splice(index, 1);
+                }
+                isFavorite = false;
+                favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+                showToast('تمت الإزالة من المفضلة', 'info');
+            } else {
+                // إضافة إلى المفضلة
+                favorites.push(designerData.id);
+                isFavorite = true;
+                favoriteBtn.innerHTML = '<i class="fas fa-heart" style="color: #e76f51;"></i>';
+                showToast('تمت الإضافة إلى المفضلة', 'success');
+            }
+            
+            localStorage.setItem('designer_favorites', JSON.stringify(favorites));
+        }
+
+        // المحادثة
+        function openChat() {
+            const modal = document.getElementById('chatModal');
+            modal.style.display = 'flex';
+            
+            // محاكاة تحميل الرسائل
+            loadChatMessages();
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        function loadChatMessages() {
+            const chatContainer = document.getElementById('chatMessages');
+            chatMessages = [
+                { sender: 'designer', text: 'مرحباً! كيف يمكنني مساعدتك؟', time: '10:00' },
+                { sender: 'user', text: 'أريد تصميم شعار لشركتي الجديدة', time: '10:02' },
+                { sender: 'designer', text: 'أهلاً وسهلاً! هل لديك فكرة معينة عن التصميم؟', time: '10:03' }
+            ];
+            
+            chatContainer.innerHTML = chatMessages.map(msg => `
+                <div class="chat-message ${msg.sender}">
+                    <div class="message-bubble">${msg.text}</div>
+                    <div class="message-time">${msg.time}</div>
+                </div>
+            `).join('');
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // إضافة أنماط المحادثة
+            const style = document.createElement('style');
+            style.textContent = `
+                .chat-message {
+                    margin-bottom: 10px;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .chat-message.user {
+                    align-items: flex-end;
+                }
+                .chat-message.designer {
+                    align-items: flex-start;
+                }
+                .message-bubble {
+                    max-width: 80%;
+                    padding: 10px 16px;
+                    border-radius: var(--radius-lg);
+                    margin-bottom: 4px;
+                }
+                .chat-message.user .message-bubble {
+                    background: var(--primary-color);
+                    color: white;
+                }
+                .chat-message.designer .message-bubble {
+                    background: var(--border-color);
+                    color: var(--text-primary);
+                }
+                .message-time {
+                    font-size: 11px;
+                    color: var(--text-secondary);
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatContainer = document.getElementById('chatMessages');
+                const time = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+                
+                chatMessages.push({ sender: 'user', text: message, time: time });
+                
+                chatContainer.innerHTML += `
+                    <div class="chat-message user">
+                        <div class="message-bubble">${message}</div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                `;
+                
+                input.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // محاكاة رد المصمم
+                setTimeout(() => {
+                    const responses = [
+                        "فكرة رائعة! هل لديك ألوان مفضلة؟",
+                        "ممتاز، سأبدأ العمل على التصميم",
+                        "هل تريد إضافة أي تفاصيل أخرى؟"
+                    ];
+                    const response = responses[Math.floor(Math.random() * responses.length)];
+                    const responseTime = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+                    
+                    chatMessages.push({ sender: 'designer', text: response, time: responseTime });
+                    
+                    chatContainer.innerHTML += `
+                        <div class="chat-message designer">
+                            <div class="message-bubble">${response}</div>
+                            <div class="message-time">${responseTime}</div>
+                        </div>
+                    `;
+                    
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // التوظيف
+        function openHireModal() {
+            document.getElementById('hireModal').style.display = 'flex';
+        }
+
+        function closeHireModal() {
+            document.getElementById('hireModal').style.display = 'none';
+        }
+
+        function submitHireRequest() {
+            const projectType = document.getElementById('projectType').value;
+            const description = document.getElementById('projectDescription').value;
+            const budget = document.getElementById('projectBudget').value;
+            const deadline = document.getElementById('projectDeadline').value;
+            
+            if (!projectType || !description || !budget) {
+                showToast('يرجى ملء جميع الحقول المطلوبة', 'warning');
+                return;
+            }
+            
+            showLoading(true);
+            
+            // محاكاة إرسال الطلب
+            setTimeout(() => {
+                showLoading(false);
+                closeHireModal();
+                showToast('تم إرسال طلب التوظيف بنجاح', 'success');
+                
+                // إعادة تعيين النموذج
+                document.getElementById('projectType').value = '';
+                document.getElementById('projectDescription').value = '';
+                document.getElementById('projectBudget').value = '';
+                document.getElementById('projectDeadline').value = '';
+                
+                // الانتقال إلى صفحة المشاريع
+                setTimeout(() => {
+                    window.location.href = 'my-projects.html';
+                }, 1500);
+            }, 2000);
+        }
+
+        // التقييمات
+        function openReviewModal() {
+            document.getElementById('reviewModal').style.display = 'flex';
+            setupRatingStars();
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+            currentRating = 0;
+        }
+
+        function setupRatingStars() {
+            const stars = document.querySelectorAll('#ratingStarsInput .star');
+            const ratingText = document.getElementById('ratingText');
+            
+            stars.forEach(star => {
+                star.classList.remove('active');
+                
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    currentRating = rating;
+                    
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                    
+                    const texts = [
+                        "سيء جداً",
+                        "سيء",
+                        "متوسط",
+                        "جيد",
+                        "ممتاز"
+                    ];
+                    
+                    ratingText.textContent = texts[rating - 1];
+                });
+                
+                star.addEventListener('mouseover', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    
+                    stars.forEach((s, index) => {
+                        if (index < rating) {
+                            s.style.color = 'var(--secondary-color)';
+                        } else {
+                            s.style.color = 'var(--border-color)';
+                        }
+                    });
+                });
+                
+                star.addEventListener('mouseout', function() {
+                    stars.forEach((s, index) => {
+                        if (index < currentRating) {
+                            s.style.color = 'var(--secondary-color)';
+                        } else {
+                            s.style.color = 'var(--border-color)';
+                        }
+                    });
+                });
+            });
+        }
+
+        function submitReview() {
+            const comment = document.getElementById('reviewComment').value;
+            
+            if (currentRating === 0) {
+                showToast('يرجى اختيار تقييم', 'warning');
+                return;
+            }
+            
+            if (!comment.trim()) {
+                showToast('يرجى كتابة تعليق', 'warning');
+                return;
+            }
+            
+            showLoading(true);
+            
+            // محاكاة إرسال التقييم
+            setTimeout(() => {
+                showLoading(false);
+                closeReviewModal();
+                showToast('تم نشر تقييمك بنجاح', 'success');
+                
+                // إعادة تعيين النموذج
+                document.getElementById('reviewComment').value = '';
+                currentRating = 0;
+                
+                // إعادة تحميل التقييمات
+                loadReviewsData(designerData.id);
+            }, 1500);
+        }
+
+        // المشاركة
+        function shareProfile() {
+            document.getElementById('shareModal').style.display = 'flex';
+            
+            // توليد QR Code
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href)}`;
+            document.getElementById('qrCodeImage').src = qrUrl;
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function shareVia(platform) {
+            const profileUrl = window.location.href;
+            const text = `تحقق من ملف المصمم ${designerData.name} على بيكسل آرت`;
+            
+            let shareUrl = '';
+            
+            switch(platform) {
+                case 'whatsapp':
+                    shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + profileUrl)}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(profileUrl)}`;
+                    break;
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(profileUrl)}`;
+                    break;
+            }
+            
+            if (shareUrl) {
+                window.open(shareUrl, '_blank');
+            }
+        }
+
+        function copyProfileLink() {
+            const profileUrl = window.location.href;
+            navigator.clipboard.writeText(profileUrl)
+                .then(() => {
+                    showToast('تم نسخ الرابط', 'success');
+                    closeShareModal();
+                })
+                .catch(() => {
+                    showToast('خطأ في نسخ الرابط', 'warning');
+                });
+        }
+
+        // الإعدادات
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        function reportDesigner() {
+            if (confirm('هل تريد الإبلاغ عن هذا المصمم؟')) {
+                showLoading(true);
+                setTimeout(() => {
+                    showLoading(false);
+                    closeSettingsModal();
+                    showToast('تم الإبلاغ عن المصمم', 'success');
+                }, 1000);
+            }
+        }
+
+        function blockDesigner() {
+            if (confirm('هل تريد حظر هذا المصمم؟')) {
+                const blocked = JSON.parse(localStorage.getItem('blocked_designers') || '[]');
+                if (!blocked.includes(designerData.id)) {
+                    blocked.push(designerData.id);
+                    localStorage.setItem('blocked_designers', JSON.stringify(blocked));
+                }
+                
+                closeSettingsModal();
+                showToast('تم حظر المصمم', 'success');
+                setTimeout(() => {
+                    window.history.back();
+                }, 1500);
+            }
+        }
+
+        function downloadPortfolio() {
+            showLoading(true);
+            setTimeout(() => {
+                showLoading(false);
+                closeSettingsModal();
+                showToast('جاري تحميل المعرض...', 'info');
+            }, 2000);
+        }
+
+        // وظائف إضافية
+        function viewPortfolioItem(id) {
+            showToast('فتح مشروع المعرض', 'info');
+            window.location.href = `portfolio-item.html?id=${id}`;
+        }
+
+        function viewService(id) {
+            showToast('فتح تفاصيل الخدمة', 'info');
+            window.location.href = `service-details.html?id=${id}&designer=${designerData.id}`;
+        }
+
+        function viewReviewImage(imageUrl) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.9);
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            modal.innerHTML = `
+                <img src="${imageUrl}" 
+                     alt="صورة التقييم"
+                     style="max-width: 90%; max-height: 90%; border-radius: var(--radius-md);">
+                <button onclick="this.parentElement.remove()" 
+                        style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 30px; cursor: pointer;">
+                    &times;
+                </button>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function viewAllPortfolio() {
+            showToast('فتح جميع الأعمال', 'info');
+            window.location.href = `portfolio.html?designer=${designerData.id}`;
+        }
+
+        function filterServices() {
+            showToast('فتح التصفية', 'info');
+            // يمكن إضافة منطق التصفية هنا
+        }
+
+        function setupEventListeners() {
+            // إغلاق المودالات بالنقر خارجها
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+            });
+            
+            // التعامل مع اللمس للسحب
+            let startY;
+            const mainContent = document.getElementById('mainContent');
+            
+            mainContent.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            mainContent.addEventListener('touchmove', (e) => {
+                if (!startY) return;
+                
+                const currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                
+                // Pull to refresh
+                if (diff > 100 && mainContent.scrollTop === 0) {
+                    refreshProfile();
+                    startY = null;
+                }
+            }, { passive: true });
+        }
+
+        function refreshProfile() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                loadDesignerData(designerData.id);
+                loadPortfolioData(designerData.id);
+                showLoading(false);
+                showToast('تم تحديث البيانات', 'success');
+            }, 1500);
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function openNewProject() {
+            window.location.href = 'new-project.html';
+        }
+
+        // وظائف المساعدة
+        function showLoading(show) {
+            document.getElementById('loader').style.display = show ? 'block' : 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? 'var(--success-color)' : 
+                            type === 'warning' ? 'var(--warning-color)' : 
+                            'var(--primary-color)'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                font-family: inherit;
+                animation: slideDown 0.3s ease forwards;
+            `;
+            
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                     type === 'warning' ? 'exclamation-triangle' : 
+                                     'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+            
+            // إضافة الأنيميشن
+            if (!document.querySelector('#toast-animations')) {
+                const style = document.createElement('style');
+                style.id = 'toast-animations';
+                style.textContent = `
+                    @keyframes slideDown {
+                        from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                        to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // PWA Features
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // Offline Detection
+        window.addEventListener('online', () => {
+            showToast('تم استعادة الاتصال بالإنترنت', 'success');
+        });
+        
+        window.addEventListener('offline', () => {
+            showToast('أنت غير متصل بالإنترنت', 'warning');
+        });
+    </script>
+</body>
+</html>نت غير متصل بالإنترنت', 'warning');
+        });
+    </script>
+</body>
+</html>

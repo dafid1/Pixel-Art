@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a9396">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>لوحة العميل | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* تصميم متقدم للعميل مع PWA */
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --transition-fast: 200ms;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            overscroll-behavior: contain;
+        }
+
+        /* شريط الحالة المخصص */
+        .status-bar {
+            height: env(safe-area-inset-top, 24px);
+            background: var(--primary-gradient);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* الهيدر مع تأثيرات PWA */
+        .app-header {
+            height: 60px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .menu-toggle:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .app-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-logo i {
+            font-size: 20px;
+            color: var(--primary-color);
+        }
+
+        .app-logo h1 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .user-badge {
+            font-size: 12px;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .header-right {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* المحتوى الرئيسي مع تحسينات اللمس */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 16px calc(80px + env(safe-area-inset-bottom, 0px)) 16px;
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+        }
+
+        /* تحسين بطاقة الترحيب */
+        .welcome-card {
+            background: var(--primary-gradient);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            color: white;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            animation: slideInDown 0.5s ease-out;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            animation: backgroundMove 20s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .welcome-header {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-header h2 {
+            font-size: 18px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .welcome-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        /* الإحصائيات السريعة */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* خدمات العميل المحسنة */
+        .client-services {
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .view-all {
+            color: var(--primary-color);
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .view-all:active {
+            background: var(--bg-secondary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .service-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::after {
+            transform: translateX(0);
+        }
+
+        .service-card:active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 24px;
+            transition: transform var(--transition-fast);
+        }
+
+        .service-card:active .service-icon {
+            transform: scale(1.1);
+        }
+
+        .service-card h4 {
+            font-size: 14px;
+            margin: 0 0 8px 0;
+            font-weight: 600;
+        }
+
+        .service-card p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* معرض الأعمال مع تأثيرات متقدمة */
+        .portfolio-section {
+            margin-bottom: 24px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .portfolio-item {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            height: 180px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 12px;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+        }
+
+        .portfolio-overlay h4 {
+            font-size: 14px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .portfolio-overlay p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* المصممون مع تفاعلات محسنة */
+        .designers-section {
+            margin-bottom: 24px;
+        }
+
+        .designers-list {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .designer-card {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+        }
+
+        .designer-card:last-child {
+            border-bottom: none;
+        }
+
+        .designer-card:active {
+            background: var(--bg-secondary);
+            transform: translateX(-5px);
+        }
+
+        .designer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            margin-left: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .designer-card:active .designer-avatar {
+            transform: scale(1.1);
+            border-color: var(--secondary-color);
+        }
+
+        .designer-info {
+            flex: 1;
+        }
+
+        .designer-info h4 {
+            font-size: 14px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .designer-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+        }
+
+        .designer-rating {
+            color: var(--secondary-color);
+            font-size: 12px;
+        }
+
+        .hire-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hire-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .hire-btn:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        .hire-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-dark);
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        /* شريط التنقل السفلي مع دعم Notch */
+        .bottom-nav {
+            height: calc(70px + env(safe-area-inset-bottom, 0px));
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px env(safe-area-inset-bottom, 0px) 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: width var(--transition-fast);
+        }
+
+        .nav-item.active::after {
+            width: 20px;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            transition: transform var(--transition-fast);
+        }
+
+        .nav-item:active i {
+            transform: scale(0.9);
+        }
+
+        .nav-center {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-top: -28px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-center:active {
+            transform: scale(0.95) rotate(90deg);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* شريط التمرير المخصص */
+        .main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .service-card:hover::after,
+            .portfolio-item:hover .portfolio-overlay,
+            .designer-card:hover {
+                transform: none;
+            }
+            
+            .service-card:active::after {
+                transform: translateX(0);
+            }
+        }
+
+        /* أنيميشن */
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* رفع الأداء */
+        .will-change {
+            will-change: transform;
+        }
+
+        /* مؤشر التحميل */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--bg-secondary);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 360px) {
+            .services-grid,
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .designer-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .designer-avatar {
+                margin-left: 0;
+                margin-bottom: 12px;
+            }
+        }
+
+        /* تحسينات للوضع الداكن */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a202c;
+                --bg-secondary: #2d3748;
+                --text-primary: #f7fafc;
+                --text-secondary: #cbd5e0;
+                --border-color: #4a5568;
+            }
+            
+            .service-card,
+            .designers-list,
+            .stat-item {
+                background: var(--bg-secondary);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar"></div>
+
+    <!-- مؤشر التحميل -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="menu-toggle" onclick="toggleSideMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="app-logo">
+                <i class="fas fa-palette"></i>
+                <h1>بيكسل آرت</h1>
+            </div>
+            <span class="user-badge" id="userBadge">عميل</span>
+        </div>
+
+        <div class="header-right">
+            <div style="position: relative;">
+                <button class="menu-toggle" onclick="toggleNotifications()" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationCount">3</span>
+                </button>
+            </div>
+            <div style="position: relative;">
+                <button class="menu-toggle" onclick="openMessages()" id="messagesBtn">
+                    <i class="fas fa-comments"></i>
+                    <span class="notification-badge" id="messageCount">5</span>
+                </button>
+            </div>
+            <button class="menu-toggle" onclick="openProfile()">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content" id="mainContent">
+        <!-- بطاقة الترحيب -->
+        <section class="welcome-card">
+            <div class="welcome-header">
+                <h2 id="welcomeMessage">مرحباً بك، عميلنا الكريم!</h2>
+                <p>نحن هنا لمساعدتك في إيجاد أفضل المصممين لمشروعك</p>
+                <div class="quick-stats" style="margin-top: 20px;">
+                    <div class="stat-item">
+                        <div class="stat-value" id="projectsCount">5</div>
+                        <div class="stat-label">المشاريع</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="activeProjects">3</div>
+                        <div class="stat-label">قيد التنفيذ</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completedProjects">2</div>
+                        <div class="stat-label">مكتملة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="unreadMessages">5</div>
+                        <div class="stat-label">رسائل جديدة</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- خدمات العميل -->
+        <section class="client-services animate-in">
+            <div class="section-header">
+                <h3>خدمات العملاء</h3>
+                <a href="#" class="view-all">المزيد</a>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card will-change" onclick="openService('new-project')">
+                    <div class="service-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h4>طلب تصميم جديد</h4>
+                    <p>أرسل طلب تصميم وسنقوم بتوصيلك بالمصمم المناسب</p>
+                </div>
+                
+                <div class="service-card will-change" onclick="openService('choose-designer')">
+                    <div class="service-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4>اختيار مصمم</h4>
+                    <p>تصفح معرض المصممين واختر الأفضل لمشروعك</p>
+                </div>
+                
+                <div class="service-card will-change" onclick="openService('my-projects')">
+                    <div class="service-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h4>مشاريعي</h4>
+                    <p>تابع جميع مشاريعك ومراحل تنفيذها</p>
+                </div>
+                
+                <div class="service-card will-change" onclick="openService('budget-calculator')">
+                    <div class="service-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h4>حاسبة الميزانية</h4>
+                    <p>احسب التكلفة التقريبية لمشروعك</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- معرض الأعمال -->
+        <section class="portfolio-section animate-in">
+            <div class="section-header">
+                <h3>معرض الأعمال</h3>
+                <a href="portfolio.html" class="view-all">عرض الكل</a>
+            </div>
+            
+            <div class="portfolio-grid">
+                <div class="portfolio-item will-change" onclick="viewProject(1)">
+                    <img src="../img/logo.jpg" 
+                         alt="تصميم شعار"
+                         loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>تصميم شعار احترافي</h4>
+                        <p>تصميم شعار لشركة تقنية</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item will-change" onclick="viewProject(2)">
+                    <img src="../img/3.jpg" 
+                         alt="هوية بصرية"
+                         loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>هوية بصرية كاملة</h4>
+                        <p>تصميم هوية بصرية لعلامة تجارية</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item will-change" onclick="viewProject(3)">
+                    <img src="../img/4.jpg" 
+                         alt="تصميم تطبيق"
+                         loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>تصميم تطبيق جوال</h4>
+                        <p>واجهة مستخدم لتطبيق توصيل</p>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item will-change" onclick="viewProject(4)">
+                    <img src="../img/5.jpg" 
+                         alt="مواد مطبوعة"
+                         loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h4>مواد دعائية مطبوعة</h4>
+                        <p>تصميم بروشور وفلاير دعائي</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- المصممون الموصى بهم -->
+        <section class="designers-section animate-in">
+            <div class="section-header">
+                <h3>المصممون الموصى بهم</h3>
+                <a href="designers.html" class="view-all">عرض الكل</a>
+            </div>
+            
+            <div class="designers-list">
+                <div class="designer-card will-change" onclick="viewDesigner(1)">
+                    <img src="https://ui-avatars.com/api/?name=أحمد+المصمم&background=005f73&color=fff&size=60" 
+                         alt="المصممة" 
+                         class="designer-avatar"
+                         loading="lazy">
+                    <div class="designer-info">
+                        <h4>المصممة حنان</h4>
+                        <p>متخصص في تصميم الشعارات والهوية البصرية</p>
+                        <div class="designer-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>4.7 (127 تقييم)</span>
+                        </div>
+                    </div>
+                    <button class="hire-btn" onclick="hireDesigner(1, event)">توظيف</button>
+                </div>
+                
+                <div class="designer-card will-change" onclick="viewDesigner(2)">
+                    <img src="https://ui-avatars.com/api/?name=سارة+المصممة&background=9a031e&color=fff&size=60" 
+                         alt="المصممة" 
+                         class="designer-avatar"
+                         loading="lazy">
+                    <div class="designer-info">
+                        <h4>المصممة دروب</h4>
+                        <p>متخصصة في تصميم UI/UX وتطبيقات الجوال</p>
+                        <div class="designer-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>5.0 (89 تقييم)</span>
+                        </div>
+                    </div>
+                    <button class="hire-btn" onclick="hireDesigner(2, event)">توظيف</button>
+                </div>
+                
+                <div class="designer-card will-change" onclick="viewDesigner(3)">
+                    <img src="https://ui-avatars.com/api/?name=خالد+المصمم&background=bb3e03&color=fff&size=60" 
+                         alt="المصممة" 
+                         class="designer-avatar"
+                         loading="lazy">
+                    <div class="designer-info">
+                        <h4>فاطمة </h4>
+                        <p>متخصص في موشن جرافيك وتحرير الفيديو</p>
+                        <div class="designer-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span>4.5 (203 تقييم)</span>
+                        </div>
+                    </div>
+                    <button class="hire-btn" onclick="hireDesigner(3, event)">توظيف</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-client.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        
+        <div class="nav-center" onclick="openNewProject()">
+            <i class="fas fa-plus"></i>
+        </div>
+        
+        <a href="designers.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>المصممون</span>
+        </a>
+        
+        <a href="chat.html" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>الرسائل</span>
+        </a>
+    </nav>
+
+    <script>
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+            setupSwipeGestures();
+            setupOfflineDetection();
+        });
+
+        // التحقق من تسجيل الدخول
+        function initApp() {
+            showLoading(true);
+            
+            // محاكاة تأخير تحميل البيانات
+            setTimeout(() => {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+                
+                if (!currentUser || currentUser.type !== 'client') {
+                    window.location.href = './index.html';
+                    return;
+                }
+                
+                // تحديث واجهة المستخدم
+                updateUserInterface(currentUser);
+                loadUserData(currentUser.id);
+                
+                // تهيئة الإشعارات
+                initNotifications();
+                
+                showLoading(false);
+            }, 800);
+        }
+
+        function updateUserInterface(user) {
+            // تحديث اسم المستخدم
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            if (welcomeMessage && user.name) {
+                welcomeMessage.textContent = `مرحباً ${user.name}`;
+            }
+            
+            // تحديث البادج
+            const userBadge = document.getElementById('userBadge');
+            if (userBadge && user.membership) {
+                userBadge.textContent = user.membership;
+            }
+        }
+
+        async function loadUserData(userId) {
+            try {
+                // محاكاة جلب البيانات
+                const mockData = {
+                    projectsCount: 5,
+                    activeProjects: 3,
+                    completedProjects: 2,
+                    unreadMessages: 5,
+                    notifications: 3
+                };
+                
+                // تحديث الإحصائيات
+                document.getElementById('projectsCount').textContent = mockData.projectsCount;
+                document.getElementById('activeProjects').textContent = mockData.activeProjects;
+                document.getElementById('completedProjects').textContent = mockData.completedProjects;
+                document.getElementById('unreadMessages').textContent = mockData.unreadMessages;
+                document.getElementById('notificationCount').textContent = mockData.notifications;
+                
+                // حفظ البيانات محلياً
+                localStorage.setItem('userStats', JSON.stringify(mockData));
+                
+            } catch (error) {
+                console.error('خطأ في تحميل البيانات:', error);
+                loadFromCache();
+            }
+        }
+
+        function loadFromCache() {
+            const cachedData = localStorage.getItem('userStats');
+            if (cachedData) {
+                const data = JSON.parse(cachedData);
+                document.getElementById('projectsCount').textContent = data.projectsCount || 0;
+                document.getElementById('activeProjects').textContent = data.activeProjects || 0;
+                document.getElementById('completedProjects').textContent = data.completedProjects || 0;
+                document.getElementById('unreadMessages').textContent = data.unreadMessages || 0;
+            }
+        }
+
+        // إدارة الإشعارات
+        function initNotifications() {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                // الإشعارات مفعلة
+            } else if ('Notification' in window && Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+        }
+
+        // فتح خدمات العملاء
+        function openService(service) {
+            showLoading(true);
+            
+            const services = {
+                'new-project': 'new-project.html',
+                'choose-designer': 'designers.html',
+                'my-projects': 'my-projects.html',
+                'budget-calculator': 'budget-calculator.html'
+            };
+            
+            setTimeout(() => {
+                if (services[service]) {
+                    window.location.href = services[service];
+                } else {
+                    showLoading(false);
+                    showToast('الخدمة غير متاحة حالياً', 'warning');
+                }
+            }, 500);
+        }
+
+        // عرض مشروع من المعرض
+        function viewProject(id) {
+            window.location.href = `project-details.html?id=${id}`;
+        }
+
+        // عرض صفحة المصمم
+        function viewDesigner(id) {
+            window.location.href = `designer-profile.html?id=${id}`;
+        }
+
+        // توظيف مصمم
+        function hireDesigner(id, event) {
+            if (event) event.stopPropagation();
+            
+            if (confirm('هل تريد توظيف هذا المصمم لمشروعك؟')) {
+                showLoading(true);
+                
+                // محاكاة عملية التوظيف
+                setTimeout(() => {
+                    showLoading(false);
+                    showToast('تم إرسال طلب التوظيف بنجاح', 'success');
+                    window.location.href = `hire-designer.html?designerId=${id}`;
+                }, 1000);
+            }
+        }
+
+        // فتح طلب مشروع جديد
+        function openNewProject() {
+            showLoading(true);
+            setTimeout(() => {
+                window.location.href = 'new-project.html';
+            }, 500);
+        }
+
+        // الإشعارات
+        function toggleNotifications() {
+            const notificationPanel = document.getElementById('notificationPanel');
+            
+            if (notificationPanel) {
+                notificationPanel.style.display = notificationPanel.style.display === 'block' ? 'none' : 'block';
+            } else {
+                // عرض الإشعارات في نافذة منبثقة
+                const notifications = [
+                    { id: 1, text: 'تم تحديث حالة مشروعك', time: 'قبل 5 دقائق' },
+                    { id: 2, text: 'مصمم جديد متاح للعمل', time: 'قبل ساعة' },
+                    { id: 3, text: 'عرض خاص على التصميمات', time: 'قبل 3 ساعات' }
+                ];
+                
+                let notificationHTML = '<div class="notification-list">';
+                notifications.forEach(notification => {
+                    notificationHTML += `
+                        <div class="notification-item">
+                            <div>${notification.text}</div>
+                            <small>${notification.time}</small>
+                        </div>
+                    `;
+                });
+                notificationHTML += '</div>';
+                
+                showModal('الإشعارات', notificationHTML);
+                
+                // تحديث العداد
+                document.getElementById('notificationCount').textContent = '0';
+            }
+        }
+
+        // الرسائل
+        function openMessages() {
+            window.location.href = 'chat.html';
+        }
+
+        // الملف الشخصي
+        function openProfile() {
+            window.location.href = 'profile.html';
+        }
+
+        // القائمة الجانبية
+        function toggleSideMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            
+            if (!sideMenu) {
+                const menuHTML = `
+                    <div id="sideMenu" class="side-menu">
+                        <div class="menu-header">
+                            <img src="https://ui-avatars.com/api/?name=عميل+بيكسل&background=0a9396&color=fff&size=80" 
+                                 alt="الصورة الشخصية">
+                            <h3 id="userName">عميل بيكسل آرت</h3>
+                            <p>عميل مميز</p>
+                        </div>
+                        <div class="menu-items">
+                            <a href="profile.html"><i class="fas fa-user"></i>الملف الشخصي</a>
+                            <a href="settings.html"><i class="fas fa-cog"></i>الإعدادات</a>
+                            <a href="help.html"><i class="fas fa-question-circle"></i>المساعدة</a>
+                            <a href="about.html"><i class="fas fa-info-circle"></i>حول التطبيق</a>
+                            <hr>
+                            <a href="javascript:void(0)" onclick="logout()" style="color: var(--danger-color);">
+                                <i class="fas fa-sign-out-alt"></i>تسجيل الخروج
+                            </a>
+                        </div>
+                    </div>
+                    <div id="sideMenuOverlay" class="side-menu-overlay" onclick="toggleSideMenu()"></div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', menuHTML);
+                
+                // إضافة الأنيميشن
+                setTimeout(() => {
+                    document.getElementById('sideMenu').style.transform = 'translateX(0)';
+                    document.getElementById('sideMenuOverlay').style.opacity = '1';
+                }, 10);
+            } else {
+                document.getElementById('sideMenu').style.transform = 'translateX(100%)';
+                document.getElementById('sideMenuOverlay').style.opacity = '0';
+                
+                setTimeout(() => {
+                    document.getElementById('sideMenu').remove();
+                    document.getElementById('sideMenuOverlay').remove();
+                }, 300);
+            }
+        }
+
+        // إيماءات السحب
+        function setupSwipeGestures() {
+            let startX, startY;
+            
+            document.addEventListener('touchstart', e => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', e => {
+                if (!startX || !startY) return;
+                
+                const endX = e.changedTouches[0].clientX;
+                const endY = e.changedTouches[0].clientY;
+                
+                const diffX = startX - endX;
+                const diffY = startY - endY;
+                
+                // سحب أفقي (للمراسلة السريعة)
+                if (Math.abs(diffX) > 50 && Math.abs(diffY) < 50) {
+                    if (diffX > 0) {
+                        // سحب لليسار - فتح المراسلة
+                        openMessages();
+                    }
+                }
+            }, { passive: true });
+        }
+
+        // كشف حالة الاتصال
+        function setupOfflineDetection() {
+            window.addEventListener('online', () => {
+                showToast('تم استعادة الاتصال بالإنترنت', 'success');
+            });
+            
+            window.addEventListener('offline', () => {
+                showToast('أنت غير متصل بالإنترنت', 'warning');
+            });
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                showLoading(true);
+                
+                setTimeout(() => {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('userToken');
+                    localStorage.removeItem('userStats');
+                    window.location.href = '../index.html';
+                }, 1000);
+            }
+        }
+
+        // وظائف المساعدة
+        function showLoading(show) {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            // إزالة أي تواست سابق
+            const existingToast = document.getElementById('toast');
+            if (existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.innerHTML = `
+                <div class="toast-content toast-${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // إضافة الأنيميشن
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-100px);
+                background: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                animation: slideDown 0.3s ease forwards;
+                font-family: inherit;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // إزالة التواست بعد 3 ثواني
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+            
+            // إضافة أنيميشن CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    to { transform: translateX(-50%) translateY(0); }
+                }
+                @keyframes slideUp {
+                    from { transform: translateX(-50%) translateY(0); }
+                    to { transform: translateX(-50%) translateY(-100px); }
+                }
+                .toast-success { color: var(--success-color); border-right: 4px solid var(--success-color); }
+                .toast-warning { color: var(--warning-color); border-right: 4px solid var(--warning-color); }
+                .toast-info { color: var(--primary-color); border-right: 4px solid var(--primary-color); }
+                .toast-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function showModal(title, content) {
+            const modal = document.createElement('div');
+            modal.id = 'modal';
+            modal.innerHTML = `
+                <div class="modal-overlay" onclick="closeModal()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">${content}</div>
+                </div>
+            `;
+            
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: inherit;
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // منع التمرير خلف المودال
+            document.body.style.overflow = 'hidden';
+            
+            // إضافة أنيميشن
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(1)';
+                    modalContent.style.opacity = '1';
+                }
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if (modal) {
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(0.9)';
+                    modalContent.style.opacity = '0';
+                }
+                
+                setTimeout(() => {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        // PWA - إضافة للشاشة الرئيسية
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // منع السلوك الافتراضي للزر الأوسط
+        document.addEventListener('touchstart', e => {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+
+        // تحسين الأداء
+        window.addEventListener('load', () => {
+            // Lazy loading للصور
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            images.forEach(img => {
+                img.addEventListener('load', () => {
+                    img.style.opacity = '1';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

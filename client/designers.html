@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#005f73">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>المصممون | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #005f73;
+            --primary-dark: #0a9396;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --accent-color: #bb3e03;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            overscroll-behavior: contain;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: env(safe-area-inset-top, 24px);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* الهيدر الثابت */
+        .app-header {
+            height: 60px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .header-right {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 10px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 600;
+        }
+
+        /* شريط البحث والتقييمات */
+        .search-section {
+            background: var(--bg-primary);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 60px;
+            z-index: 90;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 52px 16px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            font-family: inherit;
+            font-size: 16px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .filters-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            padding: 10px 18px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-chip.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .filter-chip:active {
+            transform: scale(0.95);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 16px calc(80px + env(safe-area-inset-bottom, 0px)) 16px;
+            overscroll-behavior: contain;
+            scroll-behavior: smooth;
+        }
+
+        /* إحصائيات سريعة */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* بطاقات المصممين */
+        .designers-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .designer-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-medium);
+            position: relative;
+        }
+
+        .designer-card:active {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .designer-header {
+            padding: 16px;
+            background: linear-gradient(to right, var(--bg-secondary), transparent);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+
+        .designer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .online-status {
+            position: absolute;
+            top: 70px;
+            right: 70px;
+            width: 16px;
+            height: 16px;
+            background: var(--success-color);
+            border: 3px solid white;
+            border-radius: 50%;
+        }
+
+        .online-status.offline {
+            background: var(--text-secondary);
+        }
+
+        .designer-info {
+            flex: 1;
+        }
+
+        .designer-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .designer-specialty {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stars {
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+
+        .rating-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .rating-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .designer-badges {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .badge-item {
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+        }
+
+        .badge-top-rated {
+            background: linear-gradient(135deg, var(--success-color), #2a9d8f);
+            color: white;
+        }
+
+        .badge-fast {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        /* تفاصيل البطاقة */
+        .designer-details {
+            padding: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .detail-text {
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* أزرار التوظيف */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:active {
+            background: var(--border-color);
+        }
+
+        /* ترويسة تنقل المصممين */
+        .designers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sort-btn {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sort-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 4px;
+        }
+
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .view-btn.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* مصممي اليوم المميزين */
+        .featured-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--secondary-color);
+        }
+
+        .featured-slider {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 16px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .featured-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .featured-card {
+            min-width: 280px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--secondary-color);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .featured-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .featured-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin-bottom: 16px;
+        }
+
+        .featured-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .featured-specialty {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0 0 16px 0;
+        }
+
+        .featured-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .featured-stat {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .featured-stat span {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            opacity: 1;
+            margin-top: 4px;
+        }
+
+        /* التصنيف حسب التخصص */
+        .categories-section {
+            margin-bottom: 30px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .category-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px 12px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--border-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .category-card:active {
+            transform: scale(0.98);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+
+        .category-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .category-count {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: calc(70px + env(safe-area-inset-bottom, 0px));
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px env(safe-area-inset-bottom, 0px) 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 20px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-center {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-top: -28px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-center:active {
+            transform: scale(0.95);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--bg-secondary);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            color: var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        /* التصفية المتقدمة */
+        .filter-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .filter-content {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filter-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .filter-body {
+            padding: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 24px;
+        }
+
+        .filter-group h4 {
+            font-size: 16px;
+            margin: 0 0 12px 0;
+            color: var(--text-primary);
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-option {
+            padding: 10px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .filter-option.selected {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .price-range {
+            padding: 16px 0;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .range-slider input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-appearance: none;
+            background: none;
+            pointer-events: none;
+        }
+
+        .range-slider input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .designer-card:hover,
+            .category-card:hover {
+                transform: none;
+            }
+            
+            .designer-card:active,
+            .category-card:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* تحسينات الوضع الداكن */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a202c;
+                --bg-secondary: #2d3748;
+                --bg-card: #2d3748;
+                --text-primary: #f7fafc;
+                --text-secondary: #cbd5e0;
+                --border-color: #4a5568;
+            }
+            
+            .search-input,
+            .sort-btn,
+            .filter-chip,
+            .btn-secondary {
+                background: var(--bg-card);
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .designers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .designers-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h1 class="page-title">المصممون</h1>
+        </div>
+        <div class="header-right">
+            <button class="icon-btn" onclick="openFilterModal()">
+                <i class="fas fa-filter"></i>
+                <span class="badge" id="activeFilters">2</span>
+            </button>
+            <button class="icon-btn" onclick="toggleFavoritesView()">
+                <i class="far fa-heart" id="favoritesIcon"></i>
+            </button>
+            <button class="icon-btn" onclick="openNotifications()">
+                <i class="far fa-bell"></i>
+                <span class="badge" id="notificationCount">3</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" 
+                   class="search-input" 
+                   placeholder="ابحث عن مصمم أو تخصص..."
+                   id="searchInput"
+                   oninput="searchDesigners()">
+            <button class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="filters-container">
+            <div class="filter-chip active" onclick="filterByCategory('all')">
+                <i class="fas fa-th-large"></i> الكل
+            </div>
+            <div class="filter-chip" onclick="filterByCategory('logo')">
+                <i class="fas fa-pen-nib"></i> شعارات
+            </div>
+            <div class="filter-chip" onclick="filterByCategory('ui')">
+                <i class="fas fa-mobile-alt"></i> UI/UX
+            </div>
+            <div class="filter-chip" onclick="filterByCategory('motion')">
+                <i class="fas fa-video"></i> موشن جرافيك
+            </div>
+            <div class="filter-chip" onclick="filterByCategory('branding')">
+                <i class="fas fa-palette"></i> هوية بصرية
+            </div>
+            <div class="filter-chip" onclick="filterByCategory('illustration')">
+                <i class="fas fa-paint-brush"></i> رسوميات
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Quick Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value" id="totalDesigners">48</div>
+                    <div class="stat-label">مصمم نشط</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value" id="topRated">12</div>
+                    <div class="stat-label">مصمم متميز</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Designers -->
+        <section class="featured-section">
+            <h3 class="section-title">
+                <i class="fas fa-crown"></i> مصممي اليوم
+            </h3>
+            <div class="featured-slider" id="featuredSlider">
+                <!-- Featured designers will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories-section">
+            <h3 class="section-title">
+                <i class="fas fa-layer-group"></i> التخصصات
+            </h3>
+            <div class="categories-grid">
+                <div class="category-card" onclick="filterByCategory('logo')">
+                    <div class="category-icon">
+                        <i class="fas fa-pen-nib"></i>
+                    </div>
+                    <h4 class="category-name">تصميم الشعارات</h4>
+                    <div class="category-count">15 مصمم</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('ui')">
+                    <div class="category-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4 class="category-name">UI/UX</h4>
+                    <div class="category-count">12 مصمم</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('branding')">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4 class="category-name">هوية بصرية</h4>
+                    <div class="category-count">10 مصمم</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('motion')">
+                    <div class="category-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h4 class="category-name">موشن جرافيك</h4>
+                    <div class="category-count">8 مصمم</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('illustration')">
+                    <div class="category-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h4 class="category-name">رسوميات</h4>
+                    <div class="category-count">6 مصمم</div>
+                </div>
+                <div class="category-card" onclick="filterByCategory('print')">
+                    <div class="category-icon">
+                        <i class="fas fa-print"></i>
+                    </div>
+                    <h4 class="category-name">مواد مطبوعة</h4>
+                    <div class="category-count">7 مصمم</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Designers Header -->
+        <div class="designers-header">
+            <h3 class="section-title">
+                <i class="fas fa-user-tie"></i> جميع المصممين
+            </h3>
+            <div class="sort-controls">
+                <button class="sort-btn" onclick="sortDesigners('rating')">
+                    <i class="fas fa-star"></i> التقييم
+                </button>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="changeView('grid')">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" onclick="changeView('list')">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Designers Grid -->
+        <div class="designers-grid" id="designersGrid">
+            <!-- Designers will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-user-slash"></i>
+            </div>
+            <h3 class="empty-title">لا توجد نتائج</h3>
+            <p class="empty-text">لم نجد مصممين يتطابقون مع بحثك</p>
+            <button class="btn btn-primary" onclick="resetFilters()">
+                <i class="fas fa-redo"></i> عرض الكل
+            </button>
+        </div>
+    </main>
+
+    <!-- Filter Modal -->
+    <div class="filter-modal" id="filterModal">
+        <div class="filter-content">
+            <div class="filter-header">
+                <h3>التصفية المتقدمة</h3>
+                <button class="close-btn" onclick="closeFilterModal()">&times;</button>
+            </div>
+            <div class="filter-body">
+                <div class="filter-group">
+                    <h4>المهارات</h4>
+                    <div class="filter-options" id="skillsFilter">
+                        <!-- Skills will be loaded dynamically -->
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>المستوى</h4>
+                    <div class="filter-options">
+                        <div class="filter-option" onclick="toggleFilter(this, 'level')">مبتدئ</div>
+                        <div class="filter-option" onclick="toggleFilter(this, 'level')">متوسط</div>
+                        <div class="filter-option selected" onclick="toggleFilter(this, 'level')">محترف</div>
+                        <div class="filter-option" onclick="toggleFilter(this, 'level')">خبير</div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>نطاق السعر (ساعة)</h4>
+                    <div class="price-range">
+                        <div class="range-slider">
+                            <input type="range" min="50" max="500" value="100" class="range-min" oninput="updatePriceRange()">
+                            <input type="range" min="50" max="500" value="300" class="range-max" oninput="updatePriceRange()">
+                        </div>
+                        <div class="range-values">
+                            <span id="minPrice">100 ر.س</span>
+                            <span id="maxPrice">300 ر.س</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>التوفر</h4>
+                    <div class="filter-options">
+                        <div class="filter-option" onclick="toggleFilter(this, 'availability')">مستعد للعمل</div>
+                        <div class="filter-option selected" onclick="toggleFilter(this, 'availability')">متاح الآن</div>
+                        <div class="filter-option" onclick="toggleFilter(this, 'availability')">خلال أسبوع</div>
+                    </div>
+                </div>
+                <div class="action-buttons" style="margin-top: 30px;">
+                    <button class="btn btn-secondary" onclick="resetAllFilters()">
+                        <i class="fas fa-redo"></i> إعادة تعيين
+                    </button>
+                    <button class="btn btn-primary" onclick="applyFilters()">
+                        <i class="fas fa-check"></i> تطبيق التصفية
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard-client.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        <div class="nav-center" onclick="openNewProject()">
+            <i class="fas fa-plus"></i>
+        </div>
+        <a href="designers.html" class="nav-item active">
+            <i class="fas fa-users"></i>
+            <span>المصممون</span>
+        </a>
+        <a href="messages.html" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>الرسائل</span>
+        </a>
+    </nav>
+
+    <script>
+        // البيانات والمتغيرات العامة
+        let designersData = [];
+        let filteredDesigners = [];
+        let currentCategory = 'all';
+        let currentSort = 'rating';
+        let currentView = 'grid';
+        let favorites = JSON.parse(localStorage.getItem('designer_favorites') || '[]');
+        let activeFilters = {
+            skills: [],
+            level: ['محترف'],
+            minPrice: 100,
+            maxPrice: 300,
+            availability: ['متاح الآن']
+        };
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initDesignersPage();
+            setupEventListeners();
+        });
+
+        function initDesignersPage() {
+            showLoading(true);
+            
+            // محاكاة جلب البيانات مع تأخير
+            setTimeout(() => {
+                loadDesignersData();
+                setupSkillsFilter();
+                updateStats();
+                showLoading(false);
+            }, 1000);
+        }
+
+        function loadDesignersData() {
+            // بيانات مصممين نموذجية
+            designersData = [
+                {
+                    id: 1,
+                    name: "المصممة حنان",
+                    specialty: "تصميم شعارات وهوية بصرية",
+                    avatar: "https://ui-avatars.com/api/?name=المصممة+حنان&background=005f73&color=fff&size=400",
+                    rating: 4.7,
+                    ratingCount: 127,
+                    projects: 89,
+                    experience: "5 سنوات",
+                    price: "150-250",
+                    online: true,
+                    badges: ["premium", "top-rated"],
+                    skills: ["شعارات", "هوية بصرية", "بروشورات"],
+                    level: "محترف",
+                    availability: "متاح الآن"
+                },
+                {
+                    id: 2,
+                    name: "المصممة دروب",
+                    specialty: "UI/UX وتطبيقات الجوال",
+                    avatar: "https://ui-avatars.com/api/?name=المصممة+دروب&background=9a031e&color=fff&size=400",
+                    rating: 5.0,
+                    ratingCount: 89,
+                    projects: 67,
+                    experience: "4 سنوات",
+                    price: "200-350",
+                    online: true,
+                    badges: ["premium", "fast"],
+                    skills: ["UI/UX", "تطبيقات الجوال", "واجهات ويب"],
+                    level: "خبيرة",
+                    availability: "مستعد للعمل"
+                },
+                {
+                    id: 3,
+                    name: "المصممة هيام",
+                    specialty: "موشن جرافيك وتحرير الفيديو",
+                    avatar: "https://ui-avatars.com/api/?name=المصممة+هيام&background=bb3e03&color=fff&size=400",
+                    rating: 4.5,
+                    ratingCount: 203,
+                    projects: 124,
+                    experience: "7 سنوات",
+                    price: "250-400",
+                    online: false,
+                    badges: ["top-rated"],
+                    skills: ["موشن جرافيك", "تحرير الفيديو", "أنيميشن"],
+                    level: "خبيرة",
+                    availability: "خلال أسبوع"
+                },
+                {
+                    id: 4,
+                    name: "المصممة فاطمة",
+                    specialty: "رسوميات ورسوم متحركة",
+                    avatar: "https://ui-avatars.com/api/?name=المصممة+فاطمة&background=0a9396&color=fff&size=400",
+                    rating: 4.8,
+                    ratingCount: 156,
+                    projects: 92,
+                    experience: "6 سنوات",
+                    price: "180-300",
+                    online: true,
+                    badges: ["premium", "top-rated", "fast"],
+                    skills: ["رسوميات", "رسوم متحركة", "كاريكاتير"],
+                    level: "محترف",
+                    availability: "متاح الآن"
+                },
+                {
+                    id: 5,
+                    name: "المصممة سهام",
+                    specialty: "تصميم مواقع وتطبيقات",
+                    avatar: "https://ui-avatars.com/api/?name=المصممة+سهام&background=ee9b00&color=fff&size=400",
+                    rating: 4.3,
+                    ratingCount: 87,
+                    projects: 45,
+                    experience: "3 سنوات",
+                    price: "100-200",
+                    online: true,
+                    badges: ["fast"],
+                    skills: ["تصميم مواقع", "تطبيقات", "واجهات"],
+                    level: "متوسط",
+                    availability: "مستعد للعمل"
+                },
+                {
+                    id: 6,
+                    name: "فاطمة المصممة",
+                    specialty: "تصميم بطاقات ومواد مطبوعة",
+                    avatar: "https://ui-avatars.com/api/?name=فاطمة+المصممة&background=e76f51&color=fff&size=400",
+                    rating: 4.6,
+                    ratingCount: 112,
+                    projects: 78,
+                    experience: "5 سنوات",
+                    price: "120-220",
+                    online: false,
+                    badges: ["top-rated"],
+                    skills: ["بطاقات", "مواد مطبوعة", "غلاف كتب"],
+                    level: "محترف",
+                    availability: "خلال أسبوع"
+                }
+            ];
+
+            // إضافة مصممين إضافيين
+            for (let i = 7; i <= 12; i++) {
+                designersData.push({
+                    id: i,
+                    name: `مصمم ${i}`,
+                    specialty: ["شعارات", "UI/UX", "موشن جرافيك"][Math.floor(Math.random() * 3)],
+                    avatar: `https://ui-avatars.com/api/?name=مصمم+${i}&background=${['005f73','0a9396','ee9b00'][Math.floor(Math.random()*3)]}&color=fff&size=400`,
+                    rating: 3.5 + Math.random() * 1.5,
+                    ratingCount: Math.floor(Math.random() * 200) + 50,
+                    projects: Math.floor(Math.random() * 100) + 20,
+                    experience: `${Math.floor(Math.random() * 8) + 1} سنوات`,
+                    price: `${Math.floor(Math.random() * 100) + 50}-${Math.floor(Math.random() * 300) + 200}`,
+                    online: Math.random() > 0.5,
+                    badges: Math.random() > 0.5 ? ["top-rated"] : [],
+                    skills: ["شعارات", "هوية بصرية", "UI/UX"],
+                    level: ["مبتدئ", "متوسط", "محترف", "خبير"][Math.floor(Math.random() * 4)],
+                    availability: ["متاح الآن", "مستعد للعمل", "خلال أسبوع"][Math.floor(Math.random() * 3)]
+                });
+            }
+
+            filteredDesigners = [...designersData];
+            renderDesigners();
+            renderFeaturedDesigners();
+        }
+
+        function renderDesigners() {
+            const grid = document.getElementById('designersGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (filteredDesigners.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.innerHTML = '';
+            
+            filteredDesigners.forEach(designer => {
+                const isFavorite = favorites.includes(designer.id);
+                const badgesHTML = designer.badges.map(badge => {
+                    switch(badge) {
+                        case 'premium': return '<span class="badge-item badge-premium">مميز</span>';
+                        case 'top-rated': return '<span class="badge-item badge-top-rated">الأفضل</span>';
+                        case 'fast': return '<span class="badge-item badge-fast">سريع</span>';
+                        default: return '';
+                    }
+                }).join('');
+                
+                const designerHTML = `
+                    <div class="designer-card" onclick="viewDesigner(${designer.id})">
+                        <div class="designer-header">
+                            <img src="${designer.avatar}" 
+                                 alt="${designer.name}" 
+                                 class="designer-avatar"
+                                 loading="lazy">
+                            <div class="online-status ${designer.online ? '' : 'offline'}"></div>
+                            <div class="designer-info">
+                                <h3 class="designer-name">${designer.name}</h3>
+                                <p class="designer-specialty">
+                                    <i class="fas fa-briefcase"></i> ${designer.specialty}
+                                </p>
+                                <div class="rating-container">
+                                    <div class="stars">
+                                        ${generateStars(designer.rating)}
+                                    </div>
+                                    <span class="rating-value">${designer.rating.toFixed(1)}</span>
+                                    <span class="rating-count">(${designer.ratingCount})</span>
+                                </div>
+                                <div class="designer-badges">
+                                    ${badgesHTML}
+                                </div>
+                            </div>
+                            <button class="icon-btn" onclick="toggleFavorite(${designer.id}, event)" 
+                                    style="position: absolute; left: 16px; top: 16px; background: rgba(255,255,255,0.9);">
+                                <i class="${isFavorite ? 'fas' : 'far'} fa-heart" 
+                                   style="color: ${isFavorite ? '#e76f51' : 'var(--text-secondary)'}"></i>
+                            </button>
+                        </div>
+                        <div class="designer-details">
+                            <div class="details-grid">
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-project-diagram"></i>
+                                    </div>
+                                    <div class="detail-text">
+                                        <div class="detail-label">المشاريع</div>
+                                        <div class="detail-value">${designer.projects}</div>
+                                    </div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="detail-text">
+                                        <div class="detail-label">الخبرة</div>
+                                        <div class="detail-value">${designer.experience}</div>
+                                    </div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="detail-text">
+                                        <div class="detail-label">السعر/ساعة</div>
+                                        <div class="detail-value">${designer.price} ر.س</div>
+                                    </div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-icon">
+                                        <i class="fas fa-user-tag"></i>
+                                    </div>
+                                    <div class="detail-text">
+                                        <div class="detail-label">المستوى</div>
+                                        <div class="detail-value">${designer.level}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-secondary" onclick="openChat(${designer.id}, event)">
+                                    <i class="fas fa-comment"></i> محادثة
+                                </button>
+                                <button class="btn btn-primary" onclick="hireDesigner(${designer.id}, event)">
+                                    <i class="fas fa-handshake"></i> توظيف
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                grid.insertAdjacentHTML('beforeend', designerHTML);
+            });
+        }
+
+        function renderFeaturedDesigners() {
+            const slider = document.getElementById('featuredSlider');
+            const featured = designersData
+                .filter(d => d.badges.includes('premium') && d.rating >= 4.5)
+                .slice(0, 3);
+            
+            slider.innerHTML = '';
+            
+            featured.forEach(designer => {
+                const featuredHTML = `
+                    <div class="featured-card">
+                        <div class="featured-badge">
+                            <i class="fas fa-crown"></i> مميز
+                        </div>
+                        <div class="featured-content">
+                            <img src="${designer.avatar}" 
+                                 alt="${designer.name}" 
+                                 class="featured-avatar"
+                                 loading="lazy">
+                            <h3 class="featured-name">${designer.name}</h3>
+                            <p class="featured-specialty">${designer.specialty}</p>
+                            <div class="featured-stats">
+                                <div class="featured-stat">
+                                    التقييم
+                                    <span>${designer.rating.toFixed(1)}</span>
+                                </div>
+                                <div class="featured-stat">
+                                    المشاريع
+                                    <span>${designer.projects}</span>
+                                </div>
+                                <div class="featured-stat">
+                                    الخبرة
+                                    <span>${designer.experience}</span>
+                                </div>
+                                <div class="featured-stat">
+                                    السعر
+                                    <span>${designer.price.split('-')[0]}+</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" 
+                                    style="margin-top: 16px; width: 100%;"
+                                    onclick="viewDesigner(${designer.id})">
+                                <i class="fas fa-eye"></i> عرض الملف
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                slider.insertAdjacentHTML('beforeend', featuredHTML);
+            });
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (halfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        // البحث والتصفية
+        function searchDesigners() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredDesigners = designersData.filter(designer => {
+                const matchesSearch = searchTerm === '' ||
+                    designer.name.toLowerCase().includes(searchTerm) ||
+                    designer.specialty.toLowerCase().includes(searchTerm) ||
+                    designer.skills.some(skill => skill.toLowerCase().includes(searchTerm));
+                
+                const matchesCategory = currentCategory === 'all' ||
+                    designer.specialty.toLowerCase().includes(currentCategory) ||
+                    designer.skills.some(skill => skill.toLowerCase().includes(currentCategory));
+                
+                const matchesFilters = filterDesigner(designer);
+                
+                return matchesSearch && matchesCategory && matchesFilters;
+            });
+            
+            sortDesigners(currentSort);
+            renderDesigners();
+            updateStats();
+        }
+
+        function filterByCategory(category) {
+            // تحديد الشرائح النشطة
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            event.target.closest('.filter-chip').classList.add('active');
+            
+            currentCategory = category;
+            searchDesigners();
+        }
+
+        function filterDesigner(designer) {
+            // تصفية حسب المهارات
+            if (activeFilters.skills.length > 0) {
+                const hasSkill = activeFilters.skills.some(skill => 
+                    designer.skills.includes(skill)
+                );
+                if (!hasSkill) return false;
+            }
+            
+            // تصفية حسب المستوى
+            if (activeFilters.level.length > 0 && !activeFilters.level.includes(designer.level)) {
+                return false;
+            }
+            
+            // تصفية حسب السعر
+            const minPrice = parseInt(designer.price.split('-')[0]);
+            if (minPrice < activeFilters.minPrice || minPrice > activeFilters.maxPrice) {
+                return false;
+            }
+            
+            // تصفية حسب التوفر
+            if (activeFilters.availability.length > 0 && 
+                !activeFilters.availability.includes(designer.availability)) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // الترتيب
+        function sortDesigners(criteria) {
+            currentSort = criteria;
+            
+            filteredDesigners.sort((a, b) => {
+                switch(criteria) {
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'projects':
+                        return b.projects - a.projects;
+                    case 'price-low':
+                        return parseInt(a.price.split('-')[0]) - parseInt(b.price.split('-')[0]);
+                    case 'price-high':
+                        return parseInt(b.price.split('-')[1]) - parseInt(a.price.split('-')[1]);
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderDesigners();
+        }
+
+        function changeView(view) {
+            currentView = view;
+            const grid = document.getElementById('designersGrid');
+            const viewBtns = document.querySelectorAll('.view-btn');
+            
+            viewBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (view === 'list') {
+                grid.style.gridTemplateColumns = '1fr';
+            } else {
+                grid.style.gridTemplateColumns = '1fr';
+                // في الواقع، سنستخدم media queries للتحكم في ذلك
+            }
+        }
+
+        // المفضلة
+        function toggleFavorite(designerId, event) {
+            if (event) event.stopPropagation();
+            
+            const index = favorites.indexOf(designerId);
+            if (index === -1) {
+                favorites.push(designerId);
+                showToast('تمت الإضافة إلى المفضلة', 'success');
+            } else {
+                favorites.splice(index, 1);
+                showToast('تمت الإزالة من المفضلة', 'info');
+            }
+            
+            localStorage.setItem('designer_favorites', JSON.stringify(favorites));
+            renderDesigners();
+        }
+
+        function toggleFavoritesView() {
+            const icon = document.getElementById('favoritesIcon');
+            const isViewingFavorites = icon.classList.contains('fa-heart');
+            
+            if (isViewingFavorites) {
+                // عرض الكل
+                filteredDesigners = [...designersData];
+                icon.classList.replace('fa-heart', 'fa-heart');
+                icon.classList.add('far');
+                icon.classList.remove('fas');
+                showToast('عرض جميع المصممين', 'info');
+            } else {
+                // عرض المفضلة فقط
+                filteredDesigners = designersData.filter(designer => 
+                    favorites.includes(designer.id)
+                );
+                icon.classList.replace('far', 'fas');
+                showToast('عرض المفضلة فقط', 'info');
+            }
+            
+            renderDesigners();
+        }
+
+        // التصفية المتقدمة
+        function setupSkillsFilter() {
+            const skillsContainer = document.getElementById('skillsFilter');
+            const allSkills = [...new Set(designersData.flatMap(d => d.skills))];
+            
+            skillsContainer.innerHTML = '';
+            allSkills.forEach(skill => {
+                const skillElement = document.createElement('div');
+                skillElement.className = 'filter-option';
+                skillElement.textContent = skill;
+                skillElement.onclick = () => toggleFilter(skillElement, 'skills');
+                skillsContainer.appendChild(skillElement);
+            });
+        }
+
+        function openFilterModal() {
+            document.getElementById('filterModal').style.display = 'flex';
+        }
+
+        function closeFilterModal() {
+            document.getElementById('filterModal').style.display = 'none';
+        }
+
+        function toggleFilter(element, type) {
+            element.classList.toggle('selected');
+            
+            if (type === 'skills') {
+                const skill = element.textContent;
+                const index = activeFilters.skills.indexOf(skill);
+                if (index === -1) {
+                    activeFilters.skills.push(skill);
+                } else {
+                    activeFilters.skills.splice(index, 1);
+                }
+            } else if (type === 'level') {
+                const level = element.textContent;
+                const index = activeFilters.level.indexOf(level);
+                if (index === -1) {
+                    activeFilters.level.push(level);
+                } else {
+                    activeFilters.level.splice(index, 1);
+                }
+            } else if (type === 'availability') {
+                const availability = element.textContent;
+                const index = activeFilters.availability.indexOf(availability);
+                if (index === -1) {
+                    activeFilters.availability.push(availability);
+                } else {
+                    activeFilters.availability.splice(index, 1);
+                }
+            }
+            
+            updateActiveFiltersCount();
+        }
+
+        function updatePriceRange() {
+            const minInput = document.querySelector('.range-min');
+            const maxInput = document.querySelector('.range-max');
+            
+            activeFilters.minPrice = parseInt(minInput.value);
+            activeFilters.maxPrice = parseInt(maxInput.value);
+            
+            document.getElementById('minPrice').textContent = `${activeFilters.minPrice} ر.س`;
+            document.getElementById('maxPrice').textContent = `${activeFilters.maxPrice} ر.س`;
+        }
+
+        function applyFilters() {
+            closeFilterModal();
+            searchDesigners();
+        }
+
+        function resetAllFilters() {
+            activeFilters = {
+                skills: [],
+                level: ['محترف'],
+                minPrice: 100,
+                maxPrice: 300,
+                availability: ['متاح الآن']
+            };
+            
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // إعادة تعيين المستوى الافتراضي
+            document.querySelectorAll('.filter-option').forEach(option => {
+                if (option.textContent === 'محترف') {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // إعادة تعيين التوفر الافتراضي
+            document.querySelectorAll('.filter-option').forEach(option => {
+                if (option.textContent === 'متاح الآن') {
+                    option.classList.add('selected');
+                }
+            });
+            
+            updateActiveFiltersCount();
+            updatePriceRange();
+        }
+
+        function resetFilters() {
+            currentCategory = 'all';
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            document.querySelector('.filter-chip').classList.add('active');
+            
+            resetAllFilters();
+            searchDesigners();
+        }
+
+        function updateActiveFiltersCount() {
+            let count = 0;
+            if (activeFilters.skills.length > 0) count++;
+            if (activeFilters.level.length > 0 && !(activeFilters.level.length === 1 && activeFilters.level[0] === 'محترف')) count++;
+            if (activeFilters.minPrice !== 100 || activeFilters.maxPrice !== 300) count++;
+            if (activeFilters.availability.length > 0 && !(activeFilters.availability.length === 1 && activeFilters.availability[0] === 'متاح الآن')) count++;
+            
+            document.getElementById('activeFilters').textContent = count;
+        }
+
+        function updateStats() {
+            document.getElementById('totalDesigners').textContent = filteredDesigners.length;
+            const topRated = filteredDesigners.filter(d => d.rating >= 4.5).length;
+            document.getElementById('topRated').textContent = topRated;
+        }
+
+        // الوظائف الرئيسية
+        function viewDesigner(id) {
+            window.location.href = `designer-profile.html?id=${id}`;
+        }
+
+        function hireDesigner(id, event) {
+            if (event) event.stopPropagation();
+            
+            if (confirm('هل تريد توظيف هذا المصمم لمشروعك؟')) {
+                showLoading(true);
+                
+                setTimeout(() => {
+                    showLoading(false);
+                    showToast('تم إرسال طلب التوظيف بنجاح', 'success');
+                    window.location.href = `hire-designer.html?designerId=${id}`;
+                }, 1000);
+            }
+        }
+
+        function openChat(designerId, event) {
+            if (event) event.stopPropagation();
+            
+            showToast('فتح محادثة مع المصمم', 'info');
+            window.location.href = `chat.html?designerId=${designerId}`;
+        }
+
+        function openNotifications() {
+            showToast('فتح الإشعارات', 'info');
+            window.location.href = 'notifications.html';
+        }
+
+        function openNewProject() {
+            window.location.href = 'new-project.html';
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // البحث أثناء الكتابة مع debounce
+            let searchTimeout;
+            document.getElementById('searchInput').addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(searchDesigners, 300);
+            });
+            
+            // إغلاق التصفية المتقدمة بالنقر خارجها
+            document.getElementById('filterModal').addEventListener('click', (e) => {
+                if (e.target.id === 'filterModal') {
+                    closeFilterModal();
+                }
+            });
+            
+            // Pull to refresh
+            let startY;
+            const mainContent = document.getElementById('mainContent');
+            
+            mainContent.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            mainContent.addEventListener('touchmove', (e) => {
+                if (!startY) return;
+                
+                const currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                
+                // إذا كان المستخدم يسحب لأسفل وكان في الأعلى
+                if (diff > 50 && mainContent.scrollTop === 0) {
+                    refreshDesigners();
+                    startY = null;
+                }
+            }, { passive: true });
+        }
+
+        function refreshDesigners() {
+            showLoading(true);
+            
+            setTimeout(() => {
+                loadDesignersData();
+                showLoading(false);
+                showToast('تم تحديث البيانات', 'success');
+            }, 1500);
+        }
+
+        // وظائف المساعدة
+        function showLoading(show) {
+            document.getElementById('loader').style.display = show ? 'block' : 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            // إنشاء وإظهار التواست
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? 'var(--success-color)' : 
+                            type === 'warning' ? 'var(--warning-color)' : 
+                            'var(--primary-color)'};
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                font-family: inherit;
+                animation: slideDown 0.3s ease forwards;
+            `;
+            
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 
+                                     type === 'warning' ? 'exclamation-triangle' : 
+                                     'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+            
+            // إضافة الأنيميشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    from { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                    to { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // PWA Features
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered:', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // Offline Detection
+        window.addEventListener('online', () => {
+            showToast('تم استعادة الاتصال بالإنترنت', 'success');
+        });
+        
+        window.addEventListener('offline', () => {
+            showToast('أنت غير متصل بالإنترنت', 'warning');
+        });
+
+        // تهيئة نطاق السعر
+        updatePriceRange();
+        updateActiveFiltersCount();
+    </script>
+</body>
+</html>

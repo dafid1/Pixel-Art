@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a9396">
+    <title>الملف الشخصي | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* تصميم متقدم للصفحة الشخصية */
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --transition-fast: 200ms;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            overscroll-behavior: contain;
+        }
+
+        /* شريط الحالة المخصص */
+        .status-bar {
+            height: env(safe-area-inset-top, 24px);
+            background: var(--primary-gradient);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+        }
+
+        /* الهيدر مع زر العودة */
+        .app-header {
+            height: 60px;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-light);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .header-right {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .save-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .save-btn:active {
+            transform: scale(0.95);
+            background: var(--primary-dark);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 16px calc(80px + env(safe-area-inset-bottom, 0px)) 16px;
+            overscroll-behavior: contain;
+        }
+
+        /* قسم معلومات المستخدم */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .avatar-edit {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .avatar-edit:active {
+            transform: scale(0.9);
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .profile-role {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 20px 0;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: block;
+        }
+
+        /* قسم تحرير الملف */
+        .profile-edit-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all var(--transition-fast);
+            background: var(--bg-primary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        .form-input:disabled {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .input-with-icon input {
+            padding-left: 45px;
+        }
+
+        /* قسم التفضيلات */
+        .preferences-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .preference-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .preference-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper::after {
+            content: "\f078";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        /* قسم الإشعارات */
+        .notifications-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .notification-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* قسم الأمان */
+        .security-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .security-item:last-child {
+            border-bottom: none;
+        }
+
+        .security-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .security-details h4 {
+            font-size: 14px;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .security-details p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .security-action {
+            font-size: 14px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .security-action:active {
+            background: var(--bg-primary);
+        }
+
+        /* قسم الحساب */
+        .account-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .account-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .account-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        .account-action:active {
+            transform: translateX(-5px);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .account-action.danger {
+            color: var(--danger-color);
+        }
+
+        .account-action.danger:active {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .action-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .account-action.danger .action-icon {
+            background: rgba(231, 111, 81, 0.1);
+            color: var(--danger-color);
+        }
+
+        .action-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .action-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .action-arrow {
+            color: var(--text-secondary);
+        }
+
+        /* زر تسجيل الخروج */
+        .logout-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all var(--transition-fast);
+            margin-top: 20px;
+        }
+
+        .logout-btn:active {
+            transform: scale(0.98);
+            background: #d45c40;
+        }
+
+        /* مودال تغيير الصورة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 24px;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:active {
+            background: var(--bg-secondary);
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-action {
+            padding: 16px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition-fast);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .modal-action:active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .modal-action i {
+            font-size: 20px;
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .account-action:hover,
+            .security-action:hover {
+                transform: none;
+            }
+            
+            .account-action:active,
+            .security-action:active {
+                transform: translateX(-5px);
+            }
+        }
+
+        /* أنيميشن */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* شريط التمرير المخصص */
+        .main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: calc(70px + env(safe-area-inset-bottom, 0px));
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px env(safe-area-inset-bottom, 0px) 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            flex: 1;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: width var(--transition-fast);
+        }
+
+        .nav-item.active::after {
+            width: 20px;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            transition: transform var(--transition-fast);
+        }
+
+        .nav-item:active i {
+            transform: scale(0.9);
+        }
+
+        .nav-center {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-top: -28px;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-center:active {
+            transform: scale(0.95) rotate(90deg);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* تحسينات للوضع الداكن */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a202c;
+                --bg-secondary: #2d3748;
+                --text-primary: #f7fafc;
+                --text-secondary: #cbd5e0;
+                --border-color: #4a5568;
+            }
+            
+            .profile-edit-section,
+            .preferences-section,
+            .notifications-section,
+            .security-section,
+            .account-section {
+                background: var(--bg-secondary);
+            }
+            
+            .form-input {
+                background: var(--bg-primary);
+                color: var(--text-primary);
+            }
+            
+            .account-action {
+                background: var(--bg-primary);
+            }
+        }
+
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 360px) {
+            .profile-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .preferences-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar"></div>
+
+    <!-- الهيدر -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h1 class="header-title">الملف الشخصي</h1>
+        </div>
+
+        <div class="header-right">
+            <button class="save-btn" id="saveBtn" onclick="saveProfile()">
+                <i class="fas fa-save"></i>
+                حفظ
+            </button>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content" id="mainContent">
+        <!-- قسم معلومات المستخدم -->
+        <section class="profile-header animate-in">
+            <div class="profile-avatar-container">
+                <img src="https://ui-avatars.com/api/?name=عميل+بيكسل&background=0a9396&color=fff&size=120" 
+                     alt="الصورة الشخصية" 
+                     class="profile-avatar" 
+                     id="userAvatar">
+                <button class="avatar-edit" onclick="openAvatarModal()">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+            
+            <h2 class="profile-name" id="userName">عميل بيكسل آرت</h2>
+            <p class="profile-role" id="userRole">عميل مميز منذ 2024</p>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="projectsCount">12</span>
+                    <span class="stat-label">المشاريع</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="ratingValue">4.8</span>
+                    <span class="stat-label">التقييم</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="memberSince">2024</span>
+                    <span class="stat-label">العضوية</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم معلومات الحساب -->
+        <section class="profile-edit-section animate-in">
+            <h3 class="section-title">
+                <i class="fas fa-user-circle"></i>
+                معلومات الحساب
+            </h3>
+            
+            <div class="form-group">
+                <label class="form-label">الاسم الكامل</label>
+                <input type="text" 
+                       class="form-input" 
+                       id="fullName"
+                       placeholder="أدخل اسمك الكامل"
+                       value="عميل بيكسل آرت">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">البريد الإلكتروني</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" 
+                           class="form-input" 
+                           id="email"
+                           placeholder="example@email.com"
+                           value="client@pixelart.com">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">رقم الهاتف</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" 
+                           class="form-input" 
+                           id="phone"
+                           placeholder="+966 5X XXX XXXX"
+                           value="+966 50 123 4567">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">البلد</label>
+                <div class="select-wrapper">
+                    <select id="country" class="form-input">
+                        <option value="SA" selected>المملكة العربية السعودية</option>
+                        <option value="AE">الإمارات العربية المتحدة</option>
+                        <option value="QA">قطر</option>
+                        <option value="KW">الكويت</option>
+                        <option value="BH">البحرين</option>
+                        <option value="OM">عُمان</option>
+                        <option value="JO">الأردن</option>
+                        <option value="EG">مصر</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">نبذة عنك</label>
+                <textarea class="form-input" 
+                          id="bio"
+                          rows="3"
+                          placeholder="اكتب نبذة قصيرة عن نفسك...">أبحث عن أفضل التصميمات لعلامتي التجارية</textarea>
+            </div>
+        </section>
+
+        <!-- قسم تفضيلات العميل -->
+        <section class="preferences-section animate-in">
+            <h3 class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                التفضيلات
+            </h3>
+            
+            <div class="preferences-grid">
+                <div class="preference-item">
+                    <span class="preference-label">نوع المشروع المفضل</span>
+                    <div class="select-wrapper">
+                        <select id="projectType" class="form-input">
+                            <option value="logo" selected>تصميم الشعارات</option>
+                            <option value="uiux">تصميم UI/UX</option>
+                            <option value="branding">الهوية البصرية</option>
+                            <option value="motion">الموشن جرافيك</option>
+                            <option value="print">التصميم المطبوع</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="preference-item">
+                    <span class="preference-label">الميزانية المتوسطة</span>
+                    <div class="select-wrapper">
+                        <select id="budgetRange" class="form-input">
+                            <option value="low">أقل من 1,000 ريال</option>
+                            <option value="medium" selected>1,000 - 5,000 ريال</option>
+                            <option value="high">5,000 - 20,000 ريال</option>
+                            <option value="premium">أكثر من 20,000 ريال</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="preference-item">
+                    <span class="preference-label">الإشعارات البريدية</span>
+                    <label class="switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="preference-item">
+                    <span class="preference-label">التحديثات الأسبوعية</span>
+                    <label class="switch">
+                        <input type="checkbox" id="weeklyUpdates" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم إشعارات التطبيق -->
+        <section class="notifications-section animate-in">
+            <h3 class="section-title">
+                <i class="fas fa-bell"></i>
+                إشعارات التطبيق
+            </h3>
+            
+            <div class="notification-item">
+                <div class="notification-info">
+                    <span class="notification-title">إشعارات المشاريع</span>
+                    <span class="notification-desc">تحديثات عن حالة مشاريعك</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="projectNotifications" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-info">
+                    <span class="notification-title">إشعارات الرسائل</span>
+                    <span class="notification-desc">عند وصول رسائل جديدة</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="messageNotifications" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-info">
+                    <span class="notification-title">عروض المصممين</span>
+                    <span class="notification-desc">عروض وتوصيات المصممين</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="designerOffers" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-info">
+                    <span class="notification-title">الأصوات</span>
+                    <span class="notification-desc">تشغيل الأصوات للإشعارات</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="soundNotifications">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </section>
+
+        <!-- قسم أمان الحساب -->
+        <section class="security-section animate-in">
+            <h3 class="section-title">
+                <i class="fas fa-shield-alt"></i>
+                أمان الحساب
+            </h3>
+            
+            <div class="security-item">
+                <div class="security-info">
+                    <div class="security-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="security-details">
+                        <h4>كلمة المرور</h4>
+                        <p>آخر تحديث: منذ شهرين</p>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="security-action" onclick="changePassword()">
+                    تغيير
+                </a>
+            </div>
+            
+            <div class="security-item">
+                <div class="security-info">
+                    <div class="security-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="security-details">
+                        <h4>المصادقة الثنائية</h4>
+                        <p>مفعلة على هاتفك</p>
+                    </div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="twoFactorAuth" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="security-item">
+                <div class="security-info">
+                    <div class="security-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div class="security-details">
+                        <h4>نشاط الحساب</h4>
+                        <p>آخر دخول: اليوم 10:30 ص</p>
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="security-action" onclick="viewActivity()">
+                    عرض
+                </a>
+            </div>
+        </section>
+
+        <!-- قسم إدارة الحساب -->
+        <section class="account-section animate-in">
+            <h3 class="section-title">
+                <i class="fas fa-cog"></i>
+                إدارة الحساب
+            </h3>
+            
+            <div class="account-actions">
+                <a href="my-projects.html" class="account-action">
+                    <div class="action-content">
+                        <div class="action-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="action-text">
+                            <span class="action-title">مشاريعي</span>
+                            <span class="action-desc">عرض وإدارة جميع مشاريعك</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-left action-arrow"></i>
+                </a>
+                
+                <a href="payment-methods.html" class="account-action">
+                    <div class="action-content">
+                        <div class="action-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="action-text">
+                            <span class="action-title">طرق الدفع</span>
+                            <span class="action-desc">إدارة بطاقات الدفع والمحفظة</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-left action-arrow"></i>
+                </a>
+                
+                <a href="membership.html" class="account-action">
+                    <div class="action-content">
+                        <div class="action-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="action-text">
+                            <span class="action-title">العضوية</span>
+                            <span class="action-desc">ترقية خطتك والحصول على مميزات أكثر</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-left action-arrow"></i>
+                </a>
+                
+                <a href="help.html" class="account-action">
+                    <div class="action-content">
+                        <div class="action-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="action-text">
+                            <span class="action-title">المساعدة والدعم</span>
+                            <span class="action-desc">الدعم الفني والأسئلة الشائعة</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-left action-arrow"></i>
+                </a>
+                
+                <a href="javascript:void(0)" class="account-action danger" onclick="deleteAccount()">
+                    <div class="action-content">
+                        <div class="action-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <div class="action-text">
+                            <span class="action-title">حذف الحساب</span>
+                            <span class="action-desc">حذف حسابك نهائياً من المنصة</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-left action-arrow"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- زر تسجيل الخروج -->
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            تسجيل الخروج
+        </button>
+    </main>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-client.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        
+        <div class="nav-center" onclick="openNewProject()">
+            <i class="fas fa-plus"></i>
+        </div>
+        
+        <a href="designers.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>المصممون</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item active">
+            <i class="fas fa-user"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- مودال تغيير الصورة الشخصية -->
+    <div class="modal-overlay" id="avatarModalOverlay" onclick="closeAvatarModal()"></div>
+    <div class="modal-content" id="avatarModal">
+        <div class="modal-header">
+            <h3 class="modal-title">تغيير الصورة الشخصية</h3>
+            <button class="modal-close" onclick="closeAvatarModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="modal-action" onclick="takePhoto()">
+                <i class="fas fa-camera"></i>
+                التقاط صورة
+            </button>
+            
+            <button class="modal-action" onclick="chooseFromGallery()">
+                <i class="fas fa-images"></i>
+                اختيار من المعرض
+            </button>
+            
+            <button class="modal-action" onclick="generateAvatar()">
+                <i class="fas fa-robot"></i>
+                إنشاء صورة رمزية
+            </button>
+            
+            <button class="modal-action" onclick="removeAvatar()">
+                <i class="fas fa-trash"></i>
+                إزالة الصورة
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+            setupFormValidation();
+            setupSaveIndicator();
+        });
+
+        // تحميل بيانات المستخدم
+        function loadUserProfile() {
+            const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+            
+            // بيانات افتراضية
+            const defaultData = {
+                name: userData.name || 'عميل بيكسل آرت',
+                email: userData.email || 'client@pixelart.com',
+                phone: '+966 50 123 4567',
+                country: 'SA',
+                bio: 'أبحث عن أفضل التصميمات لعلامتي التجارية',
+                avatar: 'https://ui-avatars.com/api/?name=عميل+بيكسل&background=0a9396&color=fff&size=120',
+                projectsCount: 12,
+                rating: 4.8,
+                memberSince: 2024,
+                preferences: {
+                    projectType: 'logo',
+                    budgetRange: 'medium',
+                    emailNotifications: true,
+                    weeklyUpdates: true
+                },
+                notifications: {
+                    project: true,
+                    message: true,
+                    offers: true,
+                    sound: false
+                },
+                security: {
+                    twoFactorAuth: true
+                }
+            };
+            
+            // دمج البيانات
+            const data = { ...defaultData, ...profileData };
+            
+            // تحديث واجهة المستخدم
+            updateProfileUI(data);
+        }
+
+        function updateProfileUI(data) {
+            // المعلومات الأساسية
+            document.getElementById('userName').textContent = data.name;
+            document.getElementById('userRole').textContent = `عميل مميز منذ ${data.memberSince}`;
+            document.getElementById('userAvatar').src = data.avatar;
+            
+            // الإحصائيات
+            document.getElementById('projectsCount').textContent = data.projectsCount;
+            document.getElementById('ratingValue').textContent = data.rating;
+            document.getElementById('memberSince').textContent = data.memberSince;
+            
+            // نموذج البيانات
+            document.getElementById('fullName').value = data.name;
+            document.getElementById('email').value = data.email;
+            document.getElementById('phone').value = data.phone;
+            document.getElementById('country').value = data.country;
+            document.getElementById('bio').value = data.bio;
+            
+            // التفضيلات
+            document.getElementById('projectType').value = data.preferences?.projectType || 'logo';
+            document.getElementById('budgetRange').value = data.preferences?.budgetRange || 'medium';
+            document.getElementById('emailNotifications').checked = data.preferences?.emailNotifications || true;
+            document.getElementById('weeklyUpdates').checked = data.preferences?.weeklyUpdates || true;
+            
+            // الإشعارات
+            document.getElementById('projectNotifications').checked = data.notifications?.project || true;
+            document.getElementById('messageNotifications').checked = data.notifications?.message || true;
+            document.getElementById('designerOffers').checked = data.notifications?.offers || true;
+            document.getElementById('soundNotifications').checked = data.notifications?.sound || false;
+            
+            // الأمان
+            document.getElementById('twoFactorAuth').checked = data.security?.twoFactorAuth || true;
+        }
+
+        // إعداد التحقق من صحة النموذج
+        function setupFormValidation() {
+            const formInputs = document.querySelectorAll('.form-input');
+            
+            formInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    validateField(this);
+                    updateSaveButton();
+                });
+                
+                input.addEventListener('blur', function() {
+                    validateField(this);
+                });
+            });
+        }
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const fieldId = field.id;
+            
+            // إزالة رسائل الخطأ السابقة
+            const existingError = field.parentNode.querySelector('.error-message');
+            if (existingError) existingError.remove();
+            
+            field.classList.remove('error');
+            
+            let isValid = true;
+            let errorMessage = '';
+            
+            switch(fieldId) {
+                case 'fullName':
+                    if (value.length < 2) {
+                        isValid = false;
+                        errorMessage = 'الاسم يجب أن يكون على الأقل حرفين';
+                    }
+                    break;
+                    
+                case 'email':
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'البريد الإلكتروني غير صالح';
+                    }
+                    break;
+                    
+                case 'phone':
+                    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+                    if (!phoneRegex.test(value) || value.length < 8) {
+                        isValid = false;
+                        errorMessage = 'رقم الهاتف غير صالح';
+                    }
+                    break;
+                    
+                case 'bio':
+                    if (value.length > 500) {
+                        isValid = false;
+                        errorMessage = 'النبذة يجب ألا تتجاوز 500 حرف';
+                    }
+                    break;
+            }
+            
+            if (!isValid) {
+                field.classList.add('error');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.style.cssText = `
+                    color: var(--danger-color);
+                    font-size: 12px;
+                    margin-top: 4px;
+                `;
+                errorDiv.textContent = errorMessage;
+                field.parentNode.appendChild(errorDiv);
+            }
+            
+            return isValid;
+        }
+
+        // مؤشر حفظ البيانات
+        function setupSaveIndicator() {
+            let hasChanges = false;
+            const originalData = getFormData();
+            
+            document.querySelectorAll('.form-input, select, input[type="checkbox"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    const currentData = getFormData();
+                    hasChanges = JSON.stringify(currentData) !== JSON.stringify(originalData);
+                    updateSaveButton(hasChanges);
+                });
+            });
+        }
+
+        function getFormData() {
+            return {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                country: document.getElementById('country').value,
+                bio: document.getElementById('bio').value,
+                preferences: {
+                    projectType: document.getElementById('projectType').value,
+                    budgetRange: document.getElementById('budgetRange').value,
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    weeklyUpdates: document.getElementById('weeklyUpdates').checked
+                },
+                notifications: {
+                    project: document.getElementById('projectNotifications').checked,
+                    message: document.getElementById('messageNotifications').checked,
+                    offers: document.getElementById('designerOffers').checked,
+                    sound: document.getElementById('soundNotifications').checked
+                },
+                security: {
+                    twoFactorAuth: document.getElementById('twoFactorAuth').checked
+                }
+            };
+        }
+
+        function updateSaveButton(hasChanges = true) {
+            const saveBtn = document.getElementById('saveBtn');
+            if (hasChanges) {
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات';
+                saveBtn.style.background = 'var(--secondary-color)';
+            } else {
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> محفوظ';
+                saveBtn.style.background = 'var(--success-color)';
+            }
+        }
+
+        // حفظ الملف الشخصي
+        function saveProfile() {
+            // التحقق من صحة جميع الحقول
+            const inputs = document.querySelectorAll('.form-input');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                showToast('يرجى تصحيح الأخطاء في النموذج', 'warning');
+                return;
+            }
+            
+            // جمع البيانات
+            const formData = getFormData();
+            
+            // محاكاة حفظ البيانات
+            showLoading(true);
+            
+            setTimeout(() => {
+                // حفظ البيانات محلياً
+                localStorage.setItem('profileData', JSON.stringify(formData));
+                
+                // تحديث بيانات المستخدم
+                const userData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                userData.name = formData.name;
+                userData.email = formData.email;
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                
+                // تحديث الصورة الرمزية
+                const avatar = document.getElementById('userAvatar').src;
+                localStorage.setItem('userAvatar', avatar);
+                
+                showLoading(false);
+                showToast('تم حفظ التغييرات بنجاح', 'success');
+                updateSaveButton(false);
+                
+                // تحديث الواجهة
+                updateProfileUI(formData);
+            }, 1000);
+        }
+
+        // إدارة الصورة الشخصية
+        function openAvatarModal() {
+            document.getElementById('avatarModalOverlay').style.display = 'block';
+            document.getElementById('avatarModal').style.transform = 'translateY(0)';
+            setTimeout(() => {
+                document.getElementById('avatarModalOverlay').style.opacity = '1';
+            }, 10);
+        }
+
+        function closeAvatarModal() {
+            document.getElementById('avatarModalOverlay').style.opacity = '0';
+            document.getElementById('avatarModal').style.transform = 'translateY(100%)';
+            setTimeout(() => {
+                document.getElementById('avatarModalOverlay').style.display = 'none';
+            }, 300);
+        }
+
+        function takePhoto() {
+            closeAvatarModal();
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        // هنا يمكن إضافة كاميرا حقيقية
+                        alert('كاميرا الجهاز غير مدعومة في هذا المتصفح');
+                    })
+                    .catch(error => {
+                        showToast('تعذر الوصول إلى الكاميرا', 'warning');
+                    });
+            } else {
+                showToast('الكاميرا غير مدعومة في متصفحك', 'warning');
+            }
+        }
+
+        function chooseFromGallery() {
+            closeAvatarModal();
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) { // 5MB
+                        showToast('حجم الصورة كبير جداً', 'warning');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('userAvatar').src = e.target.result;
+                        showToast('تم تغيير الصورة الشخصية', 'success');
+                        updateSaveButton();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function generateAvatar() {
+            closeAvatarModal();
+            const name = document.getElementById('fullName').value || 'عميل';
+            const colors = ['0a9396', '005f73', 'ee9b00', 'bb3e03', '9b2226'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${randomColor}&color=fff&size=120`;
+            document.getElementById('userAvatar').src = avatarUrl;
+            
+            showToast('تم إنشاء صورة رمزية جديدة', 'success');
+            updateSaveButton();
+        }
+
+        function removeAvatar() {
+            closeAvatarModal();
+            const defaultAvatar = 'https://ui-avatars.com/api/?name=عميل&background=0a9396&color=fff&size=120';
+            document.getElementById('userAvatar').src = defaultAvatar;
+            
+            showToast('تم إزالة الصورة الشخصية', 'success');
+            updateSaveButton();
+        }
+
+        // وظائف الأمان
+        function changePassword() {
+            const newPassword = prompt('أدخل كلمة المرور الجديدة:');
+            if (newPassword) {
+                if (newPassword.length < 6) {
+                    showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'warning');
+                    return;
+                }
+                
+                showLoading(true);
+                setTimeout(() => {
+                    // في التطبيق الحقيقي، هنا سيتم إرسال الطلب للخادم
+                    showToast('تم تغيير كلمة المرور بنجاح', 'success');
+                    showLoading(false);
+                }, 1000);
+            }
+        }
+
+        function viewActivity() {
+            showModal('نشاط الحساب', `
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon success">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h4>تسجيل دخول ناجح</h4>
+                            <p>من هاتف Android - اليوم 10:30 ص</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h4>تحديث الملف الشخصي</h4>
+                            <p>أمس 3:45 م</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h4>إنشاء مشروع جديد</h4>
+                            <p>منذ يومين 11:20 ص</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="activity-info">
+                            <h4>عملية دفع</h4>
+                            <p>منذ 5 أيام 2:15 م</p>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
+
+        // إدارة الحساب
+        function deleteAccount() {
+            if (confirm('هل أنت متأكد من حذف حسابك؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                const confirmText = prompt('اكتب "حذف" للتأكيد:');
+                if (confirmText === 'حذف') {
+                    showLoading(true);
+                    setTimeout(() => {
+                        // في التطبيق الحقيقي، هنا سيتم حذف الحساب من الخادم
+                        localStorage.clear();
+                        showToast('تم حذف الحساب بنجاح', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    }, 2000);
+                } else {
+                    showToast('تم إلغاء عملية الحذف', 'info');
+                }
+            }
+        }
+
+        // تسجيل الخروج
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
+                showLoading(true);
+                setTimeout(() => {
+                    localStorage.removeItem('userToken');
+                    showToast('تم تسجيل الخروج بنجاح', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1000);
+                }, 800);
+            }
+        }
+
+        // وظائف المساعدة
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'dashboard-client.html';
+            }
+        }
+
+        function showLoading(show) {
+            // إنشاء مؤشر تحميل إذا لم يكن موجوداً
+            let loader = document.getElementById('loader');
+            if (!loader) {
+                loader = document.createElement('div');
+                loader.id = 'loader';
+                loader.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255, 255, 255, 0.9);
+                    padding: 20px;
+                    border-radius: var(--radius-lg);
+                    box-shadow: var(--shadow-lg);
+                    z-index: 2000;
+                    display: none;
+                `;
+                loader.innerHTML = `
+                    <div class="spinner" style="width: 40px; height: 40px; border: 4px solid var(--bg-secondary); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <style>
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    </style>
+                `;
+                document.body.appendChild(loader);
+            }
+            
+            loader.style.display = show ? 'block' : 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            // إزالة أي تواست سابق
+            const existingToast = document.getElementById('toast');
+            if (existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.innerHTML = `
+                <div class="toast-content toast-${type}">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 50%;
+                transform: translateX(-50%) translateY(-100px);
+                background: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                animation: slideDown 0.3s ease forwards;
+                font-family: inherit;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+            
+            // إضافة أنيميشن CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    to { transform: translateX(-50%) translateY(0); }
+                }
+                @keyframes slideUp {
+                    from { transform: translateX(-50%) translateY(0); }
+                    to { transform: translateX(-50%) translateY(-100px); }
+                }
+                .toast-success { color: var(--success-color); border-right: 4px solid var(--success-color); }
+                .toast-warning { color: var(--warning-color); border-right: 4px solid var(--warning-color); }
+                .toast-info { color: var(--primary-color); border-right: 4px solid var(--primary-color); }
+                .toast-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function showModal(title, content) {
+            const modal = document.createElement('div');
+            modal.id = 'modal';
+            modal.innerHTML = `
+                <div class="modal-overlay" onclick="closeModal()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">${content}</div>
+                </div>
+            `;
+            
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: inherit;
+            `;
+            
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(1)';
+                    modalContent.style.opacity = '1';
+                }
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if (modal) {
+                const modalContent = modal.querySelector('.modal-content');
+                if (modalContent) {
+                    modalContent.style.transform = 'scale(0.9)';
+                    modalContent.style.opacity = '0';
+                }
+                
+                setTimeout(() => {
+                    modal.remove();
+                    document.body.style.overflow = '';
+                }, 300);
+            }
+        }
+
+        // فتح مشروع جديد
+        function openNewProject() {
+            window.location.href = 'new-project.html';
+        }
+    </script>
+</body>
+</html>
