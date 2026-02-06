@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الخدمات المتقدمة | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: rgba(255, 255, 255, 0.95);
+            --bg-secondary: rgba(248, 250, 252, 0.9);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.25);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                url('background/designer-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: 28px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .status-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* هيدر الصفحة */
+        .page-header {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 28px;
+            z-index: 999;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+
+        .page-title {
+            flex: 1;
+            text-align: center;
+            margin-right: 16px;
+        }
+
+        .page-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 2px 0 0 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-action {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .header-action:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* محتوى الخدمات */
+        .services-container {
+            padding: 16px;
+            margin-top: 98px;
+            margin-bottom: 80px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* قسم الخدمات الرئيسية */
+        .main-services-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-right: 12px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .section-title h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+        }
+
+        .section-title i {
+            color: var(--secondary-light);
+            font-size: 20px;
+        }
+
+        /* شبكة الخدمات الرئيسية */
+        .main-services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .main-service-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            backdrop-filter: blur(20px);
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .main-service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .main-service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--secondary-color);
+        }
+
+        .service-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: linear-gradient(45deg, var(--danger-color), #ff6b6b);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        .service-icon-large {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 24px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .service-content {
+            text-align: center;
+        }
+
+        .service-content h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .service-content p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .service-price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .price-tag {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .price-period {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* قسم الخدمات المتخصصة */
+        .specialized-services {
+            margin-bottom: 32px;
+        }
+
+        .specialized-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .specialized-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            backdrop-filter: blur(20px);
+        }
+
+        .specialized-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .specialized-header {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.1), rgba(238, 155, 0, 0.1));
+            position: relative;
+        }
+
+        .specialized-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .specialized-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .specialized-header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .specialized-features {
+            padding: 16px 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-text strong {
+            font-size: 13px;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .feature-text span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .specialized-action {
+            padding: 16px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .specialized-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--secondary-color);
+        }
+
+        .order-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-fast);
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* قسم أدوات التصميم */
+        .tools-section {
+            margin-bottom: 32px;
+        }
+
+        .tools-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .tools-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: transparent;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .tool-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .tool-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tool-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .tool-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: var(--text-primary);
+        }
+
+        .tool-info span {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .tool-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .tool-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tool-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .use-tool-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition-fast);
+        }
+
+        .use-tool-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* قسم الباقات */
+        .packages-section {
+            margin-bottom: 32px;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .package-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-medium);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .package-card.featured {
+            border: 2px solid var(--secondary-color);
+            transform: scale(1.02);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(45deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            z-index: 1;
+            box-shadow: var(--shadow-md);
+        }
+
+        .package-header {
+            padding: 30px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.05), rgba(238, 155, 0, 0.05));
+        }
+
+        .package-name {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .package-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .package-price {
+            margin-top: 20px;
+        }
+
+        .price-amount {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--secondary-color);
+            line-height: 1;
+        }
+
+        .price-period {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .package-features {
+            padding: 20px;
+        }
+
+        .package-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+
+        .package-feature i {
+            color: var(--success-color);
+            font-size: 14px;
+        }
+
+        .package-feature span {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .package-footer {
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all var(--transition-fast);
+        }
+
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* شريط التقدم */
+        .progress-section {
+            margin-bottom: 32px;
+        }
+
+        .progress-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .progress-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* زر العودة للأعلى */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--transition-medium);
+            box-shadow: var(--shadow-lg);
+            z-index: 998;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 10px;
+            border-top: 1px solid var(--glass-border);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 11px;
+            flex: 1;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--secondary-color);
+            background: rgba(238, 155, 0, 0.1);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        /* نافذة تفاصيل الخدمة */
+        .service-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+            padding: 20px;
+        }
+
+        .service-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            animation: modalSlideIn 0.4s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+        }
+
+        .modal-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .close-modal:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-features {
+            margin-bottom: 24px;
+        }
+
+        .modal-features h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            color: var(--text-primary);
+        }
+
+        .modal-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .modal-feature-item i {
+            color: var(--success-color);
+            font-size: 16px;
+        }
+
+        .modal-feature-item span {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .modal-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+        }
+
+        .modal-btn.secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* تفاعلات اللمس للأندرويد */
+        @media (hover: none) {
+            .main-service-card:hover,
+            .specialized-card:hover,
+            .tool-card:hover,
+            .package-card:hover {
+                transform: none;
+            }
+            
+            .main-service-card:active,
+            .specialized-card:active,
+            .tool-card:active,
+            .package-card:active {
+                transform: scale(0.98);
+            }
+            
+            .order-btn:hover,
+            .use-tool-btn:hover,
+            .subscribe-btn:hover,
+            .modal-btn:hover {
+                transform: none;
+            }
+            
+            .order-btn:active,
+            .use-tool-btn:active,
+            .subscribe-btn:active,
+            .modal-btn:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .main-services-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .specialized-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .service-container {
+                margin-top: 88px;
+                margin-bottom: 70px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                height: 60px;
+            }
+            
+            .page-title h1 {
+                font-size: 16px;
+            }
+            
+            .page-title p {
+                font-size: 10px;
+            }
+            
+            .service-container {
+                margin-top: 78px;
+            }
+            
+            .bottom-nav {
+                height: 60px;
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .nav-item i {
+                font-size: 18px;
+            }
+        }
+
+        /* شريط التمرير المخصص */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
+        }
+
+        /* تأثيرات التحريك */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .animate-delay-1 { animation-delay: 0.1s; }
+        .animate-delay-2 { animation-delay: 0.2s; }
+        .animate-delay-3 { animation-delay: 0.3s; }
+        .animate-delay-4 { animation-delay: 0.4s; }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            animation: slideInRight 0.3s ease;
+            transform-origin: right center;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.success {
+            border-right: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-right: 4px solid var(--danger-color);
+        }
+
+        .toast.info {
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            background: rgba(42, 157, 143, 0.2);
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-icon {
+            background: rgba(231, 111, 81, 0.2);
+            color: var(--danger-color);
+        }
+
+        .toast.info .toast-icon {
+            background: rgba(10, 147, 150, 0.2);
+            color: var(--primary-color);
+        }
+
+        .toast-content {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 14px;
+            transition: all var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-time">
+            <i class="far fa-clock"></i>
+            <span id="currentTime">--:--</span>
+        </div>
+        <div class="status-icons">
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+            <i class="fas fa-signal"></i>
+        </div>
+    </div>
+
+    <!-- هيدر الصفحة -->
+    <header class="page-header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="page-title">
+            <h1>الخدمات المتقدمة</h1>
+            <p>أدوات وإمكانيات مصممة خصيصاً لك</p>
+        </div>
+        <div class="header-actions">
+            <div class="header-action" onclick="openSearch()">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="header-action" onclick="toggleDarkMode()">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="services-container">
+        <!-- الخدمات الرئيسية -->
+        <section class="main-services-section animate-fadeInUp">
+            <div class="section-title">
+                <i class="fas fa-crown"></i>
+                <h2>الخدمات المميزة</h2>
+            </div>
+            
+            <div class="main-services-grid">
+                <div class="main-service-card animate-fadeInUp animate-delay-1" onclick="openServiceDetail('ai-design')">
+                    <div class="service-badge">الأكثر طلباً</div>
+                    <div class="service-icon-large">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>تصميم بالذكاء الاصطناعي</h3>
+                        <p>تصميم ذكي باستخدام أحدث تقنيات الذكاء الاصطناعي لإنشاء تصاميم فريدة في ثوانٍ</p>
+                        <div class="service-price">
+                            <span class="price-tag">199 ريال/شهر</span>
+                            <span class="price-period">اشتراك شهري</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="main-service-card animate-fadeInUp animate-delay-2" onclick="openServiceDetail('unlimited')">
+                    <div class="service-badge">لا محدود</div>
+                    <div class="service-icon-large">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>باقة التصميم اللا محدود</h3>
+                        <p>تصميم غير محدود لجميع احتياجاتك مع فريق دعم فني متخصص</p>
+                        <div class="service-price">
+                            <span class="price-tag">999 ريال/شهر</span>
+                            <span class="price-period">باقة شاملة</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="main-service-card animate-fadeInUp animate-delay-3" onclick="openServiceDetail('branding')">
+                    <div class="service-icon-large">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>هوية تجارية متكاملة</h3>
+                        <p>تصميم هوية بصرية كاملة تشمل الشعار، الألوان، الخطوط، ودليل الاستخدام</p>
+                        <div class="service-price">
+                            <span class="price-tag">1,499 ريال</span>
+                            <span class="price-period">مشروع واحد</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="main-service-card animate-fadeInUp animate-delay-4" onclick="openServiceDetail('video')">
+                    <div class="service-icon-large">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>مونتاج فيديو احترافي</h3>
+                        <p>إنتاج وتحرير فيديوهات احترافية مع مؤثرات بصرية وجرافيك متحرك</p>
+                        <div class="service-price">
+                            <span class="price-tag">899 ريال</span>
+                            <span class="price-period">لكل فيديو</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الخدمات المتخصصة -->
+        <section class="specialized-services animate-fadeInUp">
+            <div class="section-title">
+                <i class="fas fa-star"></i>
+                <h2>خدمات متخصصة</h2>
+            </div>
+            
+            <div class="specialized-cards">
+                <div class="specialized-card" onclick="openServiceDetail('ui-ux')">
+                    <div class="specialized-header">
+                        <div class="specialized-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>تصميم واجهات المستخدم UI/UX</h3>
+                        <p>تصميم واجهات تطبيقات ومواقع إلكترونية مع تجربة مستخدم استثنائية</p>
+                    </div>
+                    <div class="specialized-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <strong>تصميم متجاوب</strong>
+                                <span>يعمل على جميع الأجهزة</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <strong>بروتوتايب تفاعلي</strong>
+                                <span>تجربة تفاعلية قبل التنفيذ</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <strong>اختبار تجربة المستخدم</strong>
+                                <span>تحسين بناءً على آراء المستخدمين</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="specialized-action">
+                        <div class="specialized-price">2,499 ريال</div>
+                        <button class="order-btn" onclick="orderService('ui-ux', event)">
+                            <i class="fas fa-shopping-cart"></i>
+                            اطلب الآن
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="specialized-card" onclick="openServiceDetail('animation')">
+                    <div class="specialized-header">
+                        <div class="specialized-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3>تصميم جرافيك متحرك</h3>
+                        <p>إنشاء فيديوهات رسوم متحركة احترافية للإعلانات والمحتوى</p>
+                    </div>
+                    <div class="specialized-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <strong>حركة سلسة</strong>
+                                <span>60 إطار في الثانية</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <strong>مؤثرات بصرية</strong>
+                                <span>مؤثرات احترافية متقدمة</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="feature-text">
+                                <strong>مدة حتى 5 دقائق</strong>
+                                <span>إنتاج محتوى طويل</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="specialized-action">
+                        <div class="specialized-price">3,299 ريال</div>
+                        <button class="order-btn" onclick="orderService('animation', event)">
+                            <i class="fas fa-shopping-cart"></i>
+                            اطلب الآن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- أدوات التصميم -->
+        <section class="tools-section animate-fadeInUp">
+            <div class="section-title">
+                <i class="fas fa-tools"></i>
+                <h2>أدوات التصميم</h2>
+            </div>
+            
+            <div class="tools-filter">
+                <button class="filter-btn active" onclick="filterTools('all')">الكل</button>
+                <button class="filter-btn" onclick="filterTools('ai')">ذكاء اصطناعي</button>
+                <button class="filter-btn" onclick="filterTools('photo')">تحرير الصور</button>
+                <button class="filter-btn" onclick="filterTools('vector')">الرسوم المتجهة</button>
+                <button class="filter-btn" onclick="filterTools('video')">الفيديو</button>
+                <button class="filter-btn" onclick="filterTools('free')">مجانية</button>
+            </div>
+            
+            <div class="tools-grid">
+                <div class="tool-card" data-category="ai">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h4>مولد التصاميم الذكي</h4>
+                            <span>أداة ذكاء اصطناعي</span>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        إنشاء تصاميم احترافية باستخدام الذكاء الاصطناعي بمجرد وصفك لما تريد
+                    </div>
+                    <div class="tool-actions">
+                        <div class="tool-price">مجاني</div>
+                        <button class="use-tool-btn" onclick="useTool('ai-design')">
+                            <i class="fas fa-play"></i>
+                            استخدم الأداة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tool-card" data-category="photo">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h4>محرر الصور الاحترافي</h4>
+                            <span>تحرير وتعديل الصور</span>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        أدوات متقدمة لتحرير الصور، إزالة الخلفية، تحسين الألوان، وإضافة المؤثرات
+                    </div>
+                    <div class="tool-actions">
+                        <div class="tool-price">49 ريال/شهر</div>
+                        <button class="use-tool-btn" onclick="useTool('photo-editor')">
+                            <i class="fas fa-play"></i>
+                            استخدم الأداة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tool-card" data-category="vector">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-draw-polygon"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h4>مصمم الشعارات المتقدم</h4>
+                            <span>رسوم متجهة</span>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        تصميم شعارات متجهة بدقة عالية مع مكتبة تضم آلاف القوالب الجاهزة
+                    </div>
+                    <div class="tool-actions">
+                        <div class="tool-price">79 ريال/شهر</div>
+                        <button class="use-tool-btn" onclick="useTool('logo-designer')">
+                            <i class="fas fa-play"></i>
+                            استخدم الأداة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tool-card" data-category="video free">
+                    <div class="tool-header">
+                        <div class="tool-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="tool-info">
+                            <h4>محرر الفيديو السريع</h4>
+                            <span>مونتاج فيديو</span>
+                        </div>
+                    </div>
+                    <div class="tool-description">
+                        أداة سهلة لتحرير الفيديو، إضافة نصوص، مؤثرات انتقالية، ودمج المقاطع
+                    </div>
+                    <div class="tool-actions">
+                        <div class="tool-price">مجاني</div>
+                        <button class="use-tool-btn" onclick="useTool('video-editor')">
+                            <i class="fas fa-play"></i>
+                            استخدم الأداة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- باقات الاشتراك -->
+        <section class="packages-section animate-fadeInUp">
+            <div class="section-title">
+                <i class="fas fa-gem"></i>
+                <h2>باقات الاشتراك</h2>
+            </div>
+            
+            <div class="packages-grid">
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3 class="package-name">الباقة الأساسية</h3>
+                        <p class="package-description">مناسبة للمصممين المبتدئين</p>
+                        <div class="package-price">
+                            <div class="price-amount">149 ريال</div>
+                            <div class="price-period">شهرياً</div>
+                        </div>
+                    </div>
+                    <div class="package-features">
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>وصول إلى 10 أدوات تصميم</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>5 تصاميم شهرياً بالذكاء الاصطناعي</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>مكتبة قوالب محدودة</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>دعم فني عبر البريد الإلكتروني</span>
+                        </div>
+                    </div>
+                    <div class="package-footer">
+                        <button class="subscribe-btn" onclick="subscribePackage('basic')">
+                            <i class="fas fa-shopping-cart"></i>
+                            اشترك الآن
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="package-card featured">
+                    <div class="featured-badge">الأكثر شعبية</div>
+                    <div class="package-header">
+                        <h3 class="package-name">الباقة الاحترافية</h3>
+                        <p class="package-description">الأفضل للمصممين المحترفين</p>
+                        <div class="package-price">
+                            <div class="price-amount">499 ريال</div>
+                            <div class="price-period">شهرياً</div>
+                        </div>
+                    </div>
+                    <div class="package-features">
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>وصول كامل لجميع الأدوات</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>50 تصميم شهرياً بالذكاء الاصطناعي</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>مكتبة قوالب غير محدودة</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>دعم فني هاتفي ومراجعة التصاميم</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>تصدير بجودة عالية دون علامة مائية</span>
+                        </div>
+                    </div>
+                    <div class="package-footer">
+                        <button class="subscribe-btn" onclick="subscribePackage('pro')">
+                            <i class="fas fa-crown"></i>
+                            اشترك الآن
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3 class="package-name">الباقة المؤسسية</h3>
+                        <p class="package-description">للشركات والفرق الكبيرة</p>
+                        <div class="package-price">
+                            <div class="price-amount">1,499 ريال</div>
+                            <div class="price-period">شهرياً</div>
+                        </div>
+                    </div>
+                    <div class="package-features">
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>وصول لـ 5 أعضاء في الفريق</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>تصاميم غير محدودة بالذكاء الاصطناعي</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>أدوات تعاون متقدمة</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>دعم فني مخصص 24/7</span>
+                        </div>
+                        <div class="package-feature">
+                            <i class="fas fa-check"></i>
+                            <span>تخصيص واجهة النظام</span>
+                        </div>
+                    </div>
+                    <div class="package-footer">
+                        <button class="subscribe-btn" onclick="subscribePackage('enterprise')">
+                            <i class="fas fa-building"></i>
+                            تواصل مع المبيعات
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- شريط التقدم -->
+        <section class="progress-section animate-fadeInUp">
+            <div class="progress-card">
+                <div class="progress-header">
+                    <h3>تقدمك في استخدام الخدمات</h3>
+                    <span class="progress-value">65%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%"></div>
+                </div>
+                <div class="progress-text">
+                    لقد استخدمت 13 من أصل 20 خدمة متاحة لك هذا الشهر
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- زر العودة للأعلى -->
+    <div class="scroll-to-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-designer.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="services.html" class="nav-item active">
+            <i class="fas fa-concierge-bell"></i>
+            <span>الخدمات</span>
+        </a>
+        
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        
+        <a href="jobs.html" class="nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span>الوظائف</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- نافذة تفاصيل الخدمة -->
+    <div class="service-modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="close-modal" onclick="closeServiceModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h3 id="modalServiceTitle">تصميم بالذكاء الاصطناعي</h3>
+                <p id="modalServiceDesc">تصميم ذكي باستخدام أحدث تقنيات الذكاء الاصطناعي</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-features">
+                    <h4>المميزات الرئيسية:</h4>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>إنشاء تصاميم في ثوانٍ بناءً على وصف نصي</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>أكثر من 50 نمط تصميم مختلف</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>تعديل وتخصيص التصاميم بسهولة</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>تصدير بجودة عالية تناسب الطباعة</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>دعم للغة العربية والإنجليزية</span>
+                    </div>
+                </div>
+                
+                <div class="modal-features">
+                    <h4>أنواع التصاميم المتاحة:</h4>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>شعارات وهوية بصرية</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-image"></i>
+                        <span>بانرات إعلانية ومواقع إلكترونية</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>واجهات تطبيقات جوال</span>
+                    </div>
+                    <div class="modal-feature-item">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>تصاميع للوسائط الاجتماعية</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-price" id="modalServicePrice">199 ريال/شهر</div>
+                <div class="modal-actions">
+                    <button class="modal-btn secondary" onclick="saveForLater()">
+                        <i class="far fa-bookmark"></i>
+                        حفظ للمستقبل
+                    </button>
+                    <button class="modal-btn primary" onclick="purchaseService()">
+                        <i class="fas fa-shopping-cart"></i>
+                        شراء الخدمة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- حاوية Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من تسجيل الدخول
+            checkLoginStatus();
+            
+            // تحديث الوقت
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // تهيئة الفلاتر
+            initFilters();
+            
+            // تهيئة تتبع التمرير
+            initScrollTracking();
+            
+            // تحميل بيانات المستخدم
+            loadUserData();
+            
+            // تحميل الخدمات المستخدمة
+            loadServiceUsage();
+        });
+
+        // التحقق من تسجيل الدخول
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser || currentUser.type !== 'designer') {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // تحديث الوقت
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-SA', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // العودة للصفحة السابقة
+        function goBack() {
+            window.history.back();
+        }
+
+        // فتح البحث
+        function openSearch() {
+            const searchQuery = prompt('ابحث عن خدمة أو أداة:');
+            if (searchQuery) {
+                searchServices(searchQuery);
+            }
+        }
+
+        // البحث في الخدمات
+        function searchServices(query) {
+            const allCards = document.querySelectorAll('.main-service-card, .specialized-card, .tool-card');
+            let foundCount = 0;
+            
+            allCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query.toLowerCase())) {
+                    card.style.display = 'block';
+                    card.style.animation = 'pulse 1s';
+                    foundCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            if (foundCount === 0) {
+                showToast('لم يتم العثور على نتائج لبحثك', 'error');
+                // إعادة عرض جميع البطاقات بعد 3 ثواني
+                setTimeout(() => {
+                    allCards.forEach(card => {
+                        card.style.display = 'block';
+                        card.style.animation = '';
+                    });
+                }, 3000);
+            } else {
+                showToast(`تم العثور على ${foundCount} نتيجة`, 'success');
+            }
+        }
+
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.header-action:nth-child(2) i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                document.documentElement.style.setProperty('--bg-primary', 'rgba(30, 41, 59, 0.95)');
+                document.documentElement.style.setProperty('--text-primary', '#f8fafc');
+                document.documentElement.style.setProperty('--text-secondary', '#cbd5e1');
+                document.documentElement.style.setProperty('--glass-bg', 'rgba(30, 41, 59, 0.85)');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                showToast('تم تفعيل الوضع الليلي', 'success');
+            } else {
+                document.documentElement.style.setProperty('--bg-primary', 'rgba(255, 255, 255, 0.95)');
+                document.documentElement.style.setProperty('--text-primary', '#1e293b');
+                document.documentElement.style.setProperty('--text-secondary', '#475569');
+                document.documentElement.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.85)');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                showToast('تم تفعيل الوضع النهاري', 'success');
+            }
+            
+            // حفظ التفضيل
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            currentUser.darkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        // تهيئة الفلاتر
+        function initFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // إزالة النشاط من جميع الأزرار
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // إضافة النشاط للزر المحدد
+                    this.classList.add('active');
+                    
+                    // تطبيق الفلتر
+                    const category = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    applyToolFilter(category);
+                });
+            });
+        }
+
+        // تطبيق فلتر الأدوات
+        function applyToolFilter(category) {
+            const toolCards = document.querySelectorAll('.tool-card');
+            
+            toolCards.forEach(card => {
+                const cardCategories = card.getAttribute('data-category');
+                
+                if (category === 'all' || cardCategories.includes(category)) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // فتح تفاصيل الخدمة
+        function openServiceDetail(serviceId) {
+            const services = {
+                'ai-design': {
+                    title: 'تصميم بالذكاء الاصطناعي',
+                    desc: 'تصميم ذكي باستخدام أحدث تقنيات الذكاء الاصطناعي لإنشاء تصاميم فريدة في ثوانٍ',
+                    price: '199 ريال/شهر',
+                    features: [
+                        'إنشاء تصاميم في ثوانٍ بناءً على وصف نصي',
+                        'أكثر من 50 نمط تصميم مختلف',
+                        'تعديل وتخصيص التصاميم بسهولة',
+                        'تصدير بجودة عالية تناسب الطباعة',
+                        'دعم للغة العربية والإنجليزية'
+                    ],
+                    types: [
+                        {icon: 'fa-paint-brush', text: 'شعارات وهوية بصرية'},
+                        {icon: 'fa-image', text: 'بانرات إعلانية ومواقع إلكترونية'},
+                        {icon: 'fa-mobile-alt', text: 'واجهات تطبيقات جوال'},
+                        {icon: 'fa-file-invoice', text: 'تصاميع للوسائط الاجتماعية'}
+                    ]
+                },
+                'unlimited': {
+                    title: 'باقة التصميم اللا محدود',
+                    desc: 'تصميم غير محدود لجميع احتياجاتك مع فريق دعم فني متخصص',
+                    price: '999 ريال/شهر',
+                    features: [
+                        'تصاميم غير محدودة شهرياً',
+                        'دعم فني متخصص 24/7',
+                        'أدوات تصميم متقدمة',
+                        'مكتبة قوالب غير محدودة',
+                        'تصدير بجودة عالية'
+                    ],
+                    types: [
+                        {icon: 'fa-infinity', text: 'تصاميم غير محدودة'},
+                        {icon: 'fa-headset', text: 'دعم فني متخصص'},
+                        {icon: 'fa-tools', text: 'أدوات تصميم كاملة'},
+                        {icon: 'fa-download', text: 'تحميل غير محدود'}
+                    ]
+                },
+                'ui-ux': {
+                    title: 'تصميم واجهات المستخدم UI/UX',
+                    desc: 'تصميم واجهات تطبيقات ومواقع إلكترونية مع تجربة مستخدم استثنائية',
+                    price: '2,499 ريال',
+                    features: [
+                        'تصميم واجهات متجاوبة لجميع الأجهزة',
+                        'بروتوتايب تفاعلي كامل',
+                        'اختبار تجربة المستخدم',
+                        'تحليل سلوك المستخدم',
+                        'تسليم كامل الملفات والمستندات'
+                    ],
+                    types: [
+                        {icon: 'fa-mobile-alt', text: 'تطبيقات الجوال'},
+                        {icon: 'fa-desktop', text: 'المواقع الإلكترونية'},
+                        {icon: 'fa-tablet-alt', text: 'الأجهزة اللوحية'},
+                        {icon: 'fa-tv', text: 'الشاشات الكبيرة'}
+                    ]
+                }
+            };
+
+            const service = services[serviceId] || services['ai-design'];
+            
+            // تحديث محتوى النافذة
+            document.getElementById('modalServiceTitle').textContent = service.title;
+            document.getElementById('modalServiceDesc').textContent = service.desc;
+            document.getElementById('modalServicePrice').textContent = service.price;
+            
+            // تحديث المميزات
+            const featuresContainer = document.querySelector('.modal-features:first-child');
+            featuresContainer.innerHTML = `
+                <h4>المميزات الرئيسية:</h4>
+                ${service.features.map(feature => `
+                    <div class="modal-feature-item">
+                        <i class="fas fa-check"></i>
+                        <span>${feature}</span>
+                    </div>
+                `).join('')}
+            `;
+            
+            // تحديث الأنواع
+            const typesContainer = document.querySelector('.modal-features:last-child');
+            typesContainer.innerHTML = `
+                <h4>أنواع التصاميم المتاحة:</h4>
+                ${service.types.map(type => `
+                    <div class="modal-feature-item">
+                        <i class="fas ${type.icon}"></i>
+                        <span>${type.text}</span>
+                    </div>
+                `).join('')}
+            `;
+            
+            // فتح النافذة
+            document.getElementById('serviceModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق نافذة الخدمة
+        function closeServiceModal() {
+            document.getElementById('serviceModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // طلب خدمة
+        function orderService(serviceId, event) {
+            if (event) event.stopPropagation();
+            
+            const serviceName = getServiceName(serviceId);
+            const confirmation = confirm(`هل تريد طلب خدمة "${serviceName}"؟`);
+            
+            if (confirmation) {
+                showToast(`تم إرسال طلبك لخدمة ${serviceName}`, 'success');
+                
+                // حفظ الطلب في localStorage
+                const order = {
+                    id: Date.now(),
+                    serviceId: serviceId,
+                    serviceName: serviceName,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                };
+                
+                saveOrder(order);
+                
+                // إعادة توجيه لصفحة الدفع بعد 2 ثانية
+                setTimeout(() => {
+                    window.location.href = `checkout.html?service=${serviceId}`;
+                }, 2000);
+            }
+        }
+
+        // استخدام أداة
+        function useTool(toolId) {
+            const tools = {
+                'ai-design': {name: 'مولد التصاميم الذكي', url: 'tools/ai-designer.html'},
+                'photo-editor': {name: 'محرر الصور الاحترافي', url: 'tools/photo-editor.html'},
+                'logo-designer': {name: 'مصمم الشعارات المتقدم', url: 'tools/logo-designer.html'},
+                'video-editor': {name: 'محرر الفيديو السريع', url: 'tools/video-editor.html'}
+            };
+            
+            const tool = tools[toolId];
+            
+            if (tool) {
+                // التحقق من الاشتراك للأدوات المدفوعة
+                if (toolId !== 'ai-design' && toolId !== 'video-editor') {
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (!currentUser.subscription || currentUser.subscription === 'free') {
+                        showToast('هذه الأداة تتطلب اشتراكاً مدفوعاً', 'error');
+                        openServiceDetail('ai-design');
+                        return;
+                    }
+                }
+                
+                showToast(`جاري فتح ${tool.name}...`, 'info');
+                setTimeout(() => {
+                    window.location.href = tool.url;
+                }, 1000);
+            }
+        }
+
+        // اشتراك في باقة
+        function subscribePackage(packageId) {
+            const packages = {
+                'basic': {name: 'الباقة الأساسية', price: 149},
+                'pro': {name: 'الباقة الاحترافية', price: 499},
+                'enterprise': {name: 'الباقة المؤسسية', price: 1499}
+            };
+            
+            const pkg = packages[packageId];
+            
+            if (packageId === 'enterprise') {
+                showToast('سيتم التواصل معك من قبل فريق المبيعات', 'info');
+                // هنا يمكن إضافة نموذج التواصل
+                return;
+            }
+            
+            const confirmation = confirm(`هل تريد الاشتراك في ${pkg.name} بسعر ${pkg.price} ريال شهرياً؟`);
+            
+            if (confirmation) {
+                // محاكاة عملية الدفع
+                showToast('جاري توجيهك لصفحة الدفع...', 'info');
+                
+                setTimeout(() => {
+                    // حفظ معلومات الاشتراك
+                    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    currentUser.subscription = packageId;
+                    currentUser.subscriptionDate = new Date().toISOString();
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    showToast(`تم الاشتراك في ${pkg.name} بنجاح!`, 'success');
+                    
+                    // إعادة تحميل البيانات
+                    loadUserData();
+                }, 2000);
+            }
+        }
+
+        // حفظ الطلب
+        function saveOrder(order) {
+            const orders = JSON.parse(localStorage.getItem('userOrders') || '[]');
+            orders.push(order);
+            localStorage.setItem('userOrders', JSON.stringify(orders));
+        }
+
+        // الحصول على اسم الخدمة
+        function getServiceName(serviceId) {
+            const services = {
+                'ai-design': 'تصميم بالذكاء الاصطناعي',
+                'unlimited': 'باقة التصميم اللا محدود',
+                'branding': 'هوية تجارية متكاملة',
+                'video': 'مونتاج فيديو احترافي',
+                'ui-ux': 'تصميم واجهات المستخدم',
+                'animation': 'تصميم جرافيك متحرك'
+            };
+            
+            return services[serviceId] || 'خدمة';
+        }
+
+        // شراء الخدمة
+        function purchaseService() {
+            const serviceTitle = document.getElementById('modalServiceTitle').textContent;
+            const price = document.getElementById('modalServicePrice').textContent;
+            
+            showToast(`جاري توجيهك لصفحة الدفع لـ ${serviceTitle}`, 'info');
+            closeServiceModal();
+            
+            setTimeout(() => {
+                window.location.href = 'checkout.html';
+            }, 1500);
+        }
+
+        // حفظ للمستقبل
+        function saveForLater() {
+            const serviceTitle = document.getElementById('modalServiceTitle').textContent;
+            
+            // حفظ في قائمة المفضلة
+            const favorites = JSON.parse(localStorage.getItem('favoriteServices') || '[]');
+            if (!favorites.includes(serviceTitle)) {
+                favorites.push(serviceTitle);
+                localStorage.setItem('favoriteServices', JSON.stringify(favorites));
+                showToast(`تم حفظ "${serviceTitle}" في المفضلة`, 'success');
+            } else {
+                showToast('هذه الخدمة موجودة بالفعل في المفضلة', 'info');
+            }
+        }
+
+        // تحميل بيانات المستخدم
+        function loadUserData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            
+            // التحقق من الاشتراك
+            if (currentUser.subscription) {
+                const subscriptionBadge = document.createElement('div');
+                subscriptionBadge.className = 'subscription-badge';
+                subscriptionBadge.innerHTML = `
+                    <i class="fas fa-crown"></i>
+                    <span>${currentUser.subscription === 'pro' ? 'احترافي' : 'أساسي'}</span>
+                `;
+                
+                const header = document.querySelector('.page-header');
+                const existingBadge = document.querySelector('.subscription-badge');
+                if (existingBadge) {
+                    existingBadge.remove();
+                }
+                header.appendChild(subscriptionBadge);
+            }
+        }
+
+        // تحميل استخدام الخدمات
+        function loadServiceUsage() {
+            // محاكاة بيانات الاستخدام
+            const usage = {
+                used: 13,
+                total: 20,
+                percentage: 65
+            };
+            
+            // تحديث شريط التقدم
+            const progressFill = document.querySelector('.progress-fill');
+            const progressValue = document.querySelector('.progress-value');
+            const progressText = document.querySelector('.progress-text');
+            
+            progressFill.style.width = `${usage.percentage}%`;
+            progressValue.textContent = `${usage.percentage}%`;
+            progressText.textContent = `لقد استخدمت ${usage.used} من أصل ${usage.total} خدمة متاحة لك هذا الشهر`;
+        }
+
+        // تتبع التمرير
+        function initScrollTracking() {
+            const scrollToTopBtn = document.querySelector('.scroll-to-top');
+            
+            window.addEventListener('scroll', () => {
+                // زر العودة للأعلى
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+                
+                // تأثيرات الظهور عند التمرير
+                const elements = document.querySelectorAll('.animate-fadeInUp');
+                elements.forEach(el => {
+                    const elementTop = el.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+        }
+
+        // التمرير للأعلى
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // عرض Toast
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                </div>
+                <div class="toast-content">${message}</div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // إزالة تلقائية بعد 5 ثوانٍ
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideInRight 0.3s ease reverse';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // تهيئة تأثيرات الظهور
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // مراقبة العناصر المتحركة
+            document.querySelectorAll('.animate-fadeInUp').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // تهيئة تأثيرات اللمس للأندرويد
+        function initTouchEffects() {
+            // إضافة تأثير اللمس للبطاقات
+            const cards = document.querySelectorAll('.main-service-card, .specialized-card, .tool-card, .package-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                }, {passive: true});
+            });
+            
+            // إضافة تأثير اللمس للأزرار
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                }, {passive: true});
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                }, {passive: true});
+            });
+        }
+
+        // تشغيل جميع وظائف التهيئة
+        initScrollAnimations();
+        initTouchEffects();
+    </script>
+</body>
+</html>

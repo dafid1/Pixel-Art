@@ -1,0 +1,3090 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ملفي الشخصي | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* المتغيرات الأساسية */
+        :root {
+            /* نظام الألوان */
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --accent-color: #9b5de5;
+            --accent-dark: #7209b7;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --info-color: #4cc9f0;
+            
+            /* نظام التصميم */
+            --bg-primary: rgba(255, 255, 255, 0.98);
+            --bg-secondary: rgba(248, 250, 252, 0.96);
+            --bg-tertiary: rgba(241, 245, 249, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-color: rgba(226, 232, 240, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --shadow-heavy: rgba(0, 0, 0, 0.15);
+            
+            /* الأنيميشن */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* التأثيرات */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --backdrop-blur: blur(20px);
+            --backdrop-saturate: saturate(180%);
+            
+            /* الطبقات */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+            --z-toast: 1080;
+        }
+
+        /* الوضع الداكن */
+        .dark-mode {
+            --bg-primary: rgba(15, 23, 42, 0.98);
+            --bg-secondary: rgba(30, 41, 59, 0.96);
+            --bg-tertiary: rgba(51, 65, 85, 0.95);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: rgba(71, 85, 105, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-heavy: rgba(0, 0, 0, 0.4);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.05) 0%,
+                rgba(238, 155, 0, 0.05) 50%,
+                rgba(155, 93, 229, 0.05) 100%);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* تأثير الخلفية الديناميكية */
+        .dynamic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            bottom: 10%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        /* شريط الحالة الذكي */
+        .smart-status-bar {
+            height: 44px;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%,
+                var(--secondary-color) 50%,
+                var(--accent-color) 100%);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge i {
+            animation: pulse 2s infinite;
+        }
+
+        /* الهيدر الرئيسي */
+        .main-header {
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 24px;
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            z-index: var(--z-sticky);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 8px 32px rgba(10, 147, 150, 0.3);
+            transition: transform var(--transition-medium);
+        }
+
+        .logo-icon:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .logo-text span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header-back {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .header-back:hover {
+            color: var(--primary-color);
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-action {
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .header-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            color: var(--primary-color);
+        }
+
+        .action-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            font-weight: 700;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(231, 111, 81, 0.3);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 124px 0 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .profile-container {
+            padding: 0 24px;
+        }
+
+        /* بطاقة الملف الشخصي الرئيسية */
+        .profile-hero-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow-heavy);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .profile-hero-header {
+            padding: 32px;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 50%,
+                rgba(155, 93, 229, 0.1) 100%);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-identity {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .profile-avatar-container {
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--bg-primary);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            width: 36px;
+            height: 36px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 2px solid var(--bg-primary);
+        }
+
+        .avatar-edit-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .profile-title {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .profile-badge {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-badge.verified {
+            background: linear-gradient(135deg, var(--success-color), #21867a);
+            color: white;
+            border-color: transparent;
+        }
+
+        .profile-badge.premium {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+            border-color: transparent;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .profile-action-btn {
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .profile-action-btn.primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .profile-action-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .profile-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-action-btn.primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+        }
+
+        .profile-action-btn.secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* إحصائيات الملف الشخصي */
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px 32px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .profile-stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .profile-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border-color: var(--primary-color);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .trend-up {
+            color: var(--success-color);
+        }
+
+        .trend-down {
+            color: var(--danger-color);
+        }
+
+        /* محتوى الملف الشخصي */
+        .profile-content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        /* القسم الرئيسي */
+        .profile-main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* الشريط الجانبي */
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* البطاقات */
+        .profile-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            color: var(--primary-color);
+        }
+
+        .card-action {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .card-action:hover {
+            transform: translateX(-4px);
+        }
+
+        /* قسم المعلومات الشخصية */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value i {
+            color: var(--primary-color);
+        }
+
+        .info-edit {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .info-edit:hover {
+            transform: translateX(-4px);
+        }
+
+        /* قسم المهارات */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .skill-item {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition-fast);
+        }
+
+        .skill-item:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(10, 147, 150, 0.2);
+        }
+
+        .skill-item:hover .skill-name,
+        .skill-item:hover .skill-level {
+            color: white;
+        }
+
+        .skill-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .skill-level {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .skill-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .skill-action-btn {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .skill-action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* قسم التعليم والشهادات */
+        .education-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .education-item {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            padding-right: 80px;
+        }
+
+        .education-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .education-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .education-institution {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .education-period {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* قسم الخبرة العملية */
+        .experience-timeline {
+            position: relative;
+            padding-right: 30px;
+        }
+
+        .experience-item {
+            position: relative;
+            padding-bottom: 30px;
+            border-right: 3px solid var(--border-color);
+            padding-right: 30px;
+        }
+
+        .experience-item:last-child {
+            padding-bottom: 0;
+            border-right: 3px solid transparent;
+        }
+
+        .experience-marker {
+            position: absolute;
+            right: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-primary);
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .experience-content {
+            padding-top: 2px;
+        }
+
+        .experience-period {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+            padding: 4px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .experience-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .experience-company {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .experience-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* قسم المشاريع */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .project-image {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-view-btn {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+            transform: translateY(20px);
+            transition: all var(--transition-fast);
+        }
+
+        .project-card:hover .project-view-btn {
+            transform: translateY(0);
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .project-category {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .project-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* قسم الإنجازات */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .achievement-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border-color: var(--primary-color);
+        }
+
+        .achievement-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin: 0 auto 16px;
+        }
+
+        .achievement-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .achievement-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* قسم التوصيات */
+        .recommendations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .recommendation-item {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .recommendation-info h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .recommendation-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .recommendation-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .recommendation-rating i {
+            color: var(--secondary-color);
+            font-size: 12px;
+        }
+
+        .recommendation-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-date {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-align: left;
+        }
+
+        /* قسم الإعدادات */
+        .settings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .setting-item:hover {
+            background: var(--primary-color);
+            border-color: transparent;
+            transform: translateX(-8px);
+        }
+
+        .setting-item:hover .setting-icon,
+        .setting-item:hover .setting-text,
+        .setting-item:hover .setting-value {
+            color: white;
+        }
+
+        .setting-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .setting-content {
+            flex: 1;
+        }
+
+        .setting-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .setting-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .setting-value {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+        }
+
+        /* التبديل */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 32px;
+            background: var(--border-color);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-color);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+        }
+
+        .toggle-switch.active::after {
+            right: 32px;
+        }
+
+        /* الشريط السفلي */
+        .profile-bottom-bar {
+            height: 90px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-top: 1px solid var(--glass-border);
+            padding: 0 24px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            box-shadow: 0 -4px 32px var(--shadow-color);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            flex: 1;
+            padding: 12px;
+            border-radius: 16px;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.15);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            position: relative;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 700;
+            border: 2px solid var(--bg-primary);
+        }
+
+        /* نافذة التعديل */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+        }
+
+        .edit-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .edit-container {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            transform: translateY(40px);
+            transition: transform var(--transition-medium);
+        }
+
+        .edit-modal.show .edit-container {
+            transform: translateY(0);
+        }
+
+        .edit-header {
+            padding: 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 100%);
+        }
+
+        .edit-header h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .edit-close {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .edit-close:hover {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+            transform: rotate(90deg);
+        }
+
+        .edit-body {
+            padding: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(10, 147, 150, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 120px;
+            transition: all var(--transition-fast);
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(10, 147, 150, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .form-btn {
+            flex: 1;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            font-family: inherit;
+        }
+
+        .form-btn.primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .form-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* أنيميشن */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        /* تحسينات للأندرويد */
+        .android-optimized {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .touch-feedback {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .touch-feedback::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: inherit;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.3s;
+            pointer-events: none;
+        }
+
+        .touch-feedback:active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* التجاوب */
+        @media (max-width: 1200px) {
+            .profile-content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .main-header {
+                height: 70px;
+                padding: 0 16px;
+            }
+            
+            .main-content {
+                padding: 114px 0 160px;
+            }
+            
+            .profile-container {
+                padding: 0 16px;
+            }
+            
+            .profile-hero-header {
+                flex-direction: column;
+                gap: 24px;
+                padding: 24px;
+            }
+            
+            .profile-identity {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-stats-grid {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 12px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .profile-bottom-bar {
+                height: 80px;
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-name {
+                font-size: 24px;
+            }
+            
+            .profile-title {
+                font-size: 16px;
+            }
+            
+            .profile-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .profile-action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* دعم Safe Areas للأجهزة الحديثة */
+        @supports (padding: max(0px)) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            
+            .smart-status-bar {
+                height: calc(44px + env(safe-area-inset-top));
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .main-header {
+                top: calc(44px + env(safe-area-inset-top));
+            }
+            
+            .main-content {
+                padding-top: calc(124px + env(safe-area-inset-top));
+            }
+            
+            .profile-bottom-bar {
+                height: calc(90px + env(safe-area-inset-bottom));
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* تحسينات الأداء */
+        .performance-optimized {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .profile-stat:hover,
+            .project-card:hover,
+            .achievement-card:hover,
+            .setting-item:hover,
+            .skill-item:hover {
+                transform: none;
+            }
+            
+            .touch-feedback:active::after {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="android-optimized">
+    <!-- الخلفية الديناميكية -->
+    <div class="dynamic-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- شريط الحالة الذكي -->
+    <div class="smart-status-bar">
+        <div class="status-content">
+            <span id="currentTime">--:--</span>
+            <div class="status-badge">
+                <i class="fas fa-wifi"></i>
+                <span>5G</span>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>85%</span>
+            </div>
+        </div>
+        <div class="status-content">
+            <div class="status-badge">
+                <i class="fas fa-user-circle"></i>
+                <span>مشاهدة الملف الشخصي</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- الهيدر الرئيسي -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="javascript:history.back()" class="header-back">
+                <i class="fas fa-arrow-right"></i>
+                <span>رجوع</span>
+            </a>
+            <h1 class="header-title">ملفي الشخصي</h1>
+        </div>
+
+        <div class="header-right">
+            <div class="header-action" onclick="toggleDarkMode()" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="header-action" onclick="profileSystem.shareProfile()">
+                <i class="fas fa-share-alt"></i>
+            </div>
+            <div class="header-action" onclick="profileSystem.toggleEditMode()">
+                <i class="fas fa-edit"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <div class="profile-container">
+            <!-- بطاقة الملف الشخصي الرئيسية -->
+            <div class="profile-hero-card">
+                <div class="profile-hero-header">
+                    <div class="profile-identity">
+                        <div class="profile-avatar-container">
+                            <div class="profile-avatar" id="profileAvatar">
+                                <span>أ</span>
+                            </div>
+                            <div class="avatar-edit-btn" onclick="profileSystem.editAvatar()">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info">
+                            <h1 class="profile-name" id="profileName">أحمد محمد</h1>
+                            <div class="profile-title" id="profileTitle">مصمم UI/UX محترف</div>
+                            
+                            <div class="profile-badges">
+                                <div class="profile-badge verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>حساب موثق</span>
+                                </div>
+                                <div class="profile-badge premium">
+                                    <i class="fas fa-crown"></i>
+                                    <span>عضو مميز</span>
+                                </div>
+                                <div class="profile-badge">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span id="profileLocation">الرياض، السعودية</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="profile-action-btn primary" onclick="profileSystem.editProfile()">
+                            <i class="fas fa-edit"></i>
+                            تعديل الملف
+                        </button>
+                        <button class="profile-action-btn secondary" onclick="profileSystem.viewPortfolio()">
+                            <i class="fas fa-eye"></i>
+                            معاينة الملف
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- إحصائيات الملف الشخصي -->
+                <div class="profile-stats-grid">
+                    <div class="profile-stat" onclick="profileSystem.viewProjects()">
+                        <div class="stat-value" id="projectsCount">24</div>
+                        <div class="stat-label">المشاريع المنفذة</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+3 هذا الشهر</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stat" onclick="profileSystem.viewJobs()">
+                        <div class="stat-value" id="jobsCount">18</div>
+                        <div class="stat-label">الوظائف المنجزة</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+2 هذا الأسبوع</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stat" onclick="profileSystem.viewReviews()">
+                        <div class="stat-value" id="ratingValue">4.9</div>
+                        <div class="stat-label">التقييم العام</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-star"></i>
+                            <span>من 124 تقييم</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stat" onclick="profileSystem.viewEarnings()">
+                        <div class="stat-value" id="earningsValue">48.5K</div>
+                        <div class="stat-label">إجمالي الأرباح</div>
+                        <div class="stat-trend trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12% عن الشهر</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شبكة محتوى الملف الشخصي -->
+            <div class="profile-content-grid">
+                <!-- القسم الرئيسي -->
+                <div class="profile-main-content">
+                    <!-- المعلومات الشخصية -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-user-circle"></i>
+                                المعلومات الشخصية
+                            </div>
+                            <div class="card-action" onclick="profileSystem.editPersonalInfo()">
+                                <i class="fas fa-edit"></i>
+                                تعديل
+                            </div>
+                        </div>
+                        
+                        <div class="info-grid" id="personalInfoGrid">
+                            <!-- سيتم إضافة المعلومات ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- المهارات والخبرات -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-tools"></i>
+                                المهارات والخبرات
+                            </div>
+                            <div class="card-action" onclick="profileSystem.editSkills()">
+                                <i class="fas fa-plus"></i>
+                                إضافة
+                            </div>
+                        </div>
+                        
+                        <div class="skills-container" id="skillsContainer">
+                            <!-- سيتم إضافة المهارات ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- المشاريع -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-project-diagram"></i>
+                                المشاريع الحديثة
+                            </div>
+                            <div class="card-action" onclick="profileSystem.viewAllProjects()">
+                                <i class="fas fa-arrow-left"></i>
+                                عرض الكل
+                            </div>
+                        </div>
+                        
+                        <div class="projects-grid" id="projectsGrid">
+                            <!-- سيتم إضافة المشاريع ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- الخبرة العملية -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-briefcase"></i>
+                                الخبرة العملية
+                            </div>
+                            <div class="card-action" onclick="profileSystem.editExperience()">
+                                <i class="fas fa-edit"></i>
+                                تعديل
+                            </div>
+                        </div>
+                        
+                        <div class="experience-timeline" id="experienceTimeline">
+                            <!-- سيتم إضافة الخبرات ديناميكياً -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الشريط الجانبي -->
+                <div class="profile-sidebar">
+                    <!-- التعليم والشهادات -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-graduation-cap"></i>
+                                التعليم والشهادات
+                            </div>
+                            <div class="card-action" onclick="profileSystem.editEducation()">
+                                <i class="fas fa-plus"></i>
+                                إضافة
+                            </div>
+                        </div>
+                        
+                        <div class="education-list" id="educationList">
+                            <!-- سيتم إضافة التعليم ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- الإنجازات -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-trophy"></i>
+                                الإنجازات
+                            </div>
+                            <div class="card-action" onclick="profileSystem.viewAllAchievements()">
+                                <i class="fas fa-arrow-left"></i>
+                                عرض الكل
+                            </div>
+                        </div>
+                        
+                        <div class="achievements-grid" id="achievementsGrid">
+                            <!-- سيتم إضافة الإنجازات ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- التوصيات -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-comment-dots"></i>
+                                التوصيات
+                            </div>
+                            <div class="card-action" onclick="profileSystem.viewAllRecommendations()">
+                                <i class="fas fa-arrow-left"></i>
+                                عرض الكل
+                            </div>
+                        </div>
+                        
+                        <div class="recommendations-list" id="recommendationsList">
+                            <!-- سيتم إضافة التوصيات ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- الإعدادات -->
+                    <div class="profile-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-cog"></i>
+                                الإعدادات
+                            </div>
+                        </div>
+                        
+                        <div class="settings-list" id="settingsList">
+                            <!-- سيتم إضافة الإعدادات ديناميكياً -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة تعديل الملف الشخصي -->
+    <div class="edit-modal" id="editModal">
+        <div class="edit-container">
+            <div class="edit-header">
+                <h2 id="editModalTitle">تعديل الملف الشخصي</h2>
+                <button class="edit-close" onclick="profileSystem.closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="edit-body" id="editModalBody">
+                <!-- سيتم إضافة محتوى النافذة ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- الشريط السفلي -->
+    <nav class="profile-bottom-bar">
+        <a href="dashboard-designer.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="jobs.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <span>الوظائف</span>
+        </a>
+        
+        <a href="messages.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-comments"></i>
+                <span class="nav-badge">12</span>
+            </div>
+            <span>الرسائل</span>
+        </a>
+        
+        <a href="notifications.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-bell"></i>
+                <span class="nav-badge">5</span>
+            </div>
+            <span>الإشعارات</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item active">
+            <div class="nav-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- نظام الملف الشخصي المتقدم -->
+    <script>
+        // نظام إدارة الملف الشخصي
+        class ProfileSystem {
+            constructor() {
+                this.userData = null;
+                this.isEditMode = false;
+                this.currentEditSection = null;
+                this.init();
+            }
+
+            async init() {
+                await this.loadUserData();
+                this.setupEventListeners();
+                this.renderProfile();
+                this.updateTime();
+                this.setupTouchGestures();
+                this.showWelcomeMessage();
+            }
+
+            async loadUserData() {
+                // تحميل بيانات المستخدم من localStorage أو API
+                const savedData = localStorage.getItem('userProfile');
+                
+                if (savedData) {
+                    this.userData = JSON.parse(savedData);
+                } else {
+                    // بيانات افتراضية
+                    this.userData = {
+                        id: 1,
+                        name: "هيام حسن الحاج",
+                        title: "مصمم UI/UX محترف",
+                        location: "صنعاء، اليمن",
+                        avatar: "أ",
+                        email: "heyam@pixelart.com",
+                        phone: "+966500123456",
+                        bio: "مصممة UI/UX محترفة بخبرة 5 سنوات في تصميم واجهات المستخدم وتجارب المستخدم. متخصصة في تصميم تطبيقات الهاتف والويب مع التركيز على البساطة وسهولة الاستخدام.",
+                        skills: [
+                            { name: "Figma", level: "متقدم" },
+                            { name: "Adobe XD", level: "متقدم" },
+                            { name: "UI Design", level: "متقدم" },
+                            { name: "User Research", level: "متوسط" },
+                            { name: "Prototyping", level: "متقدم" },
+                            { name: "React", level: "متوسط" },
+                            { name: "Illustrator", level: "متوسط" },
+                            { name: "Photoshop", level: "متقدم" }
+                        ],
+                        personalInfo: {
+                            nationality: "يمنية",
+                            birthDate: "15 مارس 2000",
+                            gender: "انثى",
+                            languages: ["العربية", "الإنجليزية"],
+                            availability: "متاح للعمل",
+                            hourlyRate: "5000 ريال/ساعة"
+                        },
+                        education: [
+                            {
+                                degree: "بكالوريوس تصميم جرافيك",
+                                institution: "كلية رواد النهضة",
+                                period: "2022 - 2026",
+                                grade: "ممتاز"
+                            },
+                            {
+                                degree: "شهادة UX Design المتقدمة",
+                                institution: "معهد التصميم الرقمي",
+                                period: "2025",
+                                grade: "ممتاز"
+                            }
+                        ],
+                        experience: [
+                            {
+                                title: "مصممة UI/UX رئيسي",
+                                company: "شركة التقنية المتقدمة",
+                                period: "2022 - الحاضر",
+                                description: "تصميم واجهات مستخدم لتطبيقات الهاتف والويب، إدارة فريق تصميم مكون من 5 مصممين"
+                            },
+                            {
+                                title: "مصممة UI/UX",
+                                company: "مجموعة الرفاهية",
+                                period: "2023 - 2024",
+                                description: "تصميم هويات بصرية وتجارب مستخدم للعلامات التجارية الفاخرة"
+                            },
+                            {
+                                title: "مصممة جرافيك",
+                                company: "شركة الحلول الرقمية",
+                                period: "2019 - 2020",
+                                description: "تصميم المواد التسويقية والهويات البصرية للعملاء"
+                            }
+                        ],
+                        projects: [
+                            {
+                                title: "تطبيق البنك الذكي",
+                                category: "UI/UX Design",
+                                image: "bank-app",
+                                views: 1240,
+                                likes: 86
+                            },
+                            {
+                                title: "منصة التعليم عن بعد",
+                                category: "Web Design",
+                                image: "e-learning",
+                                views: 980,
+                                likes: 64
+                            },
+                            {
+                                title: "تطبيق توصيل الطعام",
+                                category: "Mobile App",
+                                image: "food-delivery",
+                                views: 1520,
+                                likes: 120
+                            }
+                        ],
+                        achievements: [
+                            {
+                                title: "مصمم الشهر",
+                                description: "تم اختياره كمصمم الشهر في المنصة",
+                                icon: "fa-trophy"
+                            },
+                            {
+                                title: "أعلى تقييم",
+                                description: "تقييم 5 نجوم من 95% من العملاء",
+                                icon: "fa-star"
+                            },
+                            {
+                                title: "100 مشروع",
+                                description: "إنجاز أكثر من 100 مشروع ناجح",
+                                icon: "fa-check-circle"
+                            },
+                            {
+                                title: "خبيرة معتمد",
+                                description: "شهادة خبيرة في تصميم UI/UX",
+                                icon: "fa-certificate"
+                            }
+                        ],
+                        recommendations: [
+                            {
+                                name: "محمد الخالد",
+                                title: "مدير مشروع",
+                                avatar: "م",
+                                rating: 5,
+                                text: "أحمد مصمم متميز يتمتع برؤية إبداعية وقدرة على تحويل الأفكار إلى تصميمات رائعة. التعامل معه كان ممتعاً ومثمراً.",
+                                date: "منذ شهر"
+                            },
+                            {
+                                name: "سارة النجدي",
+                                title: "مالكة شركة",
+                                avatar: "س",
+                                rating: 5,
+                                text: "العمل مع أحمد كان تجربة رائعة. يمتلك مهارات اتصال ممتازة ويتفهم احتياجات العملاء بدقة.",
+                                date: "منذ أسبوعين"
+                            }
+                        ],
+                        settings: {
+                            notifications: true,
+                            darkMode: false,
+                            emailUpdates: true,
+                            twoFactor: false,
+                            privacy: "public"
+                        },
+                        stats: {
+                            projects: 24,
+                            jobs: 18,
+                            rating: 4.9,
+                            earnings: 48500,
+                            reviews: 124,
+                            completed: 42,
+                            ongoing: 3,
+                            saved: 12
+                        }
+                    };
+                    
+                    localStorage.setItem('userProfile', JSON.stringify(this.userData));
+                }
+            }
+
+            setupEventListeners() {
+                // تحديث الوقت كل دقيقة
+                setInterval(() => this.updateTime(), 60000);
+                
+                // استجابة زر الرجوع
+                window.addEventListener('popstate', () => {
+                    this.showLoadingAnimation();
+                });
+            }
+
+            setupTouchGestures() {
+                let touchStartY = 0;
+                let touchEndY = 0;
+
+                document.addEventListener('touchstart', e => {
+                    touchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', e => {
+                    touchEndY = e.changedTouches[0].screenY;
+                    this.handlePullToRefresh(touchStartY, touchEndY);
+                }, { passive: true });
+            }
+
+            handlePullToRefresh(startY, endY) {
+                const pullDistance = endY - startY;
+                
+                if (pullDistance > 100 && window.scrollY === 0) {
+                    this.showToast('جاري تحديث البيانات...', 'info');
+                    setTimeout(() => {
+                        this.loadUserData();
+                        this.renderProfile();
+                        this.showToast('تم تحديث البيانات بنجاح', 'success');
+                    }, 1000);
+                }
+            }
+
+            renderProfile() {
+                this.renderHeroSection();
+                this.renderPersonalInfo();
+                this.renderSkills();
+                this.renderProjects();
+                this.renderExperience();
+                this.renderEducation();
+                this.renderAchievements();
+                this.renderRecommendations();
+                this.renderSettings();
+            }
+
+            renderHeroSection() {
+                document.getElementById('profileName').textContent = this.userData.name;
+                document.getElementById('profileTitle').textContent = this.userData.title;
+                document.getElementById('profileLocation').textContent = this.userData.location;
+                document.getElementById('profileAvatar').innerHTML = `<span>${this.userData.avatar}</span>`;
+                
+                // تحديث الإحصائيات
+                document.getElementById('projectsCount').textContent = this.userData.stats.projects;
+                document.getElementById('jobsCount').textContent = this.userData.stats.jobs;
+                document.getElementById('ratingValue').textContent = this.userData.stats.rating;
+                document.getElementById('earningsValue').textContent = this.formatNumber(this.userData.stats.earnings);
+            }
+
+            renderPersonalInfo() {
+                const container = document.getElementById('personalInfoGrid');
+                const infoItems = [
+                    { icon: 'fa-envelope', label: 'البريد الإلكتروني', value: this.userData.email },
+                    { icon: 'fa-phone', label: 'رقم الهاتف', value: this.userData.phone },
+                    { icon: 'fa-globe', label: 'الجنسية', value: this.userData.personalInfo.nationality },
+                    { icon: 'fa-birthday-cake', label: 'تاريخ الميلاد', value: this.userData.personalInfo.birthDate },
+                    { icon: 'fa-user', label: 'الجنس', value: this.userData.personalInfo.gender },
+                    { icon: 'fa-language', label: 'اللغات', value: this.userData.personalInfo.languages.join(', ') },
+                    { icon: 'fa-clock', label: 'الحالة', value: this.userData.personalInfo.availability },
+                    { icon: 'fa-money-bill-wave', label: 'السعر/ساعة', value: this.userData.personalInfo.hourlyRate }
+                ];
+                
+                container.innerHTML = infoItems.map(item => `
+                    <div class="info-item">
+                        <div class="info-label">${item.label}</div>
+                        <div class="info-value">
+                            <i class="fas ${item.icon}"></i>
+                            <span>${item.value}</span>
+                        </div>
+                        <div class="info-edit" onclick="profileSystem.editInfoItem('${item.label}')">
+                            <i class="fas fa-edit"></i>
+                            تعديل
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderSkills() {
+                const container = document.getElementById('skillsContainer');
+                container.innerHTML = this.userData.skills.map((skill, index) => `
+                    <div class="skill-item touch-feedback">
+                        <div class="skill-name">${skill.name}</div>
+                        <div class="skill-level">${skill.level}</div>
+                        <div class="skill-actions">
+                            <button class="skill-action-btn" onclick="profileSystem.editSkill(${index})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="skill-action-btn" onclick="profileSystem.deleteSkill(${index})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderProjects() {
+                const container = document.getElementById('projectsGrid');
+                container.innerHTML = this.userData.projects.map(project => `
+                    <div class="project-card touch-feedback" onclick="profileSystem.viewProject('${project.title}')">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-view-btn">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-title">${project.title}</div>
+                            <div class="project-category">
+                                <i class="fas fa-tag"></i>
+                                ${project.category}
+                            </div>
+                            <div class="project-stats">
+                                <div class="project-stat">
+                                    <i class="fas fa-eye"></i>
+                                    ${project.views}
+                                </div>
+                                <div class="project-stat">
+                                    <i class="fas fa-heart"></i>
+                                    ${project.likes}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderExperience() {
+                const container = document.getElementById('experienceTimeline');
+                container.innerHTML = this.userData.experience.map((exp, index) => `
+                    <div class="experience-item">
+                        <div class="experience-marker"></div>
+                        <div class="experience-content">
+                            <div class="experience-period">${exp.period}</div>
+                            <div class="experience-title">${exp.title}</div>
+                            <div class="experience-company">${exp.company}</div>
+                            <div class="experience-description">${exp.description}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderEducation() {
+                const container = document.getElementById('educationList');
+                container.innerHTML = this.userData.education.map(edu => `
+                    <div class="education-item">
+                        <div class="education-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="education-title">${edu.degree}</div>
+                        <div class="education-institution">${edu.institution}</div>
+                        <div class="education-period">
+                            <i class="far fa-calendar"></i>
+                            ${edu.period}
+                            <span>•</span>
+                            <i class="fas fa-star"></i>
+                            ${edu.grade}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderAchievements() {
+                const container = document.getElementById('achievementsGrid');
+                container.innerHTML = this.userData.achievements.map(achievement => `
+                    <div class="achievement-card touch-feedback" onclick="profileSystem.viewAchievement('${achievement.title}')">
+                        <div class="achievement-icon">
+                            <i class="fas ${achievement.icon}"></i>
+                        </div>
+                        <div class="achievement-title">${achievement.title}</div>
+                        <div class="achievement-description">${achievement.description}</div>
+                    </div>
+                `).join('');
+            }
+
+            renderRecommendations() {
+                const container = document.getElementById('recommendationsList');
+                container.innerHTML = this.userData.recommendations.map(rec => `
+                    <div class="recommendation-item">
+                        <div class="recommendation-header">
+                            <div class="recommendation-avatar" style="background: linear-gradient(135deg, ${this.getAvatarColor(rec.avatar)}, ${this.getAvatarColor(rec.avatar, true)});">
+                                ${rec.avatar}
+                            </div>
+                            <div class="recommendation-info">
+                                <h4>${rec.name}</h4>
+                                <p>${rec.title}</p>
+                                <div class="recommendation-rating">
+                                    ${this.renderStars(rec.rating)}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommendation-text">${rec.text}</div>
+                        <div class="recommendation-date">${rec.date}</div>
+                    </div>
+                `).join('');
+            }
+
+            renderSettings() {
+                const container = document.getElementById('settingsList');
+                const settings = [
+                    { icon: 'fa-bell', text: 'الإشعارات', description: 'إدارة إشعارات التطبيق', type: 'toggle', value: this.userData.settings.notifications },
+                    { icon: 'fa-moon', text: 'الوضع الداكن', description: 'تفعيل الوضع الداكن', type: 'toggle', value: this.userData.settings.darkMode },
+                    { icon: 'fa-envelope', text: 'التحديثات عبر البريد', description: 'استلام تحديثات المنتج', type: 'toggle', value: this.userData.settings.emailUpdates },
+                    { icon: 'fa-shield-alt', text: 'المصادقة الثنائية', description: 'تعزيز أمان الحساب', type: 'toggle', value: this.userData.settings.twoFactor },
+                    { icon: 'fa-lock', text: 'الخصوصية', description: 'إعدادات الخصوصية', type: 'value', value: this.userData.settings.privacy === 'public' ? 'عام' : 'خاص' },
+                    { icon: 'fa-question-circle', text: 'المساعدة والدعم', description: 'الحصول على المساعدة', type: 'action' },
+                    { icon: 'fa-sign-out-alt', text: 'تسجيل الخروج', description: 'تسجيل الخروج من الحساب', type: 'action' }
+                ];
+                
+                container.innerHTML = settings.map(setting => `
+                    <div class="setting-item touch-feedback" onclick="profileSystem.handleSetting('${setting.text}')">
+                        <div class="setting-icon">
+                            <i class="fas ${setting.icon}"></i>
+                        </div>
+                        <div class="setting-content">
+                            <div class="setting-text">${setting.text}</div>
+                            <div class="setting-description">${setting.description}</div>
+                        </div>
+                        ${setting.type === 'toggle' ? `
+                            <div class="toggle-switch ${setting.value ? 'active' : ''}" onclick="profileSystem.toggleSetting('${setting.text}', event)"></div>
+                        ` : setting.type === 'value' ? `
+                            <div class="setting-value">${setting.value}</div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            }
+
+            renderStars(rating) {
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += `<i class="fas fa-star${i <= rating ? '' : '-o'}"></i>`;
+                }
+                return stars;
+            }
+
+            getAvatarColor(letter, dark = false) {
+                const colors = {
+                    'أ': ['#0a9396', '#005f73'],
+                    'م': ['#ee9b00', '#ca6702'],
+                    'س': ['#9b5de5', '#7209b7']
+                };
+                
+                return colors[letter] ? colors[letter][dark ? 1 : 0] : 
+                    dark ? '#475569' : '#64748b';
+            }
+
+            formatNumber(num) {
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num.toString();
+            }
+
+            async editProfile() {
+                this.openEditModal('general', 'تعديل المعلومات العامة');
+            }
+
+            editPersonalInfo() {
+                this.openEditModal('personal', 'تعديل المعلومات الشخصية');
+            }
+
+            editSkills() {
+                this.openEditModal('skills', 'تعديل المهارات');
+            }
+
+            editExperience() {
+                this.openEditModal('experience', 'تعديل الخبرات العملية');
+            }
+
+            editEducation() {
+                this.openEditModal('education', 'تعديل التعليم والشهادات');
+            }
+
+            openEditModal(section, title) {
+                this.currentEditSection = section;
+                const modal = document.getElementById('editModal');
+                const modalTitle = document.getElementById('editModalTitle');
+                const modalBody = document.getElementById('editModalBody');
+                
+                modalTitle.textContent = title;
+                
+                switch(section) {
+                    case 'general':
+                        modalBody.innerHTML = this.getGeneralEditForm();
+                        break;
+                    case 'personal':
+                        modalBody.innerHTML = this.getPersonalInfoEditForm();
+                        break;
+                    case 'skills':
+                        modalBody.innerHTML = this.getSkillsEditForm();
+                        break;
+                    case 'experience':
+                        modalBody.innerHTML = this.getExperienceEditForm();
+                        break;
+                    case 'education':
+                        modalBody.innerHTML = this.getEducationEditForm();
+                        break;
+                }
+                
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            getGeneralEditForm() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">الاسم الكامل</label>
+                        <input type="text" class="form-input" id="editName" value="${this.userData.name}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">المسمى الوظيفي</label>
+                        <input type="text" class="form-input" id="editTitle" value="${this.userData.title}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">الموقع</label>
+                        <input type="text" class="form-input" id="editLocation" value="${this.userData.location}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">نبذة عنك</label>
+                        <textarea class="form-textarea" id="editBio">${this.userData.bio}</textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="profileSystem.closeEditModal()">
+                            إلغاء
+                        </button>
+                        <button class="form-btn primary" onclick="profileSystem.saveGeneralInfo()">
+                            حفظ التغييرات
+                        </button>
+                    </div>
+                `;
+            }
+
+            getPersonalInfoEditForm() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">البريد الإلكتروني</label>
+                        <input type="email" class="form-input" id="editEmail" value="${this.userData.email}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">رقم الهاتف</label>
+                        <input type="tel" class="form-input" id="editPhone" value="${this.userData.phone}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">الجنسية</label>
+                        <input type="text" class="form-input" id="editNationality" value="${this.userData.personalInfo.nationality}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">تاريخ الميلاد</label>
+                        <input type="text" class="form-input" id="editBirthDate" value="${this.userData.personalInfo.birthDate}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">الجنس</label>
+                        <select class="form-input" id="editGender">
+                            <option value="ذكر" ${this.userData.personalInfo.gender === 'ذكر' ? 'selected' : ''}>ذكر</option>
+                            <option value="أنثى" ${this.userData.personalInfo.gender === 'أنثى' ? 'selected' : ''}>أنثى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">اللغات</label>
+                        <input type="text" class="form-input" id="editLanguages" value="${this.userData.personalInfo.languages.join(', ')}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">السعر بالساعة</label>
+                        <input type="text" class="form-input" id="editHourlyRate" value="${this.userData.personalInfo.hourlyRate}">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="profileSystem.closeEditModal()">
+                            إلغاء
+                        </button>
+                        <button class="form-btn primary" onclick="profileSystem.savePersonalInfo()">
+                            حفظ التغييرات
+                        </button>
+                    </div>
+                `;
+            }
+
+            getSkillsEditForm() {
+                const skillsList = this.userData.skills.map(skill => skill.name).join('\n');
+                return `
+                    <div class="form-group">
+                        <label class="form-label">المهارات (كل مهارة في سطر)</label>
+                        <textarea class="form-textarea" id="editSkills" rows="8">${skillsList}</textarea>
+                    </div>
+                    
+                    <div style="background: var(--bg-secondary); padding: 16px; border-radius: 16px; margin-bottom: 24px;">
+                        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 8px;">
+                            <i class="fas fa-info-circle" style="color: var(--primary-color); margin-left: 8px;"></i>
+                            اكتب كل مهارة في سطر منفصل. يمكنك إضافة مستوى المهارة بجانبها مثل: "Figma - متقدم"
+                        </p>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="profileSystem.closeEditModal()">
+                            إلغاء
+                        </button>
+                        <button class="form-btn primary" onclick="profileSystem.saveSkills()">
+                            حفظ المهارات
+                        </button>
+                    </div>
+                `;
+            }
+
+            getExperienceEditForm() {
+                const experiences = this.userData.experience.map(exp => 
+                    `${exp.title}\n${exp.company}\n${exp.period}\n${exp.description}`
+                ).join('\n\n---\n\n');
+                
+                return `
+                    <div class="form-group">
+                        <label class="form-label">الخبرات العملية</label>
+                        <textarea class="form-textarea" id="editExperience" rows="12">${experiences}</textarea>
+                    </div>
+                    
+                    <div style="background: var(--bg-secondary); padding: 16px; border-radius: 16px; margin-bottom: 24px;">
+                        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 8px;">
+                            <i class="fas fa-info-circle" style="color: var(--primary-color); margin-left: 8px;"></i>
+                            اكتب كل خبرة عمل في سطر منفصل، مع الفواصل التالية:
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">السطر 1: المسمى الوظيفي</p>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">السطر 2: اسم الشركة</p>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">السطر 3: الفترة الزمنية</p>
+                        <p style="color: var(--text-secondary); font-size: 12px;">السطر 4: الوصف</p>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="profileSystem.closeEditModal()">
+                            إلغاء
+                        </button>
+                        <button class="form-btn primary" onclick="profileSystem.saveExperience()">
+                            حفظ الخبرات
+                        </button>
+                    </div>
+                `;
+            }
+
+            getEducationEditForm() {
+                const educationList = this.userData.education.map(edu => 
+                    `${edu.degree}\n${edu.institution}\n${edu.period}\n${edu.grade}`
+                ).join('\n\n---\n\n');
+                
+                return `
+                    <div class="form-group">
+                        <label class="form-label">التعليم والشهادات</label>
+                        <textarea class="form-textarea" id="editEducation" rows="10">${educationList}</textarea>
+                    </div>
+                    
+                    <div style="background: var(--bg-secondary); padding: 16px; border-radius: 16px; margin-bottom: 24px;">
+                        <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 8px;">
+                            <i class="fas fa-info-circle" style="color: var(--primary-color); margin-left: 8px;"></i>
+                            اكتب كل مؤهل في سطر منفصل، مع الفواصل التالية:
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">السطر 1: المؤهل</p>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">السطر 2: المؤسسة التعليمية</p>
+                        <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 4px;">السطر 3: الفترة الزمنية</p>
+                        <p style="color: var(--text-secondary); font-size: 12px;">السطر 4: التقدير</p>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" onclick="profileSystem.closeEditModal()">
+                            إلغاء
+                        </button>
+                        <button class="form-btn primary" onclick="profileSystem.saveEducation()">
+                            حفظ التعليم
+                        </button>
+                    </div>
+                `;
+            }
+
+            saveGeneralInfo() {
+                const name = document.getElementById('editName').value;
+                const title = document.getElementById('editTitle').value;
+                const location = document.getElementById('editLocation').value;
+                const bio = document.getElementById('editBio').value;
+                
+                if (!name || !title || !location) {
+                    this.showToast('الرجاء ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+                
+                this.userData.name = name;
+                this.userData.title = title;
+                this.userData.location = location;
+                this.userData.bio = bio;
+                
+                this.saveUserData();
+                this.closeEditModal();
+                this.showToast('تم حفظ المعلومات العامة بنجاح', 'success');
+            }
+
+            savePersonalInfo() {
+                this.userData.email = document.getElementById('editEmail').value;
+                this.userData.phone = document.getElementById('editPhone').value;
+                this.userData.personalInfo.nationality = document.getElementById('editNationality').value;
+                this.userData.personalInfo.birthDate = document.getElementById('editBirthDate').value;
+                this.userData.personalInfo.gender = document.getElementById('editGender').value;
+                this.userData.personalInfo.languages = document.getElementById('editLanguages').value.split(',').map(lang => lang.trim());
+                this.userData.personalInfo.hourlyRate = document.getElementById('editHourlyRate').value;
+                
+                this.saveUserData();
+                this.closeEditModal();
+                this.showToast('تم حفظ المعلومات الشخصية بنجاح', 'success');
+            }
+
+            saveSkills() {
+                const skillsText = document.getElementById('editSkills').value;
+                const skillLines = skillsText.split('\n').filter(line => line.trim());
+                
+                const skills = skillLines.map(line => {
+                    const parts = line.split('-').map(part => part.trim());
+                    return {
+                        name: parts[0],
+                        level: parts[1] || 'متوسط'
+                    };
+                });
+                
+                this.userData.skills = skills;
+                this.saveUserData();
+                this.closeEditModal();
+                this.showToast('تم حفظ المهارات بنجاح', 'success');
+            }
+
+            saveExperience() {
+                const expText = document.getElementById('editExperience').value;
+                const expBlocks = expText.split('\n\n---\n\n');
+                
+                const experiences = expBlocks.map(block => {
+                    const lines = block.split('\n').map(line => line.trim());
+                    return {
+                        title: lines[0] || '',
+                        company: lines[1] || '',
+                        period: lines[2] || '',
+                        description: lines[3] || ''
+                    };
+                }).filter(exp => exp.title); // إزالة التجارب الفارغة
+                
+                this.userData.experience = experiences;
+                this.saveUserData();
+                this.closeEditModal();
+                this.showToast('تم حفظ الخبرات العملية بنجاح', 'success');
+            }
+
+            saveEducation() {
+                const eduText = document.getElementById('editEducation').value;
+                const eduBlocks = eduText.split('\n\n---\n\n');
+                
+                const education = eduBlocks.map(block => {
+                    const lines = block.split('\n').map(line => line.trim());
+                    return {
+                        degree: lines[0] || '',
+                        institution: lines[1] || '',
+                        period: lines[2] || '',
+                        grade: lines[3] || ''
+                    };
+                }).filter(edu => edu.degree); // إزالة المؤهلات الفارغة
+                
+                this.userData.education = education;
+                this.saveUserData();
+                this.closeEditModal();
+                this.showToast('تم حفظ التعليم والشهادات بنجاح', 'success');
+            }
+
+            editSkill(index) {
+                const skill = this.userData.skills[index];
+                const newName = prompt('تعديل اسم المهارة:', skill.name);
+                if (newName) {
+                    const newLevel = prompt('مستوى المهارة (مبتدئ، متوسط، متقدم):', skill.level);
+                    if (newLevel) {
+                        this.userData.skills[index] = {
+                            name: newName,
+                            level: newLevel
+                        };
+                        this.saveUserData();
+                        this.renderSkills();
+                        this.showToast('تم تعديل المهارة بنجاح', 'success');
+                    }
+                }
+            }
+
+            deleteSkill(index) {
+                if (confirm('هل أنت متأكد من حذف هذه المهارة؟')) {
+                    this.userData.skills.splice(index, 1);
+                    this.saveUserData();
+                    this.renderSkills();
+                    this.showToast('تم حذف المهارة بنجاح', 'success');
+                }
+            }
+
+            editInfoItem(label) {
+                const currentValue = this.getInfoValueByLabel(label);
+                const newValue = prompt(`تعديل ${label}:`, currentValue);
+                
+                if (newValue !== null) {
+                    this.updateInfoByLabel(label, newValue);
+                    this.saveUserData();
+                    this.renderPersonalInfo();
+                    this.showToast('تم التعديل بنجاح', 'success');
+                }
+            }
+
+            getInfoValueByLabel(label) {
+                const infoMap = {
+                    'البريد الإلكتروني': this.userData.email,
+                    'رقم الهاتف': this.userData.phone,
+                    'الجنسية': this.userData.personalInfo.nationality,
+                    'تاريخ الميلاد': this.userData.personalInfo.birthDate,
+                    'الجنس': this.userData.personalInfo.gender,
+                    'اللغات': this.userData.personalInfo.languages.join(', '),
+                    'الحالة': this.userData.personalInfo.availability,
+                    'السعر/ساعة': this.userData.personalInfo.hourlyRate
+                };
+                
+                return infoMap[label] || '';
+            }
+
+            updateInfoByLabel(label, value) {
+                switch(label) {
+                    case 'البريد الإلكتروني':
+                        this.userData.email = value;
+                        break;
+                    case 'رقم الهاتف':
+                        this.userData.phone = value;
+                        break;
+                    case 'الجنسية':
+                        this.userData.personalInfo.nationality = value;
+                        break;
+                    case 'تاريخ الميلاد':
+                        this.userData.personalInfo.birthDate = value;
+                        break;
+                    case 'الجنس':
+                        this.userData.personalInfo.gender = value;
+                        break;
+                    case 'اللغات':
+                        this.userData.personalInfo.languages = value.split(',').map(lang => lang.trim());
+                        break;
+                    case 'الحالة':
+                        this.userData.personalInfo.availability = value;
+                        break;
+                    case 'السعر/ساعة':
+                        this.userData.personalInfo.hourlyRate = value;
+                        break;
+                }
+            }
+
+            async editAvatar() {
+                this.showToast('جاري فتح معرض الصور...', 'info');
+                
+                // محاكاة اختيار صورة
+                setTimeout(() => {
+                    const newAvatar = prompt('أدخل الحرف الأول من اسمك (للتغيير):', this.userData.avatar);
+                    if (newAvatar && newAvatar.length === 1) {
+                        this.userData.avatar = newAvatar;
+                        this.saveUserData();
+                        this.renderHeroSection();
+                        this.showToast('تم تغيير الصورة الرمزية بنجاح', 'success');
+                    }
+                }, 1000);
+            }
+
+            toggleEditMode() {
+                this.isEditMode = !this.isEditMode;
+                const editBtn = document.querySelector('.header-action:nth-child(3) i');
+                
+                if (this.isEditMode) {
+                    editBtn.className = 'fas fa-check';
+                    this.showToast('تم تفعيل وضع التعديل', 'info');
+                    this.enableEditMode();
+                } else {
+                    editBtn.className = 'fas fa-edit';
+                    this.showToast('تم تعطيل وضع التعديل', 'info');
+                    this.disableEditMode();
+                }
+            }
+
+            enableEditMode() {
+                document.querySelectorAll('.info-edit, .card-action, .skill-actions').forEach(element => {
+                    element.style.display = 'flex';
+                });
+            }
+
+            disableEditMode() {
+                document.querySelectorAll('.info-edit, .card-action, .skill-actions').forEach(element => {
+                    element.style.display = 'none';
+                });
+            }
+
+            handleSetting(setting) {
+                switch(setting) {
+                    case 'المساعدة والدعم':
+                        this.showHelp();
+                        break;
+                    case 'تسجيل الخروج':
+                        this.logout();
+                        break;
+                    default:
+                        // التبديلات يتم التعامل معها في toggleSetting
+                        break;
+                }
+            }
+
+            toggleSetting(setting, event) {
+                event.stopPropagation();
+                
+                switch(setting) {
+                    case 'الإشعارات':
+                        this.userData.settings.notifications = !this.userData.settings.notifications;
+                        break;
+                    case 'الوضع الداكن':
+                        this.userData.settings.darkMode = !this.userData.settings.darkMode;
+                        toggleDarkMode();
+                        break;
+                    case 'التحديثات عبر البريد':
+                        this.userData.settings.emailUpdates = !this.userData.settings.emailUpdates;
+                        break;
+                    case 'المصادقة الثنائية':
+                        this.userData.settings.twoFactor = !this.userData.settings.twoFactor;
+                        break;
+                }
+                
+                this.saveUserData();
+                this.renderSettings();
+                this.showToast(`تم ${this.userData.settings[this.getSettingKey(setting)] ? 'تفعيل' : 'تعطيل'} ${setting}`, 'success');
+            }
+
+            getSettingKey(setting) {
+                const keyMap = {
+                    'الإشعارات': 'notifications',
+                    'الوضع الداكن': 'darkMode',
+                    'التحديثات عبر البريد': 'emailUpdates',
+                    'المصادقة الثنائية': 'twoFactor'
+                };
+                return keyMap[setting];
+            }
+
+            showHelp() {
+                this.showToast('جاري فتح صفحة المساعدة...', 'info');
+                // في التطبيق الحقيقي، سيتم التوجيه لصفحة المساعدة
+            }
+
+            logout() {
+                if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                    localStorage.removeItem('userProfile');
+                    this.showToast('جاري تسجيل الخروج...', 'info');
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1000);
+                }
+            }
+
+            shareProfile() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: `${this.userData.name} - ${this.userData.title}`,
+                        text: `اطلع على ملف ${this.userData.name} الشخصي`,
+                        url: window.location.href
+                    });
+                } else {
+                    this.showToast('شارك الرابط: ' + window.location.href, 'info');
+                }
+            }
+
+            viewPortfolio() {
+                this.showToast('جاري فتح المحفظة...', 'info');
+                // في التطبيق الحقيقي، سيتم التوجيه لصفحة المحفظة
+            }
+
+            viewProjects() {
+                this.showToast('جاري فتح المشاريع...', 'info');
+            }
+
+            viewJobs() {
+                this.showToast('جاري فتح الوظائف...', 'info');
+            }
+
+            viewReviews() {
+                this.showToast('جاري فتح التقييمات...', 'info');
+            }
+
+            viewEarnings() {
+                this.showToast('جاري فتح الأرباح...', 'info');
+            }
+
+            viewAllProjects() {
+                this.showToast('جاري فتح جميع المشاريع...', 'info');
+            }
+
+            viewAllAchievements() {
+                this.showToast('جاري فتح جميع الإنجازات...', 'info');
+            }
+
+            viewAllRecommendations() {
+                this.showToast('جاري فتح جميع التوصيات...', 'info');
+            }
+
+            viewProject(title) {
+                this.showToast(`جاري فتح مشروع ${title}...`, 'info');
+            }
+
+            viewAchievement(title) {
+                this.showToast(`جاري فتح إنجاز ${title}...`, 'info');
+            }
+
+            saveUserData() {
+                localStorage.setItem('userProfile', JSON.stringify(this.userData));
+            }
+
+            closeEditModal() {
+                document.getElementById('editModal').classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+
+            updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-SA', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                document.getElementById('currentTime').textContent = timeString;
+            }
+
+            showLoadingAnimation() {
+                document.body.style.opacity = '0.7';
+                document.body.style.transition = 'opacity 0.3s';
+                
+                setTimeout(() => {
+                    document.body.style.opacity = '1';
+                }, 300);
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 120px;
+                    left: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? 'linear-gradient(135deg, var(--success-color), #21867a)' : 
+                                type === 'error' ? 'linear-gradient(135deg, var(--danger-color), #d1664b)' :
+                                'linear-gradient(135deg, var(--primary-color), var(--accent-color))'};
+                    color: white;
+                    padding: 16px 20px;
+                    border-radius: 16px;
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                    z-index: var(--z-toast);
+                    animation: slideInUp 0.3s ease-out;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                `;
+                
+                const icon = type === 'success' ? 'check-circle' : 
+                           type === 'error' ? 'exclamation-circle' : 'info-circle';
+                
+                toast.innerHTML = `
+                    <i class="fas fa-${icon}" style="font-size: 20px;"></i>
+                    <div style="flex: 1; font-size: 14px;">${message}</div>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(20px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            showWelcomeMessage() {
+                setTimeout(() => {
+                    this.showToast('مرحباً في ملفك الشخصي المتقدم!', 'info');
+                }, 1000);
+            }
+        }
+
+        // تهيئة النظام
+        let profileSystem;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            profileSystem = new ProfileSystem();
+        });
+
+        // دالات الواجهة العامة
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#darkModeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+
+        // التحقق من الوضع المحفوظ
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').className = 'fas fa-sun';
+        }
+
+        // إضافة أنيميشن
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

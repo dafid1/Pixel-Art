@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>منصة الوظائف الذكية | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* المتغيرات الأساسية */
+        :root {
+            /* نظام الألوان */
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --accent-color: #9b5de5;
+            --accent-dark: #7209b7;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --info-color: #4cc9f0;
+            
+            /* نظام التصميم */
+            --bg-primary: rgba(255, 255, 255, 0.98);
+            --bg-secondary: rgba(248, 250, 252, 0.96);
+            --bg-tertiary: rgba(241, 245, 249, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-color: rgba(226, 232, 240, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            
+            /* الأنيميشن */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* التأثيرات */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --backdrop-blur: blur(20px);
+            --backdrop-saturate: saturate(180%);
+            
+            /* الطبقات */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+            --z-toast: 1080;
+        }
+
+        /* الوضع الداكن */
+        .dark-mode {
+            --bg-primary: rgba(15, 23, 42, 0.98);
+            --bg-secondary: rgba(30, 41, 59, 0.96);
+            --bg-tertiary: rgba(51, 65, 85, 0.95);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: rgba(71, 85, 105, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.05) 0%,
+                rgba(238, 155, 0, 0.05) 50%,
+                rgba(155, 93, 229, 0.05) 100%);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* تأثير الخلفية الديناميكية */
+        .dynamic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            bottom: 10%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        /* شريط الحالة الذكي */
+        .smart-status-bar {
+            height: 44px;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%,
+                var(--secondary-color) 50%,
+                var(--accent-color) 100%);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge i {
+            animation: pulse 2s infinite;
+        }
+
+        /* الهيدر الرئيسي */
+        .main-header {
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 24px;
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            z-index: var(--z-sticky);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 8px 32px rgba(10, 147, 150, 0.3);
+            transition: transform var(--transition-medium);
+        }
+
+        .logo-icon:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .logo-text span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.15);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-action {
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .header-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            color: var(--primary-color);
+        }
+
+        .action-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            font-weight: 700;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(231, 111, 81, 0.3);
+        }
+
+        /* محتوى الصفحة الرئيسي */
+        .main-content {
+            padding: 124px 24px 100px;
+        }
+
+        /* نظام التبويبات المتقدم */
+        .smart-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            scrollbar-width: none;
+        }
+
+        .smart-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .smart-tab {
+            padding: 14px 28px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-medium);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .smart-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .smart-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 8px 32px rgba(10, 147, 150, 0.3);
+        }
+
+        .tab-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* لوحة التحكم الذكية */
+        .smart-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        /* بطاقة الذكاء الاصطناعي */
+        .ai-insight-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 24px;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .ai-content h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .ai-content p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .ai-recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .ai-recommendation {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            border-left: 4px solid var(--primary-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .ai-recommendation:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .ai-recommendation h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .ai-recommendation p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .ai-match {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        /* شبكة الوظائف الذكية */
+        .smart-jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        /* بطاقة الوظيفة الذكية */
+        .smart-job-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .smart-job-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .job-badges {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .job-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .badge-featured {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+        }
+
+        .badge-urgent {
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+        }
+
+        .badge-remote {
+            background: linear-gradient(135deg, var(--success-color), #21867a);
+            color: white;
+        }
+
+        .job-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-image-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .job-image-content i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        .job-image-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .job-image-content p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .job-content {
+            padding: 24px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .job-title h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .job-category {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .job-category span {
+            background: rgba(10, 147, 150, 0.1);
+            color: var(--primary-color);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .job-save-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        .job-save-btn:hover {
+            color: var(--danger-color);
+            background: rgba(231, 111, 81, 0.1);
+        }
+
+        .job-save-btn.saved {
+            color: var(--danger-color);
+        }
+
+        .job-client {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .client-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .client-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .client-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .client-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .client-rating i {
+            color: var(--secondary-color);
+            font-size: 12px;
+        }
+
+        .job-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .skill-tag {
+            padding: 6px 14px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .skill-tag:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .job-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .job-price {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--secondary-color);
+        }
+
+        .job-deadline {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .job-deadline.urgent {
+            color: var(--danger-color);
+            font-weight: 700;
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .job-btn {
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .job-btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .job-btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .job-btn-outline:hover {
+            background: rgba(10, 147, 150, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .job-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(10, 147, 150, 0.3);
+        }
+
+        /* الشريط الجانبي الذكي */
+        .smart-sidebar {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+            height: fit-content;
+            position: sticky;
+            top: 180px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        /* مرشحات الذكاء الاصطناعي */
+        .ai-filter-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .check-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .check-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .check-item input:checked + .check-box {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .check-box i {
+            color: white;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .check-item input:checked + .check-box i {
+            opacity: 1;
+        }
+
+        .check-label {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .check-count {
+            margin-right: auto;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* التوصيات الذكية */
+        .recommendation-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+        }
+
+        .recommendation-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .recommendation-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .recommendation-title h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .recommendation-title p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .recommendation-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width var(--transition-slow);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* لوحة الإحصائيات الذكية */
+        .smart-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 24px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .stat-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .trend-up {
+            color: var(--success-color);
+        }
+
+        .trend-down {
+            color: var(--danger-color);
+        }
+
+        /* نافذة التطبيق الذكية */
+        .smart-application-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+        }
+
+        .smart-application-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            transform: translateY(40px);
+            transition: transform var(--transition-medium);
+        }
+
+        .smart-application-modal.show .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 100%);
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .modal-close {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 32px;
+            overflow-y: auto;
+            max-height: calc(90vh - 160px);
+        }
+
+        .modal-steps {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .modal-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+            transition: all var(--transition-medium);
+        }
+
+        .modal-step.active .step-number {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: transparent;
+        }
+
+        .modal-step.completed .step-number {
+            background: var(--success-color);
+            color: white;
+            border-color: transparent;
+        }
+
+        .step-line {
+            position: absolute;
+            top: 20px;
+            right: calc(50% + 20px);
+            left: calc(-50% + 20px);
+            height: 2px;
+            background: var(--border-color);
+            z-index: -1;
+        }
+
+        .modal-step.active .step-line {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .modal-step.completed .step-line {
+            background: var(--success-color);
+        }
+
+        .step-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .modal-step.active .step-label {
+            color: var(--primary-color);
+        }
+
+        .modal-step.completed .step-label {
+            color: var(--success-color);
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* الشريط السفلي الذكي */
+        .smart-bottom-nav {
+            height: 90px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-top: 1px solid var(--glass-border);
+            padding: 0 24px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            flex: 1;
+            padding: 12px;
+            border-radius: 16px;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.15);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            position: relative;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 700;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .nav-center-action {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-top: -35px;
+            box-shadow: 0 8px 32px rgba(238, 155, 0, 0.4);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+        }
+
+        .nav-center-action:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 40px rgba(238, 155, 0, 0.6);
+        }
+
+        /* رسائل الذكاء الاصطناعي */
+        .ai-messages {
+            position: fixed;
+            bottom: 100px;
+            left: 24px;
+            right: 24px;
+            z-index: var(--z-toast);
+        }
+
+        .ai-message {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 16px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 16px;
+            animation: slideInUp 0.4s ease-out;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .ai-message-icon {
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .ai-message-content {
+            flex: 1;
+        }
+
+        .ai-message-content h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .ai-message-content p {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .ai-message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .ai-message-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .ai-message-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* الأنيميشن */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        /* التأثيرات الخاصة */
+        .shimmer {
+            background: linear-gradient(90deg, 
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* التجاوب */
+        @media (max-width: 1200px) {
+            .smart-dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .smart-sidebar {
+                position: static;
+                margin-top: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .main-header {
+                height: 70px;
+                padding: 0 16px;
+            }
+            
+            .main-content {
+                padding: 114px 16px 100px;
+            }
+            
+            .smart-jobs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .smart-tabs {
+                gap: 6px;
+            }
+            
+            .smart-tab {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+            
+            .smart-bottom-nav {
+                height: 80px;
+                padding: 0 16px;
+            }
+            
+            .nav-center-action {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                margin-top: -30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-nav {
+                display: none;
+            }
+            
+            .job-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .job-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-steps {
+                gap: 8px;
+            }
+            
+            .step-label {
+                font-size: 11px;
+            }
+        }
+
+        /* دعم Safe Areas للأجهزة الحديثة */
+        @supports (padding: max(0px)) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            
+            .smart-status-bar {
+                height: calc(44px + env(safe-area-inset-top));
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .main-header {
+                top: calc(44px + env(safe-area-inset-top));
+            }
+            
+            .main-content {
+                padding-top: calc(124px + env(safe-area-inset-top));
+            }
+            
+            .smart-bottom-nav {
+                height: calc(90px + env(safe-area-inset-bottom));
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* تحسينات الأداء */
+        .performance-optimized {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .smart-job-card:hover {
+                transform: none;
+            }
+            
+            .smart-tab:hover {
+                transform: none;
+            }
+            
+            .header-action:hover {
+                transform: none;
+            }
+            
+            .job-btn:hover {
+                transform: none;
+            }
+            
+            .nav-item:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الخلفية الديناميكية -->
+    <div class="dynamic-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- شريط الحالة الذكي -->
+    <div class="smart-status-bar">
+        <div class="status-content">
+            <span id="currentTime">--:--</span>
+            <div class="status-badge">
+                <i class="fas fa-wifi"></i>
+                <span>5G</span>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>85%</span>
+            </div>
+        </div>
+        <div class="status-content">
+            <div class="status-badge">
+                <i class="fas fa-sync-alt fa-spin"></i>
+                <span>جاري تحديث الوظائف...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- الهيدر الرئيسي -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="dashboard-designer.html" class="brand-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>بيكسل آرت</h1>
+                    <span>منصة الوظائف الذكية للمصممين</span>
+                </div>
+            </a>
+
+            <nav class="header-nav">
+                <a href="dashboard-designer.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    الرئيسية
+                </a>
+                <a href="jobs.html" class="nav-item active">
+                    <i class="fas fa-briefcase"></i>
+                    الوظائف
+                </a>
+                <a href="my-projects.html" class="nav-item">
+                    <i class="fas fa-project-diagram"></i>
+                    مشاريعي
+                </a>
+                <a href="portfolio.html" class="nav-item">
+                    <i class="fas fa-images"></i>
+                    محفظتي
+                </a>
+                <a href="learning.html" class="nav-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    التعلم
+                </a>
+            </nav>
+        </div>
+
+        <div class="header-right">
+            <div class="header-action" onclick="toggleDarkMode()" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="header-action" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="action-badge">5</span>
+            </div>
+            <div class="header-action" onclick="toggleMessages()">
+                <i class="fas fa-comments"></i>
+                <span class="action-badge">12</span>
+            </div>
+            <div class="header-action" onclick="toggleUserMenu()">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- نظام التبويبات -->
+        <div class="smart-tabs" id="smartTabs">
+            <!-- سيتم إضافة التبويبات ديناميكياً -->
+        </div>
+
+        <!-- لوحة التحكم الذكية -->
+        <div class="smart-dashboard">
+            <!-- القسم الرئيسي -->
+            <div class="main-dashboard">
+                <!-- بطاقة الذكاء الاصطناعي -->
+                <div class="ai-insight-card">
+                    <div class="ai-header">
+                        <div class="ai-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="ai-content">
+                            <h3>مساعد الذكاء الاصطناعي</h3>
+                            <p>بناءً على مهاراتك وتاريخك، وجدنا هذه الوظائف المناسبة لك</p>
+                        </div>
+                    </div>
+                    <div class="ai-recommendations" id="aiRecommendations">
+                        <!-- سيتم إضافة التوصيات ديناميكياً -->
+                    </div>
+                </div>
+
+                <!-- إحصائيات ذكية -->
+                <div class="smart-stats-grid" id="smartStats">
+                    <!-- سيتم إضافة الإحصائيات ديناميكياً -->
+                </div>
+
+                <!-- شبكة الوظائف الذكية -->
+                <div class="smart-jobs-grid" id="smartJobsGrid">
+                    <!-- سيتم إضافة الوظائف ديناميكياً -->
+                </div>
+            </div>
+
+            <!-- الشريط الجانبي الذكي -->
+            <div class="smart-sidebar">
+                <!-- مرشحات الذكاء الاصطناعي -->
+                <div class="sidebar-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-filter"></i>
+                        مرشحات ذكية
+                    </h3>
+                    <div class="ai-filter-section">
+                        <div class="filter-group">
+                            <label class="filter-label">نطاق السعر (ريال)</label>
+                            <input type="range" 
+                                   class="range-slider" 
+                                   id="priceRange"
+                                   min="0" 
+                                   max="10000" 
+                                   step="100"
+                                   value="5000">
+                            <div class="range-values">
+                                <span id="minPrice">0</span>
+                                <span id="maxPrice">10,000</span>
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label class="filter-label">المهارات المطلوبة</label>
+                            <div class="check-list">
+                                <!-- سيتم إضافة المهارات ديناميكياً -->
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label class="filter-label">نوع العمل</label>
+                            <div class="check-list">
+                                <label class="check-item">
+                                    <input type="checkbox" checked>
+                                    <span class="check-box">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="check-label">عن بُعد</span>
+                                    <span class="check-count">24</span>
+                                </label>
+                                <label class="check-item">
+                                    <input type="checkbox">
+                                    <span class="check-box">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="check-label">دوام كامل</span>
+                                    <span class="check-count">18</span>
+                                </label>
+                                <label class="check-item">
+                                    <input type="checkbox">
+                                    <span class="check-box">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="check-label">دوام جزئي</span>
+                                    <span class="check-count">12</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التوصيات الذكية -->
+                <div class="sidebar-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-bullseye"></i>
+                        توصيات لك
+                    </h3>
+                    <div id="smartRecommendations">
+                        <!-- سيتم إضافة التوصيات ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة التطبيق الذكية -->
+    <div class="smart-application-modal" id="smartApplicationModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="applicationTitle">تقديم على الوظيفة</h2>
+                <button class="modal-close" onclick="closeSmartApplicationModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-steps">
+                    <div class="modal-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-line"></div>
+                        <div class="step-label">المعلومات الأساسية</div>
+                    </div>
+                    <div class="modal-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-line"></div>
+                        <div class="step-label">العرض المقترح</div>
+                    </div>
+                    <div class="modal-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-line"></div>
+                        <div class="step-label">المرفقات</div>
+                    </div>
+                    <div class="modal-step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">التأكيد</div>
+                    </div>
+                </div>
+
+                <div class="step-content active" id="step1">
+                    <!-- محتوى الخطوة الأولى -->
+                </div>
+                <div class="step-content" id="step2">
+                    <!-- محتوى الخطوة الثانية -->
+                </div>
+                <div class="step-content" id="step3">
+                    <!-- محتوى الخطوة الثالثة -->
+                </div>
+                <div class="step-content" id="step4">
+                    <!-- محتوى الخطوة الرابعة -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسائل الذكاء الاصطناعي -->
+    <div class="ai-messages" id="aiMessages">
+        <!-- سيتم إضافة الرسائل ديناميكياً -->
+    </div>
+
+    <!-- الشريط السفلي الذكي -->
+    <nav class="smart-bottom-nav">
+        <a href="dashboard-designer.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="explore.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-compass"></i>
+            </div>
+            <span>استكشف</span>
+        </a>
+        
+        <div class="nav-center-action" onclick="openQuickActions()">
+            <i class="fas fa-plus"></i>
+        </div>
+        
+        <a href="notifications.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-bell"></i>
+                <span class="nav-badge">5</span>
+            </div>
+            <span>الإشعارات</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- نظام الذكاء الاصطناعي -->
+    <script>
+        // نظام البيانات المتقدم
+        class AdvancedJobsSystem {
+            constructor() {
+                this.jobs = [];
+                this.appliedJobs = new Set();
+                this.savedJobs = new Set();
+                this.userSkills = [];
+                this.aiRecommendations = [];
+                this.currentFilters = {};
+                this.currentView = 'recommended';
+                this.init();
+            }
+
+            async init() {
+                await this.loadUserData();
+                await this.loadJobsData();
+                await this.generateAIRecommendations();
+                this.setupEventListeners();
+                this.renderUI();
+            }
+
+            async loadUserData() {
+                const user = JSON.parse(localStorage.getItem('currentUser') || '{"skills": []}');
+                this.userSkills = user.skills || ['UI/UX', 'Adobe Photoshop', 'Figma', 'Illustrator'];
+                this.appliedJobs = new Set(JSON.parse(localStorage.getItem('appliedJobs')) || []);
+                this.savedJobs = new Set(JSON.parse(localStorage.getItem('savedJobs')) || []);
+            }
+
+            async loadJobsData() {
+                // محاكاة بيانات من API
+                this.jobs = [
+                    {
+                        id: 1,
+                        title: "مصمم UI/UX متقدم لتطبيق ذكاء اصطناعي",
+                        company: "شركة التقنية المتقدمة",
+                        companyLogo: "ت",
+                        rating: 4.9,
+                        category: "UI/UX",
+                        type: "دوام كامل",
+                        description: "نبحث عن مصمم UI/UX محترف لتصميم واجهة تطبيق ذكاء اصطناعي متقدم. المطلوب خبرة في تصميم أنظمة معقدة مع الحفاظ على البساطة وسلاسة التجربة.",
+                        skills: ["Figma", "Adobe XD", "UI Design", "User Research", "Prototyping", "Design Systems"],
+                        price: 8500,
+                        deadline: "3",
+                        deadlineType: "أيام",
+                        urgent: true,
+                        featured: true,
+                        remote: true,
+                        experience: "خبير",
+                        datePosted: new Date().toISOString(),
+                        matchScore: 95
+                    },
+                    {
+                        id: 2,
+                        title: "مصمم جرافيك لعلامة تجارية فاخرة",
+                        company: "مجموعة الرفاهية",
+                        companyLogo: "ر",
+                        rating: 4.7,
+                        category: "تصميم جرافيك",
+                        type: "مشروع",
+                        description: "تصميم هوية بصرية كاملة لعلامة تجارية فاخرة في مجال المجوهرات. يجب أن يعكس التصميم الفخامة والأناقة مع البساطة المعاصرة.",
+                        skills: ["Adobe Illustrator", "Photoshop", "Brand Identity", "Typography", "Packaging Design"],
+                        price: 12000,
+                        deadline: "7",
+                        deadlineType: "أيام",
+                        urgent: false,
+                        featured: true,
+                        remote: true,
+                        experience: "متوسط",
+                        datePosted: new Date(Date.now() - 86400000).toISOString(),
+                        matchScore: 88
+                    },
+                    {
+                        id: 3,
+                        title: "مطور واجهات أمامية مع تصميم",
+                        company: "شركة الحلول الرقمية",
+                        companyLogo: "ح",
+                        rating: 4.8,
+                        category: "تطوير ويب",
+                        type: "دوام كامل",
+                        description: "مطلوب مطور واجهات أمامية مع مهارات تصميم متقدمة. سيكون مسؤولاً عن تحويل التصاميم إلى كود مع الحفاظ على جودة عالية.",
+                        skills: ["React", "Vue.js", "Figma", "CSS3", "JavaScript", "Responsive Design"],
+                        price: 15000,
+                        deadline: "5",
+                        deadlineType: "أيام",
+                        urgent: true,
+                        featured: false,
+                        remote: false,
+                        experience: "خبير",
+                        datePosted: new Date(Date.now() - 172800000).toISOString(),
+                        matchScore: 92
+                    },
+                    {
+                        id: 4,
+                        title: "مصمم موشن جرافيك لمشروع تعليمي",
+                        company: "أكاديمية المستقبل",
+                        companyLogo: "أ",
+                        rating: 4.6,
+                        category: "موشن جرافيك",
+                        type: "مشروع",
+                        description: "تصميم فيديوهات تعليمية متحركة لمادة العلوم للمرحلة الثانوية. المطلوب إبداع في شرح المفاهيم المعقدة بطريقة مبسطة وجذابة.",
+                        skills: ["After Effects", "Premiere Pro", "Motion Graphics", "Animation", "Illustration"],
+                        price: 6500,
+                        deadline: "10",
+                        deadlineType: "أيام",
+                        urgent: false,
+                        featured: false,
+                        remote: true,
+                        experience: "مبتدئ",
+                        datePosted: new Date(Date.now() - 259200000).toISOString(),
+                        matchScore: 76
+                    },
+                    {
+                        id: 5,
+                        title: "مصمم تجربة مستخدم للتطبيقات المالية",
+                        company: "بنك التقنية",
+                        companyLogo: "ب",
+                        rating: 4.9,
+                        category: "UX Design",
+                        type: "دوام كامل",
+                        description: "تصميم تجربة مستخدم متكاملة لتطبيق مصرفي جديد. التركيز على الأمان وسهولة الاستخدام مع تقديم تجربة فريدة.",
+                        skills: ["UX Research", "Wireframing", "Prototyping", "User Testing", "Figma", "Sketch"],
+                        price: 18000,
+                        deadline: "14",
+                        deadlineType: "أيام",
+                        urgent: true,
+                        featured: true,
+                        remote: false,
+                        experience: "خبير",
+                        datePosted: new Date(Date.now() - 345600000).toISOString(),
+                        matchScore: 98
+                    }
+                ];
+            }
+
+            async generateAIRecommendations() {
+                // محاكاة خوارزمية الذكاء الاصطناعي
+                this.aiRecommendations = this.jobs
+                    .map(job => ({
+                        ...job,
+                        matchScore: this.calculateMatchScore(job)
+                    }))
+                    .sort((a, b) => b.matchScore - a.matchScore)
+                    .slice(0, 3);
+            }
+
+            calculateMatchScore(job) {
+                let score = 0;
+                
+                // مطابقة المهارات
+                const matchedSkills = job.skills.filter(skill => 
+                    this.userSkills.some(userSkill => 
+                        userSkill.toLowerCase().includes(skill.toLowerCase()) ||
+                        skill.toLowerCase().includes(userSkill.toLowerCase())
+                    )
+                );
+                score += (matchedSkills.length / job.skills.length) * 40;
+                
+                // تاريخ النشر
+                const daysAgo = Math.floor((Date.now() - new Date(job.datePosted).getTime()) / 86400000);
+                score += Math.max(0, 20 - daysAgo);
+                
+                // السعر
+                if (job.price > 10000) score += 15;
+                else if (job.price > 5000) score += 10;
+                else score += 5;
+                
+                // إضافات
+                if (job.urgent) score += 10;
+                if (job.featured) score += 10;
+                if (job.remote) score += 5;
+                
+                return Math.min(100, Math.round(score));
+            }
+
+            setupEventListeners() {
+                // النطاق السعري
+                const priceRange = document.getElementById('priceRange');
+                priceRange.addEventListener('input', (e) => {
+                    this.currentFilters.maxPrice = parseInt(e.target.value);
+                    document.getElementById('maxPrice').textContent = 
+                        e.target.value.toLocaleString();
+                    this.renderJobs();
+                });
+
+                // تحميل المزيد
+                window.addEventListener('scroll', () => {
+                    if (this.isNearBottom()) {
+                        this.loadMoreJobs();
+                    }
+                });
+            }
+
+            isNearBottom() {
+                return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000;
+            }
+
+            async loadMoreJobs() {
+                // محاكاة تحميل المزيد من الوظائف
+                if (this.isLoadingMore) return;
+                this.isLoadingMore = true;
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // إضافة وظائف إضافية
+                const newJobs = [...Array(3)].map((_, i) => ({
+                    id: this.jobs.length + i + 1,
+                    title: `وظيفة إضافية ${i + 1}`,
+                    company: "شركة جديدة",
+                    companyLogo: "ج",
+                    rating: 4.5,
+                    category: "متنوع",
+                    type: "مشروع",
+                    description: "وصف للوظيفة الإضافية",
+                    skills: ["مهارة 1", "مهارة 2"],
+                    price: 3000 + i * 1000,
+                    deadline: "5",
+                    deadlineType: "أيام",
+                    urgent: false,
+                    featured: false,
+                    remote: true,
+                    experience: "متوسط",
+                    datePosted: new Date().toISOString(),
+                    matchScore: 70 + i * 5
+                }));
+
+                this.jobs.push(...newJobs);
+                this.renderJobs();
+                this.isLoadingMore = false;
+            }
+
+            renderUI() {
+                this.renderTabs();
+                this.renderStats();
+                this.renderAIRecommendations();
+                this.renderJobs();
+                this.renderSidebarRecommendations();
+                this.updateTime();
+            }
+
+            renderTabs() {
+                const tabs = [
+                    { id: 'recommended', name: 'مُوصى به', count: this.aiRecommendations.length, icon: 'fas fa-star' },
+                    { id: 'urgent', name: 'مستعجل', count: this.jobs.filter(j => j.urgent).length, icon: 'fas fa-fire' },
+                    { id: 'remote', name: 'عن بُعد', count: this.jobs.filter(j => j.remote).length, icon: 'fas fa-laptop-house' },
+                    { id: 'featured', name: 'مميز', count: this.jobs.filter(j => j.featured).length, icon: 'fas fa-crown' },
+                    { id: 'new', name: 'جديد', count: this.jobs.filter(j => 
+                        Date.now() - new Date(j.datePosted).getTime() < 86400000).length, icon: 'fas fa-clock' },
+                    { id: 'high-paying', name: 'عالية الأجر', count: this.jobs.filter(j => j.price > 10000).length, icon: 'fas fa-money-bill-wave' }
+                ];
+
+                const tabsContainer = document.getElementById('smartTabs');
+                tabsContainer.innerHTML = tabs.map(tab => `
+                    <div class="smart-tab ${this.currentView === tab.id ? 'active' : ''}" 
+                         onclick="jobsSystem.switchView('${tab.id}')">
+                        <i class="${tab.icon}"></i>
+                        ${tab.name}
+                        <span class="tab-badge">${tab.count}</span>
+                    </div>
+                `).join('');
+            }
+
+            renderStats() {
+                const stats = [
+                    { 
+                        icon: 'fas fa-briefcase', 
+                        value: this.jobs.length, 
+                        label: 'وظيفة متاحة',
+                        trend: '+12 هذا الأسبوع',
+                        trendUp: true 
+                    },
+                    { 
+                        icon: 'fas fa-money-bill-wave', 
+                        value: `${Math.max(...this.jobs.map(j => j.price)).toLocaleString()}+`, 
+                        label: 'أعلى راتب',
+                        trend: 'للوظائف المميزة',
+                        trendUp: true 
+                    },
+                    { 
+                        icon: 'fas fa-bolt', 
+                        value: this.jobs.filter(j => j.urgent).length, 
+                        label: 'وظيفة مستعجلة',
+                        trend: '+3 اليوم',
+                        trendUp: true 
+                    },
+                    { 
+                        icon: 'fas fa-chart-line', 
+                        value: '95%', 
+                        label: 'مطابقة مهاراتك',
+                        trend: '+5% عن الشهر الماضي',
+                        trendUp: true 
+                    }
+                ];
+
+                const statsContainer = document.getElementById('smartStats');
+                statsContainer.innerHTML = stats.map(stat => `
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="${stat.icon}"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">${stat.value}</div>
+                            <div class="stat-label">${stat.label}</div>
+                            <div class="stat-trend ${stat.trendUp ? 'trend-up' : 'trend-down'}">
+                                <i class="fas fa-arrow-${stat.trendUp ? 'up' : 'down'}"></i>
+                                ${stat.trend}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderAIRecommendations() {
+                const container = document.getElementById('aiRecommendations');
+                container.innerHTML = this.aiRecommendations.map(rec => `
+                    <div class="ai-recommendation" onclick="jobsSystem.viewJob(${rec.id})">
+                        <h4>${rec.title}</h4>
+                        <p>${rec.description.substring(0, 80)}...</p>
+                        <div class="ai-match">
+                            <i class="fas fa-check-circle"></i>
+                            <span>${rec.matchScore}% مطابقة مع مهاراتك</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderJobs() {
+                let filteredJobs = this.jobs;
+
+                // تطبيق الفلاتر
+                if (this.currentFilters.maxPrice) {
+                    filteredJobs = filteredJobs.filter(job => job.price <= this.currentFilters.maxPrice);
+                }
+
+                // تطبيق العرض الحالي
+                switch (this.currentView) {
+                    case 'urgent':
+                        filteredJobs = filteredJobs.filter(job => job.urgent);
+                        break;
+                    case 'remote':
+                        filteredJobs = filteredJobs.filter(job => job.remote);
+                        break;
+                    case 'featured':
+                        filteredJobs = filteredJobs.filter(job => job.featured);
+                        break;
+                    case 'new':
+                        filteredJobs = filteredJobs.filter(job => 
+                            Date.now() - new Date(job.datePosted).getTime() < 86400000);
+                        break;
+                    case 'high-paying':
+                        filteredJobs = filteredJobs.filter(job => job.price > 10000);
+                        break;
+                    case 'recommended':
+                        filteredJobs = filteredJobs.sort((a, b) => b.matchScore - a.matchScore);
+                        break;
+                }
+
+                const container = document.getElementById('smartJobsGrid');
+                container.innerHTML = filteredJobs.map(job => this.createJobCard(job)).join('');
+
+                // إضافة رسالة إذا لم توجد نتائج
+                if (filteredJobs.length === 0) {
+                    container.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                            <div style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; color: white; font-size: 48px;">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3 style="font-size: 24px; margin-bottom: 16px; color: var(--text-primary);">لم يتم العثور على وظائف</h3>
+                            <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 32px;">حاول تعديل معايير البحث أو الفلاتر الخاصة بك</p>
+                            <button onclick="jobsSystem.resetFilters()" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; padding: 14px 32px; border-radius: 16px; font-size: 16px; font-weight: 700; cursor: pointer;">
+                                إعادة تعيين جميع الفلاتر
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            createJobCard(job) {
+                const isSaved = this.savedJobs.has(job.id);
+                const isApplied = this.appliedJobs.has(job.id);
+                const daysAgo = Math.floor((Date.now() - new Date(job.datePosted).getTime()) / 86400000);
+                
+                return `
+                    <div class="smart-job-card" onclick="jobsSystem.viewJob(${job.id})">
+                        <div class="job-badges">
+                            ${job.featured ? `<div class="job-badge badge-featured"><i class="fas fa-crown"></i> مميز</div>` : ''}
+                            ${job.urgent ? `<div class="job-badge badge-urgent"><i class="fas fa-fire"></i> مستعجل</div>` : ''}
+                            ${job.remote ? `<div class="job-badge badge-remote"><i class="fas fa-laptop-house"></i> عن بُعد</div>` : ''}
+                        </div>
+                        
+                        <div class="job-image">
+                            <div class="job-image-content">
+                                <i class="fas fa-${this.getJobIcon(job.category)}"></i>
+                                <h3>${job.company}</h3>
+                                <p>${job.type} • ${job.experience}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="job-content">
+                            <div class="job-header">
+                                <div class="job-title">
+                                    <h3>${job.title}</h3>
+                                    <div class="job-category">
+                                        <span>${job.category}</span>
+                                        <span>${daysAgo === 0 ? 'اليوم' : `منذ ${daysAgo} يوم`}</span>
+                                    </div>
+                                </div>
+                                <button class="job-save-btn ${isSaved ? 'saved' : ''}" 
+                                        onclick="jobsSystem.toggleSaveJob(${job.id}, event)">
+                                    <i class="fas fa-bookmark"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="job-client">
+                                <div class="client-avatar">${job.companyLogo}</div>
+                                <div class="client-info">
+                                    <h4>${job.company}</h4>
+                                    <div class="client-stats">
+                                        <div class="client-rating">
+                                            <i class="fas fa-star"></i>
+                                            <span>${job.rating}</span>
+                                        </div>
+                                        <span>•</span>
+                                        <span>${this.getMatchBadge(job.matchScore)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="job-description">${job.description}</p>
+                            
+                            <div class="job-skills">
+                                ${job.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                            </div>
+                            
+                            <div class="job-footer">
+                                <div class="job-meta">
+                                    <div class="job-price">${job.price.toLocaleString()} ريال</div>
+                                    <div class="job-deadline ${job.urgent ? 'urgent' : ''}">
+                                        <i class="far fa-clock"></i>
+                                        ينتهي خلال ${job.deadline} ${job.deadlineType}
+                                    </div>
+                                </div>
+                                
+                                <div class="job-actions">
+                                    <button class="job-btn job-btn-outline" onclick="jobsSystem.viewJobDetails(${job.id}, event)">
+                                        <i class="fas fa-eye"></i>
+                                        التفاصيل
+                                    </button>
+                                    <button class="job-btn job-btn-primary ${isApplied ? 'applied' : ''}" 
+                                            onclick="${isApplied ? `jobsSystem.viewApplication(${job.id}, event)` : `jobsSystem.openApplication(${job.id}, event)`}"
+                                            ${isApplied ? 'disabled' : ''}>
+                                        <i class="fas ${isApplied ? 'fa-check' : 'fa-paper-plane'}"></i>
+                                        ${isApplied ? 'تم التقديم' : 'تقدم الآن'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getJobIcon(category) {
+                const icons = {
+                    'UI/UX': 'palette',
+                    'تصميم جرافيك': 'paint-brush',
+                    'موشن جرافيك': 'film',
+                    'تطوير ويب': 'code',
+                    'UX Design': 'user-circle'
+                };
+                return icons[category] || 'briefcase';
+            }
+
+            getMatchBadge(score) {
+                if (score >= 90) return 'مطابقة ممتازة 🎯';
+                if (score >= 75) return 'مطابقة جيدة 👍';
+                return 'مطابقة متوسطة 👌';
+            }
+
+            renderSidebarRecommendations() {
+                const recommendations = [
+                    {
+                        icon: 'fas fa-chart-line',
+                        title: 'حسّن مهاراتك في UI/UX',
+                        description: 'دورة متقدمة تناسب الوظائف الحالية',
+                        progress: 65
+                    },
+                    {
+                        icon: 'fas fa-users',
+                        title: 'انضم لمجتمع المصممين',
+                        description: 'تواصل مع محترفين في مجالك',
+                        progress: 40
+                    },
+                    {
+                        icon: 'fas fa-certificate',
+                        title: 'احصل على شهادة Figma',
+                        description: 'تعزز فرصك في الوظائف المميزة',
+                        progress: 20
+                    }
+                ];
+
+                const container = document.getElementById('smartRecommendations');
+                container.innerHTML = recommendations.map(rec => `
+                    <div class="recommendation-card" onclick="jobsSystem.followRecommendation('${rec.title}')">
+                        <div class="recommendation-header">
+                            <div class="recommendation-icon">
+                                <i class="${rec.icon}"></i>
+                            </div>
+                            <div class="recommendation-title">
+                                <h4>${rec.title}</h4>
+                                <p>${rec.description}</p>
+                            </div>
+                        </div>
+                        <div class="recommendation-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${rec.progress}%"></div>
+                            </div>
+                            <div class="progress-text">${rec.progress}%</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            switchView(view) {
+                this.currentView = view;
+                this.renderTabs();
+                this.renderJobs();
+            }
+
+            resetFilters() {
+                this.currentFilters = {};
+                document.getElementById('priceRange').value = 5000;
+                document.getElementById('maxPrice').textContent = '10,000';
+                this.renderJobs();
+                this.showAIMessage('تم إعادة تعيين جميع الفلاتر بنجاح', 'success');
+            }
+
+            async toggleSaveJob(jobId, event) {
+                if (event) event.stopPropagation();
+                
+                if (this.savedJobs.has(jobId)) {
+                    this.savedJobs.delete(jobId);
+                    this.showAIMessage('تمت إزالة الوظيفة من المفضلة', 'info');
+                } else {
+                    this.savedJobs.add(jobId);
+                    this.showAIMessage('تم حفظ الوظيفة في المفضلة', 'success');
+                }
+                
+                localStorage.setItem('savedJobs', JSON.stringify([...this.savedJobs]));
+                this.renderJobs();
+            }
+
+            viewJob(jobId) {
+                // في التطبيق الحقيقي، سيتم التوجيه لصفحة تفاصيل الوظيفة
+                this.showAIMessage('جاري تحميل تفاصيل الوظيفة...', 'info');
+                setTimeout(() => {
+                    window.location.href = `job-details.html?id=${jobId}`;
+                }, 500);
+            }
+
+            viewJobDetails(jobId, event) {
+                if (event) event.stopPropagation();
+                this.viewJob(jobId);
+            }
+
+            openApplication(jobId, event) {
+                if (event) event.stopPropagation();
+                this.showApplicationModal(jobId);
+            }
+
+            viewApplication(jobId, event) {
+                if (event) event.stopPropagation();
+                this.showAIMessage('تم التقديم على هذه الوظيفة بالفعل. يمكنك متابعة طلبك من صفحة "طلباتي".', 'info');
+            }
+
+            showApplicationModal(jobId) {
+                const job = this.jobs.find(j => j.id === jobId);
+                if (!job) return;
+
+                document.getElementById('applicationTitle').textContent = `تقديم على: ${job.title}`;
+                document.getElementById('smartApplicationModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            followRecommendation(title) {
+                this.showAIMessage(`جاري توجيهك لتحقيق: ${title}`, 'info');
+                // في التطبيق الحقيقي، سيتم التوجيه للصفحة المناسبة
+            }
+
+            showAIMessage(text, type = 'info') {
+                const messagesContainer = document.getElementById('aiMessages');
+                const messageId = Date.now();
+                
+                const message = document.createElement('div');
+                message.className = 'ai-message';
+                message.id = `message-${messageId}`;
+                
+                const icon = type === 'success' ? 'check-circle' : 
+                           type === 'error' ? 'exclamation-circle' : 
+                           type === 'warning' ? 'exclamation-triangle' : 'info-circle';
+                
+                message.innerHTML = `
+                    <div class="ai-message-icon">
+                        <i class="fas fa-${icon}"></i>
+                    </div>
+                    <div class="ai-message-content">
+                        <h4>مساعد الذكاء الاصطناعي</h4>
+                        <p>${text}</p>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(message);
+                
+                // إزالة تلقائية بعد 5 ثوان
+                setTimeout(() => {
+                    const msg = document.getElementById(`message-${messageId}`);
+                    if (msg) {
+                        msg.style.opacity = '0';
+                        msg.style.transform = 'translateY(20px)';
+                        setTimeout(() => msg.remove(), 300);
+                    }
+                }, 5000);
+            }
+
+            updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-SA', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                document.getElementById('currentTime').textContent = timeString;
+                
+                // تحديث كل دقيقة
+                setTimeout(() => this.updateTime(), 60000);
+            }
+        }
+
+        // تهيئة النظام
+        let jobsSystem;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            jobsSystem = new AdvancedJobsSystem();
+            
+            // تحديث الوقت فوراً
+            jobsSystem.updateTime();
+            
+            // إضافة تأثيرات إضافية
+            setupAdvancedFeatures();
+        });
+
+        // دالة لإغلاق نافذة التطبيق
+        function closeSmartApplicationModal() {
+            document.getElementById('smartApplicationModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // دالة التبديل بين الوضعين
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#darkModeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('darkMode', 'false');
+            }
+        }
+
+        // التحقق من الوضع المحفوظ
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').className = 'fas fa-sun';
+        }
+
+        // الإجراءات السريعة
+        function openQuickActions() {
+            const actions = [
+                { text: 'إنشاء عرض جديد', icon: 'plus-circle', color: 'var(--primary-color)' },
+                { text: 'رفع محفظة أعمال', icon: 'cloud-upload', color: 'var(--secondary-color)' },
+                { text: 'بحث متقدم', icon: 'search-plus', color: 'var(--accent-color)' },
+                { text: 'طلب استشارة', icon: 'comments', color: 'var(--success-color)' }
+            ];
+            
+            // إنشاء قائمة الإجراءات
+            const quickActions = document.createElement('div');
+            quickActions.className = 'quick-actions-modal';
+            quickActions.style.cssText = `
+                position: fixed;
+                bottom: 100px;
+                left: 20px;
+                right: 20px;
+                background: var(--glass-bg);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-radius: 24px;
+                padding: 24px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                border: 1px solid var(--glass-border);
+                z-index: var(--z-modal);
+                animation: slideInUp 0.3s ease-out;
+            `;
+            
+            quickActions.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h3 style="margin: 0; font-size: 18px; color: var(--text-primary); font-weight: 800;">إجراءات سريعة</h3>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                    ${actions.map(action => `
+                        <button onclick="handleQuickAction('${action.text}')" style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s;">
+                            <i class="fas ${action.icon}" style="font-size: 24px; color: ${action.color};"></i>
+                            <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">${action.text}</span>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.body.appendChild(quickActions);
+            
+            // إغلاق عند النقر خارج القائمة
+            setTimeout(() => {
+                document.addEventListener('click', function closeQuickActions(e) {
+                    if (!quickActions.contains(e.target) && !e.target.closest('.nav-center-action')) {
+                        quickActions.remove();
+                        document.removeEventListener('click', closeQuickActions);
+                    }
+                });
+            }, 10);
+        }
+
+        function handleQuickAction(action) {
+            switch(action) {
+                case 'إنشاء عرض جديد':
+                    window.location.href = 'create-proposal.html';
+                    break;
+                case 'رفع محفظة أعمال':
+                    window.location.href = 'upload-portfolio.html';
+                    break;
+                case 'بحث متقدم':
+                    jobsSystem.showAIMessage('جاري فتح خيارات البحث المتقدم...', 'info');
+                    break;
+                case 'طلب استشارة':
+                    window.location.href = 'book-consultation.html';
+                    break;
+            }
+        }
+
+        // إعداد الميزات المتقدمة
+        function setupAdvancedFeatures() {
+            // تحديث تلقائي للوظائف كل 5 دقائق
+            setInterval(() => {
+                jobsSystem.showAIMessage('جاري تحديث قائمة الوظائف بأحدث الفرص...', 'info');
+                setTimeout(() => {
+                    jobsSystem.loadJobsData();
+                    jobsSystem.generateAIRecommendations();
+                    jobsSystem.renderUI();
+                }, 1000);
+            }, 300000); // 5 دقائق
+
+            // تأثيرات التمرير
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                const header = document.querySelector('.main-header');
+                
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                lastScroll = currentScroll;
+            });
+
+            // تحسينات الأداء
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('performance-optimized');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.smart-job-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // دالات الواجهة
+        function toggleNotifications() {
+            jobsSystem.showAIMessage('صفحة الإشعارات قيد التطوير', 'info');
+        }
+
+        function toggleMessages() {
+            window.location.href = 'messages.html';
+        }
+
+        function toggleUserMenu() {
+            window.location.href = 'profile.html';
+        }
+
+        // دعم Touch Events المتقدم
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeDistance = touchStartY - touchEndY;
+            
+            // سحب للتحديث
+            if (swipeDistance > 100 && window.scrollY === 0) {
+                jobsSystem.showAIMessage('جاري تحديث الوظائف...', 'info');
+                setTimeout(() => {
+                    jobsSystem.loadJobsData();
+                    jobsSystem.generateAIRecommendations();
+                    jobsSystem.renderUI();
+                    jobsSystem.showAIMessage('تم تحديث الوظائف بنجاح!', 'success');
+                }, 1000);
+            }
+            
+            // إغلاق الرسائل بالسحب
+            if (swipeDistance < -50) {
+                const messages = document.querySelectorAll('.ai-message');
+                messages.forEach(msg => {
+                    msg.style.transform = 'translateY(100%)';
+                    setTimeout(() => msg.remove(), 300);
+                });
+            }
+        }
+
+        // إدارة حالة التطبيق
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // الصفحة تم تحميلها من cache
+                jobsSystem.renderUI();
+            }
+        });
+
+        // التحكم في الذاكرة
+        window.addEventListener('beforeunload', function() {
+            // تنظيف الذاكرة
+            jobsSystem = null;
+        });
+
+        // دعم Service Worker (للتطبيقات التقدمية)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(console.error);
+        }
+
+        // تحسينات للأداء
+        if ('connection' in navigator) {
+            const connection = navigator.connection;
+            if (connection.saveData) {
+                // تقليل جودة الصور عند استخدام وضع توفير البيانات
+                document.querySelectorAll('img').forEach(img => {
+                    img.loading = 'lazy';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

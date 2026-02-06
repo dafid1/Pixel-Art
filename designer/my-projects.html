@@ -1,0 +1,2730 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مشاريعي | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: rgba(255, 255, 255, 0.95);
+            --bg-secondary: rgba(248, 250, 252, 0.9);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.25);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                url('background/designer-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: 28px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .status-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* هيدر الصفحة */
+        .page-header {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 28px;
+            z-index: 999;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+
+        .page-title {
+            flex: 1;
+            text-align: center;
+            margin-right: 16px;
+        }
+
+        .page-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 2px 0 0 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-action {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .header-action:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .header-action.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* محتوى المشاريع */
+        .projects-container {
+            padding: 16px;
+            margin-top: 98px;
+            margin-bottom: 80px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* شريط التحكم */
+        .projects-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* شريط البحث والفلترة */
+        .search-filter-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 44px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0 44px 0 16px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            color: var(--text-primary);
+            backdrop-filter: blur(20px);
+            transition: all var(--transition-fast);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .filter-btn {
+            width: 44px;
+            height: 44px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            backdrop-filter: blur(20px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* علامات التبويب */
+        .projects-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .projects-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-fast);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .tab-badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* شريط الإحصائيات */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            background: var(--glass-bg);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* زر إضافة مشروع جديد */
+        .add-project-btn {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            z-index: 998;
+            transition: all var(--transition-medium);
+        }
+
+        .add-project-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .add-project-btn:active {
+            transform: scale(0.95) rotate(90deg);
+        }
+
+        /* شبكة المشاريع */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        /* بطاقة المشروع */
+        .project-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .project-card:active {
+            transform: translateY(-2px);
+        }
+
+        .project-header {
+            padding: 20px;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .project-priority {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .priority-high { background: var(--danger-color); }
+        .priority-medium { background: var(--warning-color); }
+        .priority-low { background: var(--success-color); }
+
+        .project-category {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .project-title {
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .project-title h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .project-client {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 12px;
+        }
+
+        .status-draft { background: rgba(148, 163, 184, 0.2); color: #64748b; }
+        .status-in-progress { background: rgba(10, 147, 150, 0.2); color: var(--primary-color); }
+        .status-review { background: rgba(233, 196, 106, 0.2); color: var(--warning-color); }
+        .status-completed { background: rgba(42, 157, 143, 0.2); color: var(--success-color); }
+        .status-cancelled { background: rgba(231, 111, 81, 0.2); color: var(--danger-color); }
+
+        .project-details {
+            padding: 20px;
+        }
+
+        .project-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .project-deadline {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .project-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .project-progress {
+            margin-bottom: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .progress-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .view-btn {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .edit-btn {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .view-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .edit-btn:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        /* مشروع فارغ */
+        .empty-projects {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            border: 2px dashed var(--border-color);
+            backdrop-filter: blur(20px);
+            margin: 40px 0;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.1), rgba(238, 155, 0, 0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: var(--text-secondary);
+            font-size: 32px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .empty-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .create-project-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all var(--transition-fast);
+        }
+
+        .create-project-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* قائمة المشاريع (وضع القائمة) */
+        .projects-list-view {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .project-list-item {
+            background: var(--glass-bg);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+        }
+
+        .project-list-item:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .list-item-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .list-item-content {
+            flex: 1;
+        }
+
+        .list-item-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .list-item-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .list-action-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .list-action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* تفاصيل المشروع (نافذة منبثقة) */
+        .project-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+            padding: 20px;
+        }
+
+        .project-detail-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .detail-modal-content {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            animation: modalSlideIn 0.4s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .modal-subtitle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-section {
+            margin-bottom: 32px;
+        }
+
+        .modal-section h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .project-description-full {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .project-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .spec-item {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-radius: var(--radius-md);
+        }
+
+        .spec-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .spec-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .project-files {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .file-item:hover {
+            background: var(--border-color);
+            transform: translateX(-5px);
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .file-download {
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-price {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--secondary-color);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* شريط التمرير للأعلى */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--transition-medium);
+            box-shadow: var(--shadow-lg);
+            z-index: 998;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 10px;
+            border-top: 1px solid var(--glass-border);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 11px;
+            flex: 1;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--secondary-color);
+            background: rgba(238, 155, 0, 0.1);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        /* نافذة الفلاتر */
+        .filters-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+            padding: 20px;
+        }
+
+        .filters-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .filters-content {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            animation: modalSlideIn 0.4s ease;
+        }
+
+        .filters-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .filters-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .filters-body {
+            padding: 24px;
+        }
+
+        .filter-group {
+            margin-bottom: 24px;
+        }
+
+        .filter-group h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 12px 0;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .filter-option:hover {
+            background: var(--border-color);
+        }
+
+        .filter-option.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .filter-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+        }
+
+        .filter-option.active .filter-checkbox {
+            background: white;
+            border-color: white;
+        }
+
+        .filter-option.active .filter-checkbox i {
+            color: var(--primary-color);
+            font-size: 12px;
+        }
+
+        .filter-label {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .filter-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .filters-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+        }
+
+        .filter-btn.apply {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .filter-btn.reset {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            animation: slideInRight 0.3s ease;
+            transform-origin: right center;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.success {
+            border-right: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-right: 4px solid var(--danger-color);
+        }
+
+        .toast.info {
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            background: rgba(42, 157, 143, 0.2);
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-icon {
+            background: rgba(231, 111, 81, 0.2);
+            color: var(--danger-color);
+        }
+
+        .toast.info .toast-icon {
+            background: rgba(10, 147, 150, 0.2);
+            color: var(--primary-color);
+        }
+
+        .toast-content {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 14px;
+            transition: all var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* تحسينات للأندرويد */
+        @media (hover: none) {
+            .project-card:hover,
+            .project-list-item:hover,
+            .action-btn:hover,
+            .modal-btn:hover,
+            .filter-btn:hover {
+                transform: none;
+            }
+            
+            .project-card:active,
+            .project-list-item:active {
+                transform: scale(0.98);
+            }
+            
+            .action-btn:active,
+            .modal-btn:active,
+            .filter-btn:active {
+                transform: scale(0.95);
+            }
+            
+            .add-project-btn:hover {
+                transform: none;
+            }
+            
+            .add-project-btn:active {
+                transform: scale(0.9) rotate(90deg);
+            }
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .search-filter-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .filter-btn {
+                align-self: flex-start;
+            }
+            
+            .project-detail-modal,
+            .filters-modal {
+                padding: 10px;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .modal-actions {
+                width: 100%;
+            }
+            
+            .modal-btn {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                height: 60px;
+            }
+            
+            .page-title h1 {
+                font-size: 16px;
+            }
+            
+            .page-title p {
+                font-size: 10px;
+            }
+            
+            .projects-container {
+                margin-top: 78px;
+                padding: 12px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+            
+            .bottom-nav {
+                height: 60px;
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .nav-item i {
+                font-size: 18px;
+            }
+            
+            .add-project-btn {
+                bottom: 80px;
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+        }
+
+        /* شريط التمرير المخصص */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
+        }
+
+        /* تأثيرات التحريك */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .animate-delay-1 { animation-delay: 0.1s; }
+        .animate-delay-2 { animation-delay: 0.2s; }
+        .animate-delay-3 { animation-delay: 0.3s; }
+        .animate-delay-4 { animation-delay: 0.4s; }
+
+        /* تأثير النبض */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-time">
+            <i class="far fa-clock"></i>
+            <span id="currentTime">--:--</span>
+        </div>
+        <div class="status-icons">
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+            <i class="fas fa-signal"></i>
+        </div>
+    </div>
+
+    <!-- هيدر الصفحة -->
+    <header class="page-header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="page-title">
+            <h1>مشاريعي</h1>
+            <p>إدارة وتتبع جميع مشاريعك</p>
+        </div>
+        <div class="header-actions">
+            <div class="header-action" onclick="toggleView()" id="viewToggleBtn">
+                <i class="fas fa-th-large"></i>
+            </div>
+            <div class="header-action" onclick="openFilters()">
+                <i class="fas fa-filter"></i>
+            </div>
+            <div class="header-action" onclick="refreshProjects()">
+                <i class="fas fa-sync-alt"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="projects-container">
+        <!-- شريط التحكم -->
+        <div class="projects-controls">
+            <!-- شريط البحث والفلترة -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="ابحث في مشاريعك..." id="searchInput">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <button class="filter-btn" onclick="openFilters()">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
+            </div>
+
+            <!-- علامات التبويب -->
+            <div class="projects-tabs" id="projectsTabs">
+                <div class="tab active" onclick="filterProjects('all')">
+                    <span>الكل</span>
+                    <span class="tab-badge" id="countAll">12</span>
+                </div>
+                <div class="tab" onclick="filterProjects('active')">
+                    <i class="fas fa-play-circle"></i>
+                    <span>نشطة</span>
+                    <span class="tab-badge" id="countActive">5</span>
+                </div>
+                <div class="tab" onclick="filterProjects('review')">
+                    <i class="fas fa-eye"></i>
+                    <span>قيد المراجعة</span>
+                    <span class="tab-badge" id="countReview">3</span>
+                </div>
+                <div class="tab" onclick="filterProjects('completed')">
+                    <i class="fas fa-check-circle"></i>
+                    <span>مكتملة</span>
+                    <span class="tab-badge" id="countCompleted">4</span>
+                </div>
+                <div class="tab" onclick="filterProjects('draft')">
+                    <i class="fas fa-edit"></i>
+                    <span>مسودة</span>
+                    <span class="tab-badge" id="countDraft">2</span>
+                </div>
+            </div>
+
+            <!-- شريط الإحصائيات -->
+            <div class="stats-bar">
+                <div class="stat-item" onclick="filterProjects('active')">
+                    <div class="stat-value" id="statActive">5</div>
+                    <div class="stat-label">مشاريع نشطة</div>
+                </div>
+                <div class="stat-item" onclick="filterProjects('completed')">
+                    <div class="stat-value" id="statCompleted">4</div>
+                    <div class="stat-label">مكتملة</div>
+                </div>
+                <div class="stat-item" onclick="showEarnings()">
+                    <div class="stat-value" id="statEarnings">12,500 ريال</div>
+                    <div class="stat-label">إجمالي الإيرادات</div>
+                </div>
+                <div class="stat-item" onclick="showDeadlines()">
+                    <div class="stat-value" id="statDeadlines">3</div>
+                    <div class="stat-label">قريبة الإنتهاء</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شبكة المشاريع -->
+        <div class="projects-grid" id="projectsGrid">
+            <!-- سيتم إضافة المشاريع ديناميكياً -->
+        </div>
+
+        <!-- قائمة المشاريع -->
+        <div class="projects-list-view" id="projectsListView">
+            <!-- سيتم إضافة المشاريع ديناميكياً -->
+        </div>
+
+        <!-- حالة عدم وجود مشاريع -->
+        <div class="empty-projects" id="emptyProjects" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+            <h2 class="empty-title">لا توجد مشاريع حالياً</h2>
+            <p class="empty-description">
+                ابدأ رحلتك الإبداعية من خلال إنشاء مشروع جديد أو تصفح الوظائف المتاحة للبدء في مشروعك الأول
+            </p>
+            <button class="create-project-btn" onclick="createNewProject()">
+                <i class="fas fa-plus"></i>
+                إنشاء مشروع جديد
+            </button>
+        </div>
+    </main>
+
+    <!-- زر إضافة مشروع جديد -->
+    <div class="add-project-btn animate-pulse" onclick="createNewProject()">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- زر التمرير للأعلى -->
+    <div class="scroll-to-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-designer.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="my-projects.html" class="nav-item active">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        
+        <a href="jobs.html" class="nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span>الوظائف</span>
+        </a>
+        
+        <a href="messages.html" class="nav-item">
+            <i class="fas fa-comments"></i>
+            <span>الرسائل</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- نافذة تفاصيل المشروع -->
+    <div class="project-detail-modal" id="projectDetailModal">
+        <div class="detail-modal-content">
+            <div class="modal-header">
+                <div class="modal-close" onclick="closeProjectDetail()">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h3 class="modal-title" id="detailTitle">تصميم شعار متكامل لمطعم</h3>
+                <div class="modal-subtitle">
+                    <span id="detailClient">العميل: أحمد التميمي</span>
+                    <span class="project-status status-in-progress" id="detailStatus">قيد التنفيذ</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>وصف المشروع</h3>
+                    <div class="project-description-full" id="detailDescription">
+                        تصميم شعار وهوية بصرية متكاملة لمطعم حديث متخصص في المأكولات الشعبية. يتطلب المشروع تصميم شعار يعكس الهوية التراثية مع لمسة عصرية، بالإضافة إلى تصميم بطاقات العمل، القوائم، والأغلفة.
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>تفاصيل المشروع</h3>
+                    <div class="project-specs">
+                        <div class="spec-item">
+                            <div class="spec-label">تاريخ البدء</div>
+                            <div class="spec-value" id="detailStartDate">15 مارس 2024</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">تاريخ التسليم</div>
+                            <div class="spec-value" id="detailDeadline">30 مارس 2024</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">الفئة</div>
+                            <div class="spec-value" id="detailCategory">شعارات وهوية بصرية</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">الأولوية</div>
+                            <div class="spec-value" id="detailPriority">متوسطة</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">نسبة الإنجاز</div>
+                            <div class="spec-value" id="detailProgress">65%</div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">المبلغ المدفوع</div>
+                            <div class="spec-value" id="detailPaid">600 ريال</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>ملفات المشروع</h3>
+                    <div class="project-files">
+                        <div class="file-item" onclick="downloadFile('brief.pdf')">
+                            <div class="file-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">مستند متطلبات المشروع</div>
+                                <div class="file-size">2.4 MB - PDF</div>
+                            </div>
+                            <div class="file-download">
+                                <i class="fas fa-download"></i>
+                            </div>
+                        </div>
+                        <div class="file-item" onclick="downloadFile('logo-design.ai')">
+                            <div class="file-icon">
+                                <i class="fas fa-file-image"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">تصاميم الشعار النهائية</div>
+                                <div class="file-size">15.7 MB - AI</div>
+                            </div>
+                            <div class="file-download">
+                                <i class="fas fa-download"></i>
+                            </div>
+                        </div>
+                        <div class="file-item" onclick="downloadFile('feedback.docx')">
+                            <div class="file-icon">
+                                <i class="fas fa-file-word"></i>
+                            </div>
+                            <div class="file-info">
+                                <div class="file-name">ملاحظات العميل</div>
+                                <div class="file-size">1.2 MB - DOCX</div>
+                            </div>
+                            <div class="file-download">
+                                <i class="fas fa-download"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>التحديثات الأخيرة</h3>
+                    <div class="project-updates">
+                        <div class="update-item">
+                            <div class="update-header">
+                                <strong>تم رفع التصميم النهائي</strong>
+                                <span class="update-time">منذ يومين</span>
+                            </div>
+                            <div class="update-content">
+                                تم رفع 3 خيارات للشعار النهائي مع دليل الألوان والخطوط.
+                            </div>
+                        </div>
+                        <div class="update-item">
+                            <div class="update-header">
+                                <strong>طلب تعديلات من العميل</strong>
+                                <span class="update-time">منذ 5 أيام</span>
+                            </div>
+                            <div class="update-content">
+                                العميل طبق تعديلات طفيفة على الشعار وتغيير في الدرجة اللونية.
+                            </div>
+                        </div>
+                        <div class="update-item">
+                            <div class="update-header">
+                                <strong>بدء العمل على المشروع</strong>
+                                <span class="update-time">منذ 10 أيام</span>
+                            </div>
+                            <div class="update-content">
+                                بدأت العمل على التصميم الأولي بناءً على متطلبات العميل.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modal-price" id="detailPrice">1,200 ريال</div>
+                <div class="modal-actions">
+                    <button class="modal-btn secondary" onclick="editProject()">
+                        <i class="fas fa-edit"></i>
+                        تعديل المشروع
+                    </button>
+                    <button class="modal-btn primary" onclick="submitProject()">
+                        <i class="fas fa-paper-plane"></i>
+                        تسليم المشروع
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة الفلاتر -->
+    <div class="filters-modal" id="filtersModal">
+        <div class="filters-content">
+            <div class="filters-header">
+                <h3>تصفية المشاريع</h3>
+            </div>
+            <div class="filters-body">
+                <div class="filter-group">
+                    <h4>حالة المشروع</h4>
+                    <div class="filter-options">
+                        <div class="filter-option active" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="filter-label">الكل</div>
+                            <div class="filter-count">12</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">نشطة</div>
+                            <div class="filter-count">5</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">قيد المراجعة</div>
+                            <div class="filter-count">3</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">مكتملة</div>
+                            <div class="filter-count">4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4>الفئة</h4>
+                    <div class="filter-options">
+                        <div class="filter-option active" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="filter-label">الكل</div>
+                            <div class="filter-count">12</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">شعارات وهوية بصرية</div>
+                            <div class="filter-count">4</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">UI/UX تصميم</div>
+                            <div class="filter-count">3</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">تصميم مواقع</div>
+                            <div class="filter-count">2</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">مونتاج فيديو</div>
+                            <div class="filter-count">3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4>الأولوية</h4>
+                    <div class="filter-options">
+                        <div class="filter-option active" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="filter-label">الكل</div>
+                            <div class="filter-count">12</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">عالية</div>
+                            <div class="filter-count">2</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">متوسطة</div>
+                            <div class="filter-count">7</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">منخفضة</div>
+                            <div class="filter-count">3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4>الترتيب حسب</h4>
+                    <div class="filter-options">
+                        <div class="filter-option active" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="filter-label">تاريخ الإنشاء</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">تاريخ التسليم</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">الأعلى سعراً</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">الأقل سعراً</div>
+                        </div>
+                        <div class="filter-option" onclick="toggleFilterOption(this)">
+                            <div class="filter-checkbox"></div>
+                            <div class="filter-label">الأقدم</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="filters-footer">
+                <button class="filter-btn reset" onclick="resetFilters()">
+                    إعادة التعيين
+                </button>
+                <button class="filter-btn apply" onclick="applyFilters()">
+                    تطبيق الفلاتر
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- حاوية Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // بيانات المشاريع
+        let projectsData = [];
+        let currentFilter = 'all';
+        let isGridView = true;
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من تسجيل الدخول
+            checkLoginStatus();
+            
+            // تحديث الوقت
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // تحميل المشاريع
+            loadProjects();
+            
+            // تهيئة البحث
+            initSearch();
+            
+            // تهيئة تتبع التمرير
+            initScrollTracking();
+            
+            // تحميل الإحصائيات
+            loadStatistics();
+        });
+
+        // التحقق من تسجيل الدخول
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser || currentUser.type !== 'designer') {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // تحديث الوقت
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-SA', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // العودة للصفحة السابقة
+        function goBack() {
+            window.history.back();
+        }
+
+        // تحميل المشاريع
+        function loadProjects() {
+            // بيانات نموذجية للمشاريع
+            projectsData = [
+                {
+                    id: 1,
+                    title: "تصميم شعار متكامل لمطعم",
+                    client: "أحمد التميمي",
+                    description: "تصميم شعار وهوية بصرية متكاملة لمطعم حديث متخصص في المأكولات الشعبية",
+                    category: "شعارات وهوية بصرية",
+                    status: "in-progress",
+                    priority: "medium",
+                    progress: 65,
+                    price: 1200,
+                    paid: 600,
+                    startDate: "2024-03-15",
+                    deadline: "2024-03-30",
+                    daysLeft: 5,
+                    clientType: "individual"
+                },
+                {
+                    id: 2,
+                    title: "هوية بصرية لشركة تقنية",
+                    client: "شركة التقنية المتقدمة",
+                    description: "تطوير هوية بصرية كاملة تشمل الشعار، الألوان، الخطوط، ودليل الاستخدام",
+                    category: "شعارات وهوية بصرية",
+                    status: "review",
+                    priority: "high",
+                    progress: 100,
+                    price: 3500,
+                    paid: 3500,
+                    startDate: "2024-03-01",
+                    deadline: "2024-03-25",
+                    daysLeft: -2,
+                    clientType: "company"
+                },
+                {
+                    id: 3,
+                    title: "تصميم موقع إلكتروني متكامل",
+                    client: "متجر الأثاث الراقي",
+                    description: "تصميم وتطوير واجهة مستخدم متكاملة لمتجر إلكتروني متخصص في الأثاث الفاخر",
+                    category: "تصميم مواقع",
+                    status: "completed",
+                    priority: "medium",
+                    progress: 100,
+                    price: 4800,
+                    paid: 4800,
+                    startDate: "2024-02-10",
+                    deadline: "2024-03-10",
+                    daysLeft: -15,
+                    clientType: "company"
+                },
+                {
+                    id: 4,
+                    title: "تصميم تطبيق جوال للخدمات",
+                    client: "شركة الخدمات السريعة",
+                    description: "تصميم واجهة مستخدم لتطبيق جوال يقدم خدمات توصيل سريعة",
+                    category: "UI/UX تصميم",
+                    status: "in-progress",
+                    priority: "high",
+                    progress: 40,
+                    price: 2500,
+                    paid: 1250,
+                    startDate: "2024-03-20",
+                    deadline: "2024-04-15",
+                    daysLeft: 20,
+                    clientType: "company"
+                },
+                {
+                    id: 5,
+                    title: "مونتاج فيديو دعائي",
+                    client: "مؤسسة التعليم الحديث",
+                    description: "إنتاج وتحرير فيديو دعائي لمدة 3 دقائق لمؤسسة تعليمية",
+                    category: "مونتاج فيديو",
+                    status: "draft",
+                    priority: "low",
+                    progress: 20,
+                    price: 1800,
+                    paid: 0,
+                    startDate: "2024-03-25",
+                    deadline: "2024-04-10",
+                    daysLeft: 15,
+                    clientType: "company"
+                },
+                {
+                    id: 6,
+                    title: "تصميم غلاف كتاب",
+                    client: "دار النشر العربية",
+                    description: "تصميم غلاف كتاب أدبي مع رسوم توضيحية عالية الجودة",
+                    category: "تصميم جرافيك",
+                    status: "in-progress",
+                    priority: "medium",
+                    progress: 80,
+                    price: 900,
+                    paid: 450,
+                    startDate: "2024-03-18",
+                    deadline: "2024-03-28",
+                    daysLeft: 3,
+                    clientType: "company"
+                },
+                {
+                    id: 7,
+                    title: "تصميم بوستر معرض فني",
+                    client: "صالح الفنان",
+                    description: "تصميم بوستر لمعرض فني يقام في شهر أبريل",
+                    category: "تصميم جرافيك",
+                    status: "review",
+                    priority: "medium",
+                    progress: 100,
+                    price: 600,
+                    paid: 600,
+                    startDate: "2024-03-10",
+                    deadline: "2024-03-22",
+                    daysLeft: -3,
+                    clientType: "individual"
+                },
+                {
+                    id: 8,
+                    title: "تصميم واجهة موقع حجز تذاكر",
+                    client: "شركة السفر والسياحة",
+                    description: "تصميم واجهة مستخدم لموقع حجز تذاكر سفر وسياحة",
+                    category: "تصميم مواقع",
+                    status: "completed",
+                    priority: "high",
+                    progress: 100,
+                    price: 3200,
+                    paid: 3200,
+                    startDate: "2024-02-15",
+                    deadline: "2024-03-15",
+                    daysLeft: -10,
+                    clientType: "company"
+                }
+            ];
+
+            // عرض المشاريع
+            displayProjects(projectsData);
+            updateProjectsCount();
+        }
+
+        // عرض المشاريع
+        function displayProjects(projects) {
+            const projectsGrid = document.getElementById('projectsGrid');
+            const projectsList = document.getElementById('projectsListView');
+            const emptyProjects = document.getElementById('emptyProjects');
+
+            // إخفاء عرض فارغ إذا كان هناك مشاريع
+            if (projects.length === 0) {
+                projectsGrid.style.display = 'none';
+                projectsList.style.display = 'none';
+                emptyProjects.style.display = 'block';
+                return;
+            } else {
+                emptyProjects.style.display = 'none';
+            }
+
+            // تفريغ الحاويات
+            projectsGrid.innerHTML = '';
+            projectsList.innerHTML = '';
+
+            // إضافة المشاريع
+            projects.forEach(project => {
+                // إنشاء بطاقة المشروع (وضع الشبكة)
+                const projectCard = createProjectCard(project);
+                projectsGrid.appendChild(projectCard);
+
+                // إنشاء عنصر القائمة (وضع القائمة)
+                const listItem = createProjectListItem(project);
+                projectsList.appendChild(listItem);
+            });
+
+            // عرض الوضع المناسب
+            if (isGridView) {
+                projectsGrid.style.display = 'grid';
+                projectsList.style.display = 'none';
+            } else {
+                projectsGrid.style.display = 'none';
+                projectsList.style.display = 'flex';
+            }
+        }
+
+        // إنشاء بطاقة المشروع
+        function createProjectCard(project) {
+            const card = document.createElement('div');
+            card.className = 'project-card animate-fadeInUp';
+            
+            // تحديد لون الأولوية
+            let priorityClass = 'priority-medium';
+            let priorityText = 'متوسطة';
+            if (project.priority === 'high') {
+                priorityClass = 'priority-high';
+                priorityText = 'عالية';
+            } else if (project.priority === 'low') {
+                priorityClass = 'priority-low';
+                priorityText = 'منخفضة';
+            }
+
+            // تحديد حالة المشروع
+            let statusClass = 'status-in-progress';
+            let statusText = 'قيد التنفيذ';
+            if (project.status === 'review') {
+                statusClass = 'status-review';
+                statusText = 'قيد المراجعة';
+            } else if (project.status === 'completed') {
+                statusClass = 'status-completed';
+                statusText = 'مكتملة';
+            } else if (project.status === 'draft') {
+                statusClass = 'status-draft';
+                statusText = 'مسودة';
+            }
+
+            // حساب الأيام المتبقية
+            let daysText = `${project.daysLeft} أيام`;
+            if (project.daysLeft < 0) {
+                daysText = 'منتهية';
+            } else if (project.daysLeft === 0) {
+                daysText = 'اليوم';
+            }
+
+            card.innerHTML = `
+                <div class="project-header">
+                    <div class="project-priority ${priorityClass}" title="الأولوية: ${priorityText}"></div>
+                    <div class="project-category">${project.category}</div>
+                    <div class="project-title">
+                        <h3>${project.title}</h3>
+                        <div class="project-client">
+                            <i class="fas fa-${project.clientType === 'company' ? 'building' : 'user'}"></i>
+                            ${project.client}
+                        </div>
+                    </div>
+                    <span class="project-status ${statusClass}">${statusText}</span>
+                </div>
+                <div class="project-details">
+                    <div class="project-description">${project.description}</div>
+                    
+                    <div class="project-progress">
+                        <div class="progress-header">
+                            <span class="progress-label">تقدم المشروع</span>
+                            <span class="progress-value">${project.progress}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${project.progress}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-meta">
+                        <div class="project-deadline">
+                            <i class="far fa-clock"></i>
+                            ${daysText}
+                        </div>
+                        <div class="project-price">${project.price.toLocaleString()} ريال</div>
+                    </div>
+                    
+                    <div class="project-actions">
+                        <button class="action-btn view-btn" onclick="viewProjectDetail(${project.id})">
+                            <i class="fas fa-eye"></i>
+                            تفاصيل
+                        </button>
+                        <button class="action-btn edit-btn" onclick="editProject(${project.id})">
+                            <i class="fas fa-edit"></i>
+                            تعديل
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // إنشاء عنصر قائمة المشروع
+        function createProjectListItem(project) {
+            const item = document.createElement('div');
+            item.className = 'project-list-item animate-fadeInUp';
+
+            // تحديد لون الأولوية
+            let priorityClass = 'priority-medium';
+            let priorityText = 'متوسطة';
+            if (project.priority === 'high') {
+                priorityClass = 'priority-high';
+                priorityText = 'عالية';
+            } else if (project.priority === 'low') {
+                priorityClass = 'priority-low';
+                priorityText = 'منخفضة';
+            }
+
+            // تحديد حالة المشروع
+            let statusClass = 'status-in-progress';
+            let statusText = 'قيد التنفيذ';
+            if (project.status === 'review') {
+                statusClass = 'status-review';
+                statusText = 'قيد المراجعة';
+            } else if (project.status === 'completed') {
+                statusClass = 'status-completed';
+                statusText = 'مكتملة';
+            } else if (project.status === 'draft') {
+                statusClass = 'status-draft';
+                statusText = 'مسودة';
+            }
+
+            // تحديد أيقونة الفئة
+            let categoryIcon = 'fa-paint-brush';
+            if (project.category.includes('موقع')) {
+                categoryIcon = 'fa-globe';
+            } else if (project.category.includes('UI/UX')) {
+                categoryIcon = 'fa-layer-group';
+            } else if (project.category.includes('فيديو')) {
+                categoryIcon = 'fa-video';
+            } else if (project.category.includes('جرافيك')) {
+                categoryIcon = 'fa-image';
+            }
+
+            item.innerHTML = `
+                <div class="list-item-icon">
+                    <i class="fas ${categoryIcon}"></i>
+                </div>
+                <div class="list-item-content">
+                    <div class="list-item-title">${project.title}</div>
+                    <div class="list-item-meta">
+                        <span><i class="fas fa-user"></i> ${project.client}</span>
+                        <span><i class="far fa-clock"></i> ${project.daysLeft} أيام</span>
+                        <span class="project-status ${statusClass}">${statusText}</span>
+                    </div>
+                </div>
+                <div class="list-item-actions">
+                    <div class="list-action-btn" onclick="viewProjectDetail(${project.id})">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="list-action-btn" onclick="editProject(${project.id})">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+            `;
+
+            return item;
+        }
+
+        // تحديث عدد المشاريع
+        function updateProjectsCount() {
+            const counts = {
+                all: projectsData.length,
+                active: projectsData.filter(p => p.status === 'in-progress').length,
+                review: projectsData.filter(p => p.status === 'review').length,
+                completed: projectsData.filter(p => p.status === 'completed').length,
+                draft: projectsData.filter(p => p.status === 'draft').length
+            };
+
+            // تحديث علامات التبويب
+            document.getElementById('countAll').textContent = counts.all;
+            document.getElementById('countActive').textContent = counts.active;
+            document.getElementById('countReview').textContent = counts.review;
+            document.getElementById('countCompleted').textContent = counts.completed;
+            document.getElementById('countDraft').textContent = counts.draft;
+
+            // تحديث الإحصائيات
+            document.getElementById('statActive').textContent = counts.active;
+            document.getElementById('statCompleted').textContent = counts.completed;
+            
+            // حساب الإيرادات
+            const totalEarnings = projectsData
+                .filter(p => p.status === 'completed')
+                .reduce((sum, p) => sum + p.price, 0);
+            document.getElementById('statEarnings').textContent = totalEarnings.toLocaleString() + ' ريال';
+            
+            // حساب المشاريع القريبة من الإنتهاء
+            const nearDeadline = projectsData.filter(p => p.daysLeft >= 0 && p.daysLeft <= 3).length;
+            document.getElementById('statDeadlines').textContent = nearDeadline;
+        }
+
+        // فلترة المشاريع
+        function filterProjects(filter) {
+            currentFilter = filter;
+            
+            // تحديث علامات التبويب النشطة
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // تصفية المشاريع
+            let filteredProjects = [];
+            
+            switch(filter) {
+                case 'all':
+                    filteredProjects = projectsData;
+                    break;
+                case 'active':
+                    filteredProjects = projectsData.filter(p => p.status === 'in-progress');
+                    break;
+                case 'review':
+                    filteredProjects = projectsData.filter(p => p.status === 'review');
+                    break;
+                case 'completed':
+                    filteredProjects = projectsData.filter(p => p.status === 'completed');
+                    break;
+                case 'draft':
+                    filteredProjects = projectsData.filter(p => p.status === 'draft');
+                    break;
+            }
+            
+            displayProjects(filteredProjects);
+        }
+
+        // تبديل طريقة العرض
+        function toggleView() {
+            const viewToggleBtn = document.getElementById('viewToggleBtn');
+            const projectsGrid = document.getElementById('projectsGrid');
+            const projectsList = document.getElementById('projectsListView');
+            
+            isGridView = !isGridView;
+            
+            if (isGridView) {
+                viewToggleBtn.innerHTML = '<i class="fas fa-th-large"></i>';
+                projectsGrid.style.display = 'grid';
+                projectsList.style.display = 'none';
+            } else {
+                viewToggleBtn.innerHTML = '<i class="fas fa-list"></i>';
+                projectsGrid.style.display = 'none';
+                projectsList.style.display = 'flex';
+            }
+        }
+
+        // تحميل الإحصائيات
+        function loadStatistics() {
+            // بيانات الإحصائيات
+            const stats = {
+                totalProjects: projectsData.length,
+                activeProjects: projectsData.filter(p => p.status === 'in-progress').length,
+                completedProjects: projectsData.filter(p => p.status === 'completed').length,
+                totalEarnings: projectsData
+                    .filter(p => p.status === 'completed')
+                    .reduce((sum, p) => sum + p.price, 0),
+                nearDeadline: projectsData.filter(p => p.daysLeft >= 0 && p.daysLeft <= 3).length
+            };
+            
+            // عرض الإحصائيات
+            document.getElementById('statActive').textContent = stats.activeProjects;
+            document.getElementById('statCompleted').textContent = stats.completedProjects;
+            document.getElementById('statEarnings').textContent = stats.totalEarnings.toLocaleString() + ' ريال';
+            document.getElementById('statDeadlines').textContent = stats.nearDeadline;
+        }
+
+        // عرض تفاصيل المشروع
+        function viewProjectDetail(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+
+            // تحديث محتوى النافذة المنبثقة
+            document.getElementById('detailTitle').textContent = project.title;
+            document.getElementById('detailClient').textContent = `العميل: ${project.client}`;
+            document.getElementById('detailDescription').textContent = project.description;
+            document.getElementById('detailStartDate').textContent = formatDate(project.startDate);
+            document.getElementById('detailDeadline').textContent = formatDate(project.deadline);
+            document.getElementById('detailCategory').textContent = project.category;
+            document.getElementById('detailPriority').textContent = getPriorityText(project.priority);
+            document.getElementById('detailProgress').textContent = `${project.progress}%`;
+            document.getElementById('detailPaid').textContent = `${project.paid.toLocaleString()} ريال`;
+            document.getElementById('detailPrice').textContent = `${project.price.toLocaleString()} ريال`;
+
+            // تحديث حالة المشروع
+            const statusElement = document.getElementById('detailStatus');
+            statusElement.textContent = getStatusText(project.status);
+            statusElement.className = `project-status ${getStatusClass(project.status)}`;
+
+            // فتح النافذة المنبثقة
+            document.getElementById('projectDetailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق تفاصيل المشروع
+        function closeProjectDetail() {
+            document.getElementById('projectDetailModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // تحرير المشروع
+        function editProject(projectId) {
+            if (projectId) {
+                showToast(`جاري فتح مشروع رقم ${projectId} للتحرير`, 'info');
+                // هنا يمكن توجيه المستخدم لصفحة تحرير المشروع
+                setTimeout(() => {
+                    window.location.href = `edit-project.html?id=${projectId}`;
+                }, 1000);
+            } else {
+                showToast('جاري فتح نموذج تحرير المشروع', 'info');
+            }
+        }
+
+        // تسليم المشروع
+        function submitProject() {
+            if (confirm('هل أنت متأكد من تسليم المشروع؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                showToast('جاري تسليم المشروع...', 'info');
+                setTimeout(() => {
+                    showToast('تم تسليم المشروع بنجاح!', 'success');
+                    closeProjectDetail();
+                    loadProjects(); // إعادة تحميل المشاريع
+                }, 2000);
+            }
+        }
+
+        // إنشاء مشروع جديد
+        function createNewProject() {
+            showToast('جاري فتح نموذج مشروع جديد', 'info');
+            setTimeout(() => {
+                window.location.href = 'new-project.html';
+            }, 1000);
+        }
+
+        // فتح الفلاتر
+        function openFilters() {
+            document.getElementById('filtersModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق الفلاتر
+        function closeFilters() {
+            document.getElementById('filtersModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // تبديل خيار الفلتر
+        function toggleFilterOption(element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.filter-option').forEach(opt => {
+                opt.classList.remove('active');
+                opt.querySelector('.filter-checkbox').innerHTML = '';
+            });
+            
+            element.classList.add('active');
+            element.querySelector('.filter-checkbox').innerHTML = '<i class="fas fa-check"></i>';
+        }
+
+        // تطبيق الفلاتر
+        function applyFilters() {
+            showToast('تم تطبيق الفلاتر بنجاح', 'success');
+            closeFilters();
+            // هنا يمكن تطبيق الفلاتر على البيانات
+        }
+
+        // إعادة تعيين الفلاتر
+        function resetFilters() {
+            document.querySelectorAll('.filter-option').forEach((opt, index) => {
+                opt.classList.remove('active');
+                opt.querySelector('.filter-checkbox').innerHTML = '';
+                
+                // إعادة تعيين الخيار الأول في كل مجموعة
+                if (index === 0 || index === 5 || index === 10 || index === 15) {
+                    opt.classList.add('active');
+                    opt.querySelector('.filter-checkbox').innerHTML = '<i class="fas fa-check"></i>';
+                }
+            });
+        }
+
+        // تهيئة البحث
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    displayProjects(projectsData);
+                    return;
+                }
+                
+                const filteredProjects = projectsData.filter(project => 
+                    project.title.toLowerCase().includes(searchTerm) ||
+                    project.client.toLowerCase().includes(searchTerm) ||
+                    project.description.toLowerCase().includes(searchTerm) ||
+                    project.category.toLowerCase().includes(searchTerm)
+                );
+                
+                displayProjects(filteredProjects);
+            });
+        }
+
+        // تحديث المشاريع
+        function refreshProjects() {
+            showToast('جاري تحديث المشاريع...', 'info');
+            
+            // محاكاة تحديث البيانات
+            setTimeout(() => {
+                loadProjects();
+                showToast('تم تحديث المشاريع بنجاح', 'success');
+            }, 1500);
+        }
+
+        // عرض الإيرادات
+        function showEarnings() {
+            const totalEarnings = projectsData
+                .filter(p => p.status === 'completed')
+                .reduce((sum, p) => sum + p.price, 0);
+            
+            showToast(`إجمالي إيراداتك: ${totalEarnings.toLocaleString()} ريال`, 'info');
+        }
+
+        // عرض المواعيد النهائية
+        function showDeadlines() {
+            const nearDeadline = projectsData.filter(p => p.daysLeft >= 0 && p.daysLeft <= 3);
+            
+            if (nearDeadline.length === 0) {
+                showToast('لا توجد مشاريع قريبة من الموعد النهائي', 'info');
+            } else {
+                let message = `لديك ${nearDeadline.length} مشاريع قريبة من الإنتهاء:\n`;
+                nearDeadline.forEach(p => {
+                    message += `- ${p.title} (${p.daysLeft} أيام)\n`;
+                });
+                alert(message);
+            }
+        }
+
+        // تحميل الملف
+        function downloadFile(filename) {
+            showToast(`جاري تحميل ${filename}...`, 'info');
+            // هنا يمكن إضافة منطق التحميل الفعلي
+        }
+
+        // تهيئة تتبع التمرير
+        function initScrollTracking() {
+            const scrollToTopBtn = document.querySelector('.scroll-to-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+            });
+        }
+
+        // التمرير للأعلى
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // وظائف مساعدة
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function getPriorityText(priority) {
+            switch(priority) {
+                case 'high': return 'عالية';
+                case 'medium': return 'متوسطة';
+                case 'low': return 'منخفضة';
+                default: return 'متوسطة';
+            }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'in-progress': return 'قيد التنفيذ';
+                case 'review': return 'قيد المراجعة';
+                case 'completed': return 'مكتملة';
+                case 'draft': return 'مسودة';
+                default: return 'قيد التنفيذ';
+            }
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'in-progress': return 'status-in-progress';
+                case 'review': return 'status-review';
+                case 'completed': return 'status-completed';
+                case 'draft': return 'status-draft';
+                default: return 'status-in-progress';
+            }
+        }
+
+        // عرض Toast
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                </div>
+                <div class="toast-content">${message}</div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // إزالة تلقائية بعد 5 ثوانٍ
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideInRight 0.3s ease reverse';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // تهيئة تأثيرات الظهور
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // مراقبة العناصر المتحركة
+            document.querySelectorAll('.animate-fadeInUp').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+
+        // تهيئة تأثيرات اللمس للأندرويد
+        function initTouchEffects() {
+            // إضافة تأثير اللمس للبطاقات
+            const cards = document.querySelectorAll('.project-card, .project-list-item');
+            
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                }, {passive: true});
+                
+                card.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                }, {passive: true});
+            });
+            
+            // إضافة تأثير اللمس للأزرار
+            const buttons = document.querySelectorAll('button, .header-action, .tab, .filter-option');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                }, {passive: true});
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                }, {passive: true});
+            });
+        }
+
+        // تشغيل جميع وظائف التهيئة
+        initScrollAnimations();
+        initTouchEffects();
+    </script>
+</body>
+</html>

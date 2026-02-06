@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أدوات التصميم المتقدمة | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: rgba(255, 255, 255, 0.98);
+            --bg-secondary: rgba(248, 250, 252, 0.95);
+            --bg-dark: rgba(15, 23, 42, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-2xl: 32px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.25);
+            --shadow-inner: inset 0 2px 4px rgba(0,0,0,0.06);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --tool-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: 
+                linear-gradient(rgba(10, 147, 150, 0.05), rgba(238, 155, 0, 0.05)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8fafc"/><path d="M0,0 L100,0 L100,100 Z" fill="%23ffffff"/></svg>');
+            background-size: cover;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* شريط الحالة المميز */
+        .status-bar {
+            height: 28px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .status-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* الهيدر المتطور */
+        .app-header {
+            height: 60px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            position: sticky;
+            top: 28px;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .back-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 18px;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+
+        .page-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .header-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 16px;
+            position: relative;
+        }
+
+        /* شريط البحث المتقدم */
+        .search-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+        }
+
+        .search-bar i {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .search-filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* قسم الأدوات الرئيسية */
+        .tools-section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-primary);
+            position: relative;
+            padding-right: 12px;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .section-badge {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* شبكة الأدوات */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .tool-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .tool-card:active {
+            transform: translateY(-2px);
+        }
+
+        .tool-card.premium::before {
+            content: 'PRO';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 800;
+            z-index: 1;
+        }
+
+        .tool-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: var(--tool-gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .tool-card h3 {
+            font-size: 16px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .tool-card p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .tool-stats {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* محرر الصور المدمج */
+        .editor-section {
+            background: var(--bg-dark);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .editor-header {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .editor-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .editor-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .editor-btn:hover {
+            background: var(--primary-color);
+        }
+
+        .editor-btn.primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .editor-container {
+            height: 300px;
+            background: 
+                repeating-linear-gradient(45deg, #1e293b 0px, #1e293b 10px, #0f172a 10px, #0f172a 20px),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230f172a"/><path d="M0,0 L100,0 L100,100 Z" fill="%231e293b"/></svg>');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .editor-tools {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: var(--radius-lg);
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+        }
+
+        .editor-tools::-webkit-scrollbar {
+            display: none;
+        }
+
+        .editor-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 60px;
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .editor-tool:hover {
+            background: rgba(10, 147, 150, 0.3);
+        }
+
+        .editor-tool i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .editor-tool span {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+        }
+
+        /* مكتبة القوالب */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .template-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .template-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .template-preview {
+            height: 120px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-preview::after {
+            content: 'استخدم';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .template-card:hover .template-preview::after {
+            opacity: 1;
+        }
+
+        .template-info {
+            padding: 12px;
+        }
+
+        .template-info h4 {
+            font-size: 13px;
+            margin: 0 0 4px 0;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .template-info p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* أدوات الذكاء الاصطناعي */
+        .ai-tools-section {
+            background: linear-gradient(135deg, rgba(10, 147, 150, 0.1), rgba(238, 155, 0, 0.1));
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .ai-tools-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .ai-tool {
+            background: var(--glass-bg);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            border: 1px solid var(--border-color);
+        }
+
+        .ai-tool:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .ai-tool-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .ai-tool-content h4 {
+            font-size: 16px;
+            margin: 0 0 4px 0;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .ai-tool-content p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* قائمة الأدوات السريعة */
+        .quick-tools {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 8px 0 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .quick-tools::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            min-width: 70px;
+            padding: 12px 8px;
+            background: var(--glass-bg);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid var(--border-color);
+        }
+
+        .quick-tool:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .quick-tool i {
+            font-size: 24px;
+        }
+
+        .quick-tool span {
+            font-size: 11px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* نافذة المحرر المتقدم */
+        .advanced-editor-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .editor-modal-header {
+            height: 60px;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .editor-modal-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-sidebar {
+            width: 250px;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .editor-canvas {
+            flex: 1;
+            background: 
+                repeating-linear-gradient(45deg, #2d3748 0px, #2d3748 10px, #1a202c 10px, #1a202c 20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .tool-properties {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .tool-properties h5 {
+            color: white;
+            margin: 0 0 12px 0;
+            font-size: 14px;
+        }
+
+        .property-slider {
+            margin-bottom: 12px;
+        }
+
+        .property-slider label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .slider-value {
+            color: white;
+            font-size: 12px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* شريط التمرير المخصص */
+        .main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        /* تأثيرات خاصة */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-slideIn {
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 16px;
+            border-top: 1px solid var(--border-color);
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 11px;
+            flex: 1;
+            padding: 8px;
+            border-radius: 10px;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--secondary-color);
+            background: rgba(238, 155, 0, 0.1);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        .nav-center {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            margin-top: -25px;
+            box-shadow: var(--shadow-xl);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+        }
+
+        .nav-center:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .ai-tools-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .editor-sidebar {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-filters {
+                flex-wrap: nowrap;
+            }
+            
+            .quick-tool {
+                min-width: 60px;
+            }
+            
+            .nav-item span {
+                font-size: 10px;
+            }
+            
+            .nav-center {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+                margin-top: -22px;
+            }
+        }
+
+        /* Toast الإشعارات */
+        .toast {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .toast.error {
+            background: var(--danger-color);
+        }
+
+        .toast.warning {
+            background: var(--warning-color);
+        }
+
+        .toast.info {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-time">
+            <i class="far fa-clock"></i>
+            <span id="currentTime">--:--</span>
+        </div>
+        <div class="status-icons">
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+            <i class="fas fa-signal"></i>
+        </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="app-header animate-fadeIn">
+        <div class="header-left">
+            <a href="dashboard-designer.html" class="back-btn">
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <div class="page-title">
+                <h1>أدوات التصميم المتقدمة</h1>
+                <span>أكثر من 50 أداة احترافية</span>
+            </div>
+        </div>
+        
+        <div class="header-actions">
+            <button class="header-btn" onclick="toggleDarkMode()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="header-btn" onclick="openHelp()">
+                <i class="fas fa-question-circle"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- شريط البحث -->
+        <div class="search-container animate-fadeIn">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="toolSearch" placeholder="ابحث عن أداة أو قالب..." oninput="searchTools()">
+            </div>
+            <div class="search-filters">
+                <div class="filter-chip active" onclick="filterTools('all')">الكل</div>
+                <div class="filter-chip" onclick="filterTools('photo')">تحرير الصور</div>
+                <div class="filter-chip" onclick="filterTools('vector')">التصميم المتجهي</div>
+                <div class="filter-chip" onclick="filterTools('ui')">UI/UX</div>
+                <div class="filter-chip" onclick="filterTools('video')">الفيديو</div>
+                <div class="filter-chip" onclick="filterTools('ai')">الذكاء الاصطناعي</div>
+                <div class="filter-chip" onclick="filterTools('free')">مجاني</div>
+                <div class="filter-chip" onclick="filterTools('premium')">Pro</div>
+            </div>
+        </div>
+
+        <!-- الأدوات الرئيسية -->
+        <section class="tools-section animate-fadeIn">
+            <div class="section-header">
+                <h2>الأدوات الأساسية</h2>
+                <div class="section-badge">
+                    <i class="fas fa-bolt"></i>
+                    الأكثر استخداماً
+                </div>
+            </div>
+            
+            <div class="tools-grid" id="toolsGrid">
+                <!-- سيتم ملؤها بالجافاسكريبت -->
+            </div>
+        </section>
+
+        <!-- محرر الصور السريع -->
+        <section class="editor-section animate-fadeIn">
+            <div class="editor-header">
+                <h3>محرر الصور السريع</h3>
+                <div class="editor-actions">
+                    <button class="editor-btn" onclick="uploadImage()">
+                        <i class="fas fa-upload"></i>
+                        تحميل صورة
+                    </button>
+                    <button class="editor-btn primary" onclick="openAdvancedEditor()">
+                        <i class="fas fa-external-link-alt"></i>
+                        محرر متقدم
+                    </button>
+                </div>
+            </div>
+            
+            <div class="editor-container">
+                <div class="editor-placeholder">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 64px; color: rgba(255,255,255,0.3);"></i>
+                    <p style="color: rgba(255,255,255,0.5); margin-top: 16px;">اسحب وأفلت صورة هنا أو انقر لتحميل</p>
+                </div>
+                
+                <div class="editor-tools">
+                    <div class="editor-tool" onclick="applyFilter('brightness')">
+                        <i class="fas fa-sun"></i>
+                        <span>سطوع</span>
+                    </div>
+                    <div class="editor-tool" onclick="applyFilter('contrast')">
+                        <i class="fas fa-adjust"></i>
+                        <span>تباين</span>
+                    </div>
+                    <div class="editor-tool" onclick="applyFilter('saturation')">
+                        <i class="fas fa-tint"></i>
+                        <span>تشبع</span>
+                    </div>
+                    <div class="editor-tool" onclick="applyFilter('blur')">
+                        <i class="fas fa-water"></i>
+                        <span>ضبابية</span>
+                    </div>
+                    <div class="editor-tool" onclick="applyFilter('sharpen')">
+                        <i class="fas fa-cut"></i>
+                        <span>حدة</span>
+                    </div>
+                    <div class="editor-tool" onclick="applyFilter('grayscale')">
+                        <i class="fas fa-moon"></i>
+                        <span>رمادي</span>
+                    </div>
+                    <div class="editor-tool" onclick="applyFilter('sepia')">
+                        <i class="fas fa-image"></i>
+                        <span>سيبيا</span>
+                    </div>
+                    <div class="editor-tool" onclick="cropImage()">
+                        <i class="fas fa-crop"></i>
+                        <span>قص</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- أدوات الذكاء الاصطناعي -->
+        <section class="ai-tools-section animate-fadeIn">
+            <div class="section-header" style="margin-bottom: 20px;">
+                <h2 style="color: var(--text-primary);">مساعد الذكاء الاصطناعي</h2>
+                <div class="section-badge animate-pulse">
+                    <i class="fas fa-robot"></i>
+                    جديد
+                </div>
+            </div>
+            
+            <div class="ai-tools-container">
+                <div class="ai-tool" onclick="openAITool('generate')">
+                    <div class="ai-tool-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <div class="ai-tool-content">
+                        <h4>مولد التصاميم الذكي</h4>
+                        <p>أنشئ تصاميم احترافية باستخدام الذكاء الاصطناعي</p>
+                    </div>
+                </div>
+                
+                <div class="ai-tool" onclick="openAITool('enhance')">
+                    <div class="ai-tool-icon">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div class="ai-tool-content">
+                        <h4>محسّن الجودة الذكي</h4>
+                        <p>حسّن جودة الصور تلقائياً باستخدام AI</p>
+                    </div>
+                </div>
+                
+                <div class="ai-tool" onclick="openAITool('remove-bg')">
+                    <div class="ai-tool-icon">
+                        <i class="fas fa-user-minus"></i>
+                    </div>
+                    <div class="ai-tool-content">
+                        <h4>إزالة الخلفية الذكية</h4>
+                        <p>أزل خلفية الصور تلقائياً بدقة عالية</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الأدوات السريعة -->
+        <section class="tools-section animate-fadeIn">
+            <div class="section-header">
+                <h2>أدوات سريعة</h2>
+                <span style="font-size: 12px; color: var(--text-secondary);">انقر للاستخدام الفوري</span>
+            </div>
+            
+            <div class="quick-tools">
+                <div class="quick-tool" onclick="openTool('color-picker')">
+                    <i class="fas fa-eye-dropper"></i>
+                    <span>منتقي الألوان</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('gradient-generator')">
+                    <i class="fas fa-palette"></i>
+                    <span>مولد التدرجات</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('font-pairing')">
+                    <i class="fas fa-font"></i>
+                    <span>اقتراح الخطوط</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('image-compressor')">
+                    <i class="fas fa-compress-alt"></i>
+                    <span>ضغط الصور</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('logo-maker')">
+                    <i class="fas fa-crown"></i>
+                    <span>صانع الشعارات</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('mockup-generator')">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>مولد الموكب</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('qr-generator')">
+                    <i class="fas fa-qrcode"></i>
+                    <span>مولد QR</span>
+                </div>
+                <div class="quick-tool" onclick="openTool('icon-maker')">
+                    <i class="fas fa-icons"></i>
+                    <span>صانع الأيقونات</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- مكتبة القوالب -->
+        <section class="tools-section animate-fadeIn">
+            <div class="section-header">
+                <h2>قوالب جاهزة</h2>
+                <span style="font-size: 12px; color: var(--text-secondary);">+150 قالب احترافي</span>
+            </div>
+            
+            <div class="templates-grid">
+                <!-- سيتم ملؤها بالجافاسكريبت -->
+            </div>
+        </section>
+    </main>
+
+    <!-- نافذة المحرر المتقدم -->
+    <div class="advanced-editor-modal" id="advancedEditor">
+        <div class="editor-modal-header">
+            <h3 style="margin: 0; color: white;">المحرر المتقدم</h3>
+            <div>
+                <button class="editor-btn" onclick="closeAdvancedEditor()" style="background: rgba(255,255,255,0.2);">
+                    <i class="fas fa-times"></i>
+                    إغلاق
+                </button>
+            </div>
+        </div>
+        
+        <div class="editor-modal-content">
+            <div class="editor-sidebar">
+                <div class="tool-properties">
+                    <h5>خصائص الفرشاة</h5>
+                    <div class="property-slider">
+                        <label>الحجم</label>
+                        <div class="slider-container">
+                            <input type="range" id="brushSize" min="1" max="100" value="10" oninput="updateBrushSize(this.value)">
+                            <span class="slider-value" id="brushSizeValue">10px</span>
+                        </div>
+                    </div>
+                    <div class="property-slider">
+                        <label>الشفافية</label>
+                        <div class="slider-container">
+                            <input type="range" id="brushOpacity" min="1" max="100" value="100" oninput="updateBrushOpacity(this.value)">
+                            <span class="slider-value" id="brushOpacityValue">100%</span>
+                        </div>
+                    </div>
+                    <div class="property-slider">
+                        <label>الصلابة</label>
+                        <div class="slider-container">
+                            <input type="range" id="brushHardness" min="1" max="100" value="50" oninput="updateBrushHardness(this.value)">
+                            <span class="slider-value" id="brushHardnessValue">50%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tool-properties">
+                    <h5>الألوان</h5>
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                        <div style="width: 30px; height: 30px; background: #0a9396; border-radius: 6px; cursor: pointer;" onclick="selectColor('#0a9396')"></div>
+                        <div style="width: 30px; height: 30px; background: #ee9b00; border-radius: 6px; cursor: pointer;" onclick="selectColor('#ee9b00')"></div>
+                        <div style="width: 30px; height: 30px; background: #2a9d8f; border-radius: 6px; cursor: pointer;" onclick="selectColor('#2a9d8f')"></div>
+                        <div style="width: 30px; height: 30px; background: #e76f51; border-radius: 6px; cursor: pointer;" onclick="selectColor('#e76f51')"></div>
+                        <div style="width: 30px; height: 30px; background: #1e293b; border-radius: 6px; cursor: pointer;" onclick="selectColor('#1e293b')"></div>
+                    </div>
+                    <input type="color" id="colorPicker" value="#0a9396" onchange="selectColor(this.value)" style="width: 100%; height: 30px; border: none; border-radius: 6px; cursor: pointer;">
+                </div>
+            </div>
+            
+            <div class="editor-canvas">
+                <canvas id="drawingCanvas" width="800" height="600" style="background: white; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-designer.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="design-tools.html" class="nav-item active">
+            <i class="fas fa-tools"></i>
+            <span>الأدوات</span>
+        </a>
+        
+        <div class="nav-center" onclick="openNewDesign()">
+            <i class="fas fa-plus"></i>
+        </div>
+        
+        <a href="resources.html" class="nav-item">
+            <i class="fas fa-box-open"></i>
+            <span>المكتبة</span>
+        </a>
+        
+        <a href="ai-tools.html" class="nav-item">
+            <i class="fas fa-robot"></i>
+            <span>AI</span>
+        </a>
+    </nav>
+
+    <script>
+        // بيانات الأدوات
+        const designTools = [
+            {
+                id: 1,
+                name: "محرر الصور الاحترافي",
+                description: "تحرير متقدم للصور مع طبقات وفلاتر",
+                icon: "fas fa-image",
+                category: "photo",
+                premium: true,
+                rating: 4.9,
+                users: "12K"
+            },
+            {
+                id: 2,
+                name: "مصمم الشعارات الذكي",
+                description: "إنشاء شعارات احترافية بذكاء اصطناعي",
+                icon: "fas fa-crown",
+                category: "ai",
+                premium: true,
+                rating: 4.8,
+                users: "8K"
+            },
+            {
+                id: 3,
+                name: "محرر الفيديو السريع",
+                description: "قص، دمج، وإضافة مؤثرات للفيديو",
+                icon: "fas fa-video",
+                category: "video",
+                premium: false,
+                rating: 4.7,
+                users: "15K"
+            },
+            {
+                id: 4,
+                name: "مصمم UI/UX",
+                description: "تصميم واجهات مستخدم تفاعلية",
+                icon: "fas fa-mobile-alt",
+                category: "ui",
+                premium: false,
+                rating: 4.6,
+                users: "10K"
+            },
+            {
+                id: 5,
+                name: "محرر المتجهات",
+                description: "تصميم رسومات متجهية عالية الجودة",
+                icon: "fas fa-draw-polygon",
+                category: "vector",
+                premium: true,
+                rating: 4.9,
+                users: "5K"
+            },
+            {
+                id: 6,
+                name: "منتقي الألوان",
+                description: "اختيار واستخراج أنظمة ألوان متناسقة",
+                icon: "fas fa-palette",
+                category: "all",
+                premium: false,
+                rating: 4.5,
+                users: "20K"
+            },
+            {
+                id: 7,
+                name: "مولد التدرجات",
+                description: "إنشاء تدرجات لونية مذهلة",
+                icon: "fas fa-fill-drip",
+                category: "all",
+                premium: false,
+                rating: 4.4,
+                users: "18K"
+            },
+            {
+                id: 8,
+                name: "محرر النصوص الفني",
+                description: "إنشاء نصوص بتأثيرات فنية مميزة",
+                icon: "fas fa-font",
+                category: "all",
+                premium: false,
+                rating: 4.3,
+                users: "12K"
+            },
+            {
+                id: 9,
+                name: "مولد الموكب الذكي",
+                description: "عرض تصميماتك على منتجات حقيقية",
+                icon: "fas fa-laptop",
+                category: "ui",
+                premium: true,
+                rating: 4.8,
+                users: "7K"
+            },
+            {
+                id: 10,
+                name: "محول الصور",
+                description: "تحويل بين جميع صيغ الصور",
+                icon: "fas fa-exchange-alt",
+                category: "photo",
+                premium: false,
+                rating: 4.2,
+                users: "25K"
+            },
+            {
+                id: 11,
+                name: "مصغر حجم الصور",
+                description: "تصغير حجم الصور دون فقدان الجودة",
+                icon: "fas fa-compress-arrows-alt",
+                category: "photo",
+                premium: false,
+                rating: 4.6,
+                users: "22K"
+            },
+            {
+                id: 12,
+                name: "مولد QR كود",
+                description: "إنشاء رموز QR مخصصة",
+                icon: "fas fa-qrcode",
+                category: "all",
+                premium: false,
+                rating: 4.3,
+                users: "14K"
+            }
+        ];
+
+        // بيانات القوالب
+        const templates = [
+            { id: 1, name: "بطاقة عمل احترافية", category: "business", color: "#0a9396" },
+            { id: 2, name: "إعلان وسائل التواصل", category: "social", color: "#ee9b00" },
+            { id: 3, name: "بروشور ثلاثي", category: "marketing", color: "#2a9d8f" },
+            { id: 4, name: "إنفوجرافيك تعليمي", category: "education", color: "#e76f51" },
+            { id: 5, name: "بطاقة دعوة زفاف", category: "invitation", color: "#9d4edd" },
+            { id: 6, name: "منشور ترويجي", category: "marketing", color: "#f72585" },
+            { id: 7, name: "غلاف كتاب", category: "publishing", color: "#4361ee" },
+            { id: 8, name: "قائمة طعام", category: "restaurant", color: "#4cc9f0" }
+        ];
+
+        // حالة التطبيق
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let isDarkMode = false;
+        let selectedColor = '#0a9396';
+        let brushSize = 10;
+        let brushOpacity = 100;
+        let brushHardness = 50;
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من تسجيل الدخول
+            checkLoginStatus();
+            
+            // تحديث الوقت
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // تحميل الأدوات
+            loadTools();
+            
+            // تحميل القوالب
+            loadTemplates();
+            
+            // إعداد المحرر
+            setupCanvas();
+            
+            // إضافة تأثيرات التحريك
+            addAnimationEffects();
+        });
+
+        // التحقق من حالة تسجيل الدخول
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser || currentUser.type !== 'designer') {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // تحديث الوقت الحالي
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-SA', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // تحميل الأدوات
+        function loadTools() {
+            const toolsGrid = document.getElementById('toolsGrid');
+            toolsGrid.innerHTML = '';
+            
+            const filteredTools = designTools.filter(tool => {
+                const matchesFilter = currentFilter === 'all' || 
+                                    tool.category === currentFilter || 
+                                    (currentFilter === 'free' && !tool.premium) ||
+                                    (currentFilter === 'premium' && tool.premium);
+                
+                const matchesSearch = !currentSearch || 
+                                    tool.name.includes(currentSearch) || 
+                                    tool.description.includes(currentSearch);
+                
+                return matchesFilter && matchesSearch;
+            });
+            
+            filteredTools.forEach(tool => {
+                const toolCard = document.createElement('div');
+                toolCard.className = `tool-card ${tool.premium ? 'premium' : ''}`;
+                toolCard.innerHTML = `
+                    <div class="tool-icon">
+                        <i class="${tool.icon}"></i>
+                    </div>
+                    <h3>${tool.name}</h3>
+                    <p>${tool.description}</p>
+                    <div class="tool-stats">
+                        <span><i class="fas fa-star" style="color: #ffc107;"></i> ${tool.rating}</span>
+                        <span><i class="fas fa-users" style="color: #0a9396;"></i> ${tool.users}</span>
+                    </div>
+                `;
+                toolCard.onclick = () => openTool(tool.id);
+                toolsGrid.appendChild(toolCard);
+            });
+        }
+
+        // تحميل القوالب
+        function loadTemplates() {
+            const templatesGrid = document.querySelector('.templates-grid');
+            templatesGrid.innerHTML = '';
+            
+            templates.forEach(template => {
+                const templateCard = document.createElement('div');
+                templateCard.className = 'template-card';
+                templateCard.innerHTML = `
+                    <div class="template-preview" style="background: linear-gradient(45deg, ${template.color}, ${adjustColor(template.color, -20)})">
+                        <div style="position: absolute; top: 10px; right: 10px; left: 10px; bottom: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;"></div>
+                    </div>
+                    <div class="template-info">
+                        <h4>${template.name}</h4>
+                        <p>${template.category}</p>
+                    </div>
+                `;
+                templateCard.onclick = () => useTemplate(template.id);
+                templatesGrid.appendChild(templateCard);
+            });
+        }
+
+        // البحث عن الأدوات
+        function searchTools() {
+            currentSearch = document.getElementById('toolSearch').value;
+            loadTools();
+        }
+
+        // تصفية الأدوات
+        function filterTools(category) {
+            // تحديث الفلاتر النشطة
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            currentFilter = category;
+            loadTools();
+        }
+
+        // فتح أداة
+        function openTool(toolId) {
+            if (typeof toolId === 'number') {
+                const tool = designTools.find(t => t.id === toolId);
+                if (tool) {
+                    if (tool.premium && !checkPremiumAccess()) {
+                        showPremiumModal(tool.name);
+                        return;
+                    }
+                    
+                    showToast(`جاري فتح ${tool.name}...`, 'info');
+                    
+                    // محاكاة تحميل الأداة
+                    setTimeout(() => {
+                        switch(toolId) {
+                            case 1:
+                                openAdvancedEditor();
+                                break;
+                            case 2:
+                                window.location.href = 'logo-maker.html';
+                                break;
+                            case 3:
+                                window.location.href = 'video-editor.html';
+                                break;
+                            case 6:
+                                openColorPicker();
+                                break;
+                            case 12:
+                                openQRGenerator();
+                                break;
+                            default:
+                                showToast(`أداة ${tool.name} جاهزة للاستخدام!`, 'success');
+                        }
+                    }, 1000);
+                }
+            } else {
+                // للأدوات السريعة
+                showToast(`جاري فتح ${toolId}...`, 'info');
+            }
+        }
+
+        // استخدام قالب
+        function useTemplate(templateId) {
+            const template = templates.find(t => t.id === templateId);
+            showToast(`جاري تحميل قالب ${template.name}...`, 'info');
+            
+            setTimeout(() => {
+                openAdvancedEditor();
+                showToast(`تم تحميل القالب بنجاح! يمكنك التعديل عليه الآن.`, 'success');
+            }, 1500);
+        }
+
+        // التحقق من اشتراك Premium
+        function checkPremiumAccess() {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            return user.premium === true;
+        }
+
+        // عرض نافذة Premium
+        function showPremiumModal(toolName) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 3000;
+                backdrop-filter: blur(10px);
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: var(--bg-primary); border-radius: var(--radius-xl); padding: 30px; max-width: 400px; width: 90%; text-align: center; box-shadow: var(--shadow-xl);">
+                    <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px;">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 style="margin: 0 0 12px 0; color: var(--text-primary);">ميزة Premium</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5;">
+                        ${toolName} متاحة فقط للمشتركين في الخطة الاحترافية. قم بالترقية الآن للوصول إلى جميع الأدوات المتقدمة!
+                    </p>
+                    <div style="display: flex; gap: 12px; justify-content: center;">
+                        <button onclick="this.closest('div[style*=\"position: fixed\"]').remove();" style="padding: 12px 24px; background: var(--bg-secondary); border: none; border-radius: var(--radius-lg); color: var(--text-primary); cursor: pointer; font-weight: 600; transition: all var(--transition-fast);">
+                            لاحقاً
+                        </button>
+                        <button onclick="upgradeToPremium()" style="padding: 12px 24px; background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark)); border: none; border-radius: var(--radius-lg); color: white; cursor: pointer; font-weight: 600; transition: all var(--transition-fast);">
+                            <i class="fas fa-arrow-up"></i>
+                            ترقية الآن
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // ترقية إلى Premium
+        function upgradeToPremium() {
+            showToast('جاري التوجيه إلى صفحة الاشتراك...', 'info');
+            setTimeout(() => {
+                window.location.href = 'premium.html';
+            }, 1000);
+        }
+
+        // تحميل صورة للمحرر
+        function uploadImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        showToast('تم تحميل الصورة بنجاح!', 'success');
+                        // هنا يمكن إضافة كود لمعالجة الصورة
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            input.click();
+        }
+
+        // تطبيق فلتر على الصورة
+        function applyFilter(filterType) {
+            const filters = {
+                'brightness': 'سطوع',
+                'contrast': 'تباين',
+                'saturation': 'تشبع',
+                'blur': 'ضبابية',
+                'sharpen': 'حدة',
+                'grayscale': 'رمادي',
+                'sepia': 'سيبيا'
+            };
+            
+            showToast(`تم تطبيق فلتر ${filters[filterType]}`, 'success');
+        }
+
+        // قص الصورة
+        function cropImage() {
+            showToast('تم تفعيل أداة القص. اسحب لتحديد المنطقة المطلوبة.', 'info');
+        }
+
+        // فتح المحرر المتقدم
+        function openAdvancedEditor() {
+            document.getElementById('advancedEditor').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق المحرر المتقدم
+        function closeAdvancedEditor() {
+            document.getElementById('advancedEditor').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // إعداد لوحة الرسم
+        function setupCanvas() {
+            const canvas = document.getElementById('drawingCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // تعديل الحجم للتجاوب
+            canvas.style.width = '90%';
+            canvas.style.height = '90%';
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            // بدء الرسم
+            canvas.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                [lastX, lastY] = getMousePos(canvas, e);
+            });
+            
+            canvas.addEventListener('touchstart', (e) => {
+                isDrawing = true;
+                const touch = e.touches[0];
+                [lastX, lastY] = getTouchPos(canvas, touch);
+            });
+            
+            // الرسم
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                draw({ clientX: touch.clientX, clientY: touch.clientY });
+            });
+            
+            // إنهاء الرسم
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseout', () => isDrawing = false);
+            canvas.addEventListener('touchend', () => isDrawing = false);
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                ctx.strokeStyle = selectedColor;
+                ctx.globalAlpha = brushOpacity / 100;
+                ctx.lineWidth = brushSize;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                const [x, y] = getMousePos(canvas, e);
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                [lastX, lastY] = [x, y];
+            }
+            
+            function getMousePos(canvas, evt) {
+                const rect = canvas.getBoundingClientRect();
+                return [
+                    evt.clientX - rect.left,
+                    evt.clientY - rect.top
+                ];
+            }
+            
+            function getTouchPos(canvas, touch) {
+                const rect = canvas.getBoundingClientRect();
+                return [
+                    touch.clientX - rect.left,
+                    touch.clientY - rect.top
+                ];
+            }
+        }
+
+        // تحديث حجم الفرشاة
+        function updateBrushSize(value) {
+            brushSize = value;
+            document.getElementById('brushSizeValue').textContent = value + 'px';
+        }
+
+        // تحديث شفافية الفرشاة
+        function updateBrushOpacity(value) {
+            brushOpacity = value;
+            document.getElementById('brushOpacityValue').textContent = value + '%';
+        }
+
+        // تحديث صلابة الفرشاة
+        function updateBrushHardness(value) {
+            brushHardness = value;
+            document.getElementById('brushHardnessValue').textContent = value + '%';
+        }
+
+        // اختيار لون
+        function selectColor(color) {
+            selectedColor = color;
+            document.getElementById('colorPicker').value = color;
+        }
+
+        // فتح أداة الذكاء الاصطناعي
+        function openAITool(tool) {
+            const tools = {
+                'generate': 'مولد التصاميم الذكي',
+                'enhance': 'محسّن الجودة الذكي',
+                'remove-bg': 'إزالة الخلفية الذكية'
+            };
+            
+            showToast(`جاري فتح ${tools[tool]}...`, 'info');
+            setTimeout(() => {
+                window.location.href = `ai-${tool}.html`;
+            }, 1000);
+        }
+
+        // فتح تصميم جديد
+        function openNewDesign() {
+            const options = [
+                'تصميم صورة',
+                'تصميم فيديو',
+                'تصميم شعار',
+                'تصميم UI/UX',
+                'تصميم بروشور',
+                'تصميم إنفوجرافيك'
+            ];
+            
+            let optionsHTML = options.map((opt, i) => `${i + 1}. ${opt}`).join('\n');
+            
+            const choice = prompt(`اختر نوع التصميم:\n\n${optionsHTML}`, '1');
+            
+            if (choice !== null) {
+                const choiceNum = parseInt(choice);
+                if (choiceNum >= 1 && choiceNum <= options.length) {
+                    showToast(`جاري إنشاء ${options[choiceNum - 1]}...`, 'info');
+                    setTimeout(() => {
+                        openAdvancedEditor();
+                    }, 1000);
+                }
+            }
+        }
+
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.style.backgroundColor = isDarkMode ? '#0f172a' : '#f8fafc';
+            document.body.style.color = isDarkMode ? '#e2e8f0' : '#1e293b';
+            
+            showToast(isDarkMode ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع النهاري', 'info');
+        }
+
+        // فتح المساعدة
+        function openHelp() {
+            window.location.href = 'help-tools.html';
+        }
+
+        // فتح منتقي الألوان
+        function openColorPicker() {
+            const color = prompt('أدخل رمز اللون (مثل #0a9396) أو اختر:', '#0a9396');
+            if (color) {
+                navigator.clipboard.writeText(color).then(() => {
+                    showToast(`تم نسخ اللون ${color} إلى الحافظة`, 'success');
+                });
+            }
+        }
+
+        // فتح مولد QR
+        function openQRGenerator() {
+            const text = prompt('أدخل النص أو الرابط لتحويله إلى QR Code:');
+            if (text) {
+                showToast('جاري إنشاء QR Code...', 'info');
+                setTimeout(() => {
+                    alert(`QR Code للعنصر:\n${text}\n\nسيتم حفظ الصورة في معرض الصور.`);
+                }, 1000);
+            }
+        }
+
+        // عرض رسائل Toast
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span style="flex: 1;">${message}</span>
+                <button onclick="this.parentElement.remove()" style="background: none; border: none; color: white; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'fadeOut 0.3s ease-out';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }
+            }, 3000);
+        }
+
+        // إضافة تأثيرات التحريك
+        function addAnimationEffects() {
+            // تأثيرات عند التمرير
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeIn 0.6s ease-out';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.tools-section, .editor-section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        // دالة مساعدة لتعديل الألوان
+        function adjustColor(color, amount) {
+            let usePound = false;
+            
+            if (color[0] === "#") {
+                color = color.slice(1);
+                usePound = true;
+            }
+            
+            const num = parseInt(color, 16);
+            let r = (num >> 16) + amount;
+            let g = ((num >> 8) & 0x00FF) + amount;
+            let b = (num & 0x0000FF) + amount;
+            
+            r = Math.min(Math.max(0, r), 255);
+            g = Math.min(Math.max(0, g), 255);
+            b = Math.min(Math.max(0, b), 255);
+            
+            return (usePound ? "#" : "") + (b | (g << 8) | (r << 16)).toString(16).padStart(6, '0');
+        }
+    </script>
+</body>
+</html>

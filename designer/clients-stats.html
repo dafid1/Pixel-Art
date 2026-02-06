@@ -1,0 +1,3207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>إحصائيات العملاء | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* المتغيرات الأساسية */
+        :root {
+            /* نظام الألوان */
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --accent-color: #9b5de5;
+            --accent-dark: #7209b7;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --info-color: #4cc9f0;
+            
+            /* نظام التصميم */
+            --bg-primary: rgba(255, 255, 255, 0.98);
+            --bg-secondary: rgba(248, 250, 252, 0.96);
+            --bg-tertiary: rgba(241, 245, 249, 0.95);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-color: rgba(226, 232, 240, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --shadow-heavy: rgba(0, 0, 0, 0.15);
+            
+            /* الأنيميشن */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* التأثيرات */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --backdrop-blur: blur(20px);
+            --backdrop-saturate: saturate(180%);
+            
+            /* الطبقات */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+            --z-toast: 1080;
+        }
+
+        /* الوضع الداكن */
+        .dark-mode {
+            --bg-primary: rgba(15, 23, 42, 0.98);
+            --bg-secondary: rgba(30, 41, 59, 0.96);
+            --bg-tertiary: rgba(51, 65, 85, 0.95);
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: rgba(71, 85, 105, 0.95);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-heavy: rgba(0, 0, 0, 0.4);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.05) 0%,
+                rgba(238, 155, 0, 0.05) 50%,
+                rgba(155, 93, 229, 0.05) 100%);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* تأثير الخلفية الديناميكية */
+        .dynamic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            bottom: 10%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        /* شريط الحالة الذكي */
+        .smart-status-bar {
+            height: 44px;
+            background: linear-gradient(90deg, 
+                var(--primary-color) 0%,
+                var(--secondary-color) 50%,
+                var(--accent-color) 100%);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge i {
+            animation: pulse 2s infinite;
+        }
+
+        /* الهيدر الرئيسي */
+        .main-header {
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 24px;
+            position: fixed;
+            top: 44px;
+            left: 0;
+            right: 0;
+            z-index: var(--z-sticky);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+            box-shadow: 0 8px 32px rgba(10, 147, 150, 0.3);
+            transition: transform var(--transition-medium);
+        }
+
+        .logo-icon:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .logo-text span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header-back {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 16px;
+            transition: all var(--transition-fast);
+        }
+
+        .header-back:hover {
+            color: var(--primary-color);
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-action {
+            width: 48px;
+            height: 48px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .header-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            color: var(--primary-color);
+        }
+
+        .action-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            font-weight: 700;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(231, 111, 81, 0.3);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 124px 0 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .clients-container {
+            padding: 0 24px;
+        }
+
+        /* بطاقة النظرة العامة */
+        .overview-hero-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow-heavy);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .overview-hero-header {
+            padding: 32px;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 50%,
+                rgba(155, 93, 229, 0.1) 100%);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-hero-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .overview-title {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .overview-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .overview-filters {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            min-width: 180px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(10, 147, 150, 0.1);
+        }
+
+        .refresh-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(10, 147, 150, 0.3);
+        }
+
+        /* إحصائيات النظرة العامة */
+        .overview-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 32px;
+            background: var(--bg-secondary);
+        }
+
+        .overview-stat {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .overview-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px var(--shadow-heavy);
+            border-color: var(--primary-color);
+        }
+
+        .stat-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .stat-change {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .change-positive {
+            color: var(--success-color);
+        }
+
+        .change-negative {
+            color: var(--danger-color);
+        }
+
+        .stat-period {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        /* شبكة المحتوى */
+        .clients-content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        /* القسم الرئيسي */
+        .clients-main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* الشريط الجانبي */
+        .clients-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* البطاقات */
+        .clients-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--glass-border);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            color: var(--primary-color);
+        }
+
+        .card-action {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-action:hover {
+            transform: translateX(-4px);
+        }
+
+        /* مخطط التحليلات */
+        .analytics-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* قائمة العملاء النشطين */
+        .active-clients-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .client-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .client-item:hover {
+            background: var(--bg-tertiary);
+            transform: translateX(-4px);
+            border-color: var(--primary-color);
+        }
+
+        .client-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .avatar-status {
+            position: absolute;
+            bottom: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--bg-primary);
+            border-radius: 50%;
+        }
+
+        .status-online {
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        .status-offline {
+            background: var(--text-tertiary);
+        }
+
+        .client-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .client-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .client-company {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .client-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .client-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .client-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .client-action-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .client-action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* جدول تحليل العملاء */
+        .clients-table-container {
+            overflow-x: auto;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--glass-bg);
+        }
+
+        .clients-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .clients-table thead {
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 100%);
+        }
+
+        .clients-table th {
+            padding: 20px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .clients-table td {
+            padding: 20px;
+            text-align: right;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .clients-table tbody tr {
+            transition: all var(--transition-fast);
+        }
+
+        .clients-table tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .clients-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .client-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .client-cell-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .client-cell-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .client-cell-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .client-cell-email {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status-badge-table {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: rgba(42, 157, 143, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background: rgba(233, 196, 106, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-inactive {
+            background: rgba(231, 111, 81, 0.1);
+            color: var(--danger-color);
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .rating-stars i {
+            color: var(--secondary-color);
+            font-size: 12px;
+        }
+
+        .action-dropdown {
+            position: relative;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .action-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* جغرافية العملاء */
+        .geography-map {
+            height: 200px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .geography-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .geo-stat {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .geo-stat-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .geo-stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* مصادر العملاء */
+        .sources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .source-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .source-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .source-details h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .source-details p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .source-stats {
+            text-align: left;
+        }
+
+        .source-count {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .source-percentage {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* تقييمات العملاء */
+        .reviews-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .review-item {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reviewer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .reviewer-details h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .reviewer-details p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .review-rating i {
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+
+        .review-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        /* نافذة تفاصيل العميل */
+        .client-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+        }
+
+        .client-detail-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .client-detail-container {
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-radius: 32px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            transform: translateY(40px);
+            transition: transform var(--transition-medium);
+        }
+
+        .client-detail-modal.show .client-detail-container {
+            transform: translateY(0);
+        }
+
+        .client-detail-header {
+            padding: 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, 
+                rgba(10, 147, 150, 0.1) 0%,
+                rgba(238, 155, 0, 0.1) 100%);
+        }
+
+        .client-detail-header h2 {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .client-detail-close {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .client-detail-close:hover {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+            transform: rotate(90deg);
+        }
+
+        .client-detail-body {
+            padding: 32px;
+        }
+
+        .client-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .client-profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 36px;
+            position: relative;
+        }
+
+        .client-profile-info h3 {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .client-profile-info p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .client-profile-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .client-profile-stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .client-profile-stat-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .client-profile-stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* الشريط السفلي */
+        .clients-bottom-bar {
+            height: 90px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-top: 1px solid var(--glass-border);
+            padding: 0 24px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: var(--z-fixed);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            box-shadow: 0 -4px 32px var(--shadow-color);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            flex: 1;
+            padding: 12px;
+            border-radius: 16px;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.15);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            position: relative;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, var(--danger-color), #d1664b);
+            color: white;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            font-weight: 700;
+            border: 2px solid var(--bg-primary);
+        }
+
+        /* أنيميشن */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes chartAnimation {
+            from {
+                transform: scaleY(0);
+            }
+            to {
+                transform: scaleY(1);
+            }
+        }
+
+        /* تأثيرات خاصة للإحصائيات */
+        .stat-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 0%,
+                rgba(255,255,255,0.1) 50%,
+                transparent 100%);
+            opacity: 0;
+            transition: opacity var(--transition-medium);
+        }
+
+        .overview-stat:hover .stat-glow {
+            opacity: 1;
+        }
+
+        /* تحسينات للأندرويد */
+        .android-optimized {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .touch-feedback {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .touch-feedback::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: inherit;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.3s;
+            pointer-events: none;
+        }
+
+        .touch-feedback:active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* تحسينات الجدول للأندرويد */
+        .table-scroll-wrapper {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: auto;
+        }
+
+        /* التجاوب */
+        @media (max-width: 1200px) {
+            .clients-content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .overview-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .client-profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .main-header {
+                height: 70px;
+                padding: 0 16px;
+            }
+            
+            .main-content {
+                padding: 114px 0 160px;
+            }
+            
+            .clients-container {
+                padding: 0 16px;
+            }
+            
+            .overview-hero-header {
+                padding: 24px;
+            }
+            
+            .overview-filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-select {
+                flex: 1;
+            }
+            
+            .overview-stats-grid {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 16px;
+            }
+            
+            .stat-value {
+                font-size: 28px;
+            }
+            
+            .clients-table th,
+            .clients-table td {
+                padding: 12px;
+            }
+            
+            .clients-bottom-bar {
+                height: 80px;
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 18px;
+            }
+            
+            .overview-title {
+                font-size: 22px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .client-item {
+                padding: 16px;
+            }
+            
+            .client-actions {
+                flex-direction: column;
+            }
+            
+            .geography-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .client-detail-header {
+                padding: 24px;
+            }
+            
+            .client-detail-body {
+                padding: 24px;
+            }
+            
+            .client-profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* دعم Safe Areas للأجهزة الحديثة */
+        @supports (padding: max(0px)) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            
+            .smart-status-bar {
+                height: calc(44px + env(safe-area-inset-top));
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            .main-header {
+                top: calc(44px + env(safe-area-inset-top));
+            }
+            
+            .main-content {
+                padding-top: calc(124px + env(safe-area-inset-top));
+            }
+            
+            .clients-bottom-bar {
+                height: calc(90px + env(safe-area-inset-bottom));
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* تحسينات الأداء */
+        .performance-optimized {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        /* تحسينات اللمس */
+        @media (hover: none) and (pointer: coarse) {
+            .overview-stat:hover,
+            .client-item:hover,
+            .clients-table tbody tr:hover {
+                transform: none;
+            }
+            
+            .touch-feedback:active::after {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            
+            .action-btn:hover,
+            .client-action-btn:hover {
+                background: var(--bg-tertiary);
+                color: var(--text-secondary);
+                border-color: var(--border-color);
+            }
+        }
+
+        /* شريط التمرير المخصص */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body class="android-optimized">
+    <!-- الخلفية الديناميكية -->
+    <div class="dynamic-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- شريط الحالة الذكي -->
+    <div class="smart-status-bar">
+        <div class="status-content">
+            <span id="currentTime">--:--</span>
+            <div class="status-badge">
+                <i class="fas fa-wifi"></i>
+                <span>5G</span>
+            </div>
+            <div class="status-badge">
+                <i class="fas fa-battery-three-quarters"></i>
+                <span>85%</span>
+            </div>
+        </div>
+        <div class="status-content">
+            <div class="status-badge">
+                <i class="fas fa-chart-line"></i>
+                <span>تحليل العملاء</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- الهيدر الرئيسي -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="javascript:history.back()" class="header-back">
+                <i class="fas fa-arrow-right"></i>
+                <span>رجوع</span>
+            </a>
+            <h1 class="header-title">إحصائيات العملاء</h1>
+        </div>
+
+        <div class="header-right">
+            <div class="header-action" onclick="toggleDarkMode()" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="header-action" onclick="clientsStatsSystem.exportData()">
+                <i class="fas fa-download"></i>
+            </div>
+            <div class="header-action" onclick="clientsStatsSystem.addClient()">
+                <i class="fas fa-user-plus"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <div class="clients-container">
+            <!-- بطاقة النظرة العامة -->
+            <div class="overview-hero-card">
+                <div class="overview-hero-header">
+                    <h2 class="overview-title">نظرة عامة على العملاء</h2>
+                    <p class="overview-subtitle">تحليل شامل لإحصائيات العملاء وأدائهم</p>
+                    
+                    <div class="overview-filters">
+                        <div class="filter-group">
+                            <span class="filter-label">الفترة:</span>
+                            <select class="filter-select" id="periodFilter" onchange="clientsStatsSystem.filterByPeriod()">
+                                <option value="today">اليوم</option>
+                                <option value="week" selected>هذا الأسبوع</option>
+                                <option value="month">هذا الشهر</option>
+                                <option value="quarter">هذا الربع</option>
+                                <option value="year">هذه السنة</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <span class="filter-label">النوع:</span>
+                            <select class="filter-select" id="typeFilter" onchange="clientsStatsSystem.filterByType()">
+                                <option value="all">جميع العملاء</option>
+                                <option value="active">النشطون فقط</option>
+                                <option value="premium">المميزون</option>
+                                <option value="new">الجدد</option>
+                            </select>
+                        </div>
+                        
+                        <button class="refresh-btn touch-feedback" onclick="clientsStatsSystem.refreshData()">
+                            <i class="fas fa-sync-alt"></i>
+                            تحديث البيانات
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- إحصائيات النظرة العامة -->
+                <div class="overview-stats-grid">
+                    <div class="overview-stat touch-feedback" onclick="clientsStatsSystem.viewTotalClients()">
+                        <div class="stat-glow"></div>
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>إجمالي العملاء</h3>
+                                <div class="stat-value" id="totalClients">128</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12 هذا الشهر</span>
+                        </div>
+                        <div class="stat-period">مقارنة بالشهر الماضي</div>
+                    </div>
+                    
+                    <div class="overview-stat touch-feedback" onclick="clientsStatsSystem.viewActiveClients()">
+                        <div class="stat-glow"></div>
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>العملاء النشطون</h3>
+                                <div class="stat-value" id="activeClients">94</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8 هذا الشهر</span>
+                        </div>
+                        <div class="stat-period">نشطون خلال 30 يوم</div>
+                    </div>
+                    
+                    <div class="overview-stat touch-feedback" onclick="clientsStatsSystem.viewRevenue()">
+                        <div class="stat-glow"></div>
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>الإيرادات من العملاء</h3>
+                                <div class="stat-value" id="clientRevenue">245K</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+18% عن الشهر</span>
+                        </div>
+                        <div class="stat-period">إجمالي الإيرادات</div>
+                    </div>
+                    
+                    <div class="overview-stat touch-feedback" onclick="clientsStatsSystem.viewSatisfaction()">
+                        <div class="stat-glow"></div>
+                        <div class="stat-content">
+                            <div class="stat-info">
+                                <h3>معدل الرضا</h3>
+                                <div class="stat-value" id="satisfactionRate">4.8</div>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+0.2 عن الربع</span>
+                        </div>
+                        <div class="stat-period">من 5 نقاط</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شبكة محتوى العملاء -->
+            <div class="clients-content-grid">
+                <!-- القسم الرئيسي -->
+                <div class="clients-main-content">
+                    <!-- تحليلات العملاء -->
+                    <div class="clients-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-chart-bar"></i>
+                                تحليلات العملاء
+                            </div>
+                            <div class="card-action" onclick="clientsStatsSystem.viewAdvancedAnalytics()">
+                                <i class="fas fa-expand-alt"></i>
+                                عرض موسع
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-container">
+                            <canvas id="clientsAnalyticsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- قائمة العملاء النشطين -->
+                    <div class="clients-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-user-clock"></i>
+                                العملاء النشطين حديثاً
+                            </div>
+                            <div class="card-action" onclick="clientsStatsSystem.viewAllActiveClients()">
+                                <i class="fas fa-arrow-left"></i>
+                                عرض الكل
+                            </div>
+                        </div>
+                        
+                        <div class="active-clients-list" id="activeClientsList">
+                            <!-- سيتم إضافة العملاء ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- جدول تحليل العملاء -->
+                    <div class="clients-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-table"></i>
+                                تحليل العملاء
+                            </div>
+                            <div class="card-action" onclick="clientsStatsSystem.exportTable()">
+                                <i class="fas fa-file-export"></i>
+                                تصدير
+                            </div>
+                        </div>
+                        
+                        <div class="clients-table-container table-scroll-wrapper">
+                            <table class="clients-table">
+                                <thead>
+                                    <tr>
+                                        <th>العميل</th>
+                                        <th>الحالة</th>
+                                        <th>المشاريع</th>
+                                        <th>القيمة</th>
+                                        <th>التقييم</th>
+                                        <th>الأفعال</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientsTableBody">
+                                    <!-- سيتم إضافة الصفوف ديناميكياً -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الشريط الجانبي -->
+                <div class="clients-sidebar">
+                    <!-- جغرافية العملاء -->
+                    <div class="clients-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-globe-asia"></i>
+                                جغرافية العملاء
+                            </div>
+                            <div class="card-action" onclick="clientsStatsSystem.viewGeographicDetails()">
+                                <i class="fas fa-map"></i>
+                                خريطة
+                            </div>
+                        </div>
+                        
+                        <div class="geography-map">
+                            <div class="map-overlay">
+                                <i class="fas fa-globe-americas" style="font-size: 48px; opacity: 0.3;"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="geography-stats">
+                            <div class="geo-stat">
+                                <div class="geo-stat-value" id="saudiClients">64</div>
+                                <div class="geo-stat-label">السعودية</div>
+                            </div>
+                            <div class="geo-stat">
+                                <div class="geo-stat-value" id="uaeClients">28</div>
+                                <div class="geo-stat-label">الإمارات</div>
+                            </div>
+                            <div class="geo-stat">
+                                <div class="geo-stat-value" id="kuwaitClients">18</div>
+                                <div class="geo-stat-label">الكويت</div>
+                            </div>
+                            <div class="geo-stat">
+                                <div class="geo-stat-value" id="otherClients">18</div>
+                                <div class="geo-stat-label">أخرى</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- مصادر العملاء -->
+                    <div class="clients-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-funnel-dollar"></i>
+                                مصادر العملاء
+                            </div>
+                        </div>
+                        
+                        <div class="sources-list" id="sourcesList">
+                            <!-- سيتم إضافة المصادر ديناميكياً -->
+                        </div>
+                    </div>
+
+                    <!-- تقييمات العملاء -->
+                    <div class="clients-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="fas fa-comment-dots"></i>
+                                أحدث التقييمات
+                            </div>
+                            <div class="card-action" onclick="clientsStatsSystem.viewAllReviews()">
+                                <i class="fas fa-arrow-left"></i>
+                                عرض الكل
+                            </div>
+                        </div>
+                        
+                        <div class="reviews-container" id="reviewsContainer">
+                            <!-- سيتم إضافة التقييمات ديناميكياً -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة تفاصيل العميل -->
+    <div class="client-detail-modal" id="clientDetailModal">
+        <div class="client-detail-container">
+            <div class="client-detail-header">
+                <h2 id="clientDetailTitle">تفاصيل العميل</h2>
+                <button class="client-detail-close" onclick="clientsStatsSystem.closeClientDetail()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="client-detail-body" id="clientDetailBody">
+                <!-- سيتم إضافة محتوى النافذة ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- الشريط السفلي -->
+    <nav class="clients-bottom-bar">
+        <a href="dashboard-designer.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="jobs.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <span>الوظائف</span>
+        </a>
+        
+        <a href="messages.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-comments"></i>
+                <span class="nav-badge">12</span>
+            </div>
+            <span>الرسائل</span>
+        </a>
+        
+        <a href="clients-stats.html" class="nav-item active">
+            <div class="nav-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <span>الإحصائيات</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item">
+            <div class="nav-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- نظام إحصائيات العملاء المتقدم -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // نظام إحصائيات العملاء
+        class ClientsStatsSystem {
+            constructor() {
+                this.clientsData = null;
+                this.analyticsChart = null;
+                this.currentFilter = {
+                    period: 'week',
+                    type: 'all'
+                };
+                this.selectedClient = null;
+                this.init();
+            }
+
+            async init() {
+                await this.loadClientsData();
+                this.setupEventListeners();
+                this.renderDashboard();
+                this.initAnalyticsChart();
+                this.updateTime();
+                this.setupTouchGestures();
+                this.showWelcomeMessage();
+                
+                // تحديث التوقيت
+                setInterval(() => this.updateRealTimeData(), 30000);
+            }
+
+            async loadClientsData() {
+                // تحميل بيانات العملاء من localStorage أو API
+                const savedData = localStorage.getItem('clientsStatsData');
+                
+                if (savedData) {
+                    this.clientsData = JSON.parse(savedData);
+                } else {
+                    // بيانات افتراضية شاملة
+                    this.clientsData = {
+                        summary: {
+                            totalClients: 128,
+                            activeClients: 94,
+                            newClients: 12,
+                            returningClients: 82,
+                            revenue: 245000,
+                            satisfaction: 4.8,
+                            retentionRate: 85,
+                            churnRate: 8
+                        },
+                        trends: {
+                            daily: [42, 38, 45, 52, 48, 55, 60],
+                            weekly: [120, 125, 118, 130, 128, 135, 140],
+                            monthly: [450, 480, 520, 550, 580, 610, 640]
+                        },
+                        activeClients: [
+                            {
+                                id: 1,
+                                name: "شركة التقنية المتقدمة",
+                                avatar: "ت",
+                                status: "online",
+                                company: "شركة تقنية رائدة",
+                                lastActive: "قبل 5 دقائق",
+                                projects: 8,
+                                revenue: 85000,
+                                rating: 4.9,
+                                color: "linear-gradient(135deg, #0a9396, #005f73)"
+                            },
+                            {
+                                id: 2,
+                                name: "مجموعة الرفاهية",
+                                avatar: "ر",
+                                status: "online",
+                                company: "مجموعة عقارية",
+                                lastActive: "قبل 15 دقيقة",
+                                projects: 12,
+                                revenue: 120000,
+                                rating: 4.7,
+                                color: "linear-gradient(135deg, #ee9b00, #ca6702)"
+                            },
+                            {
+                                id: 3,
+                                name: "بنك المستقبل",
+                                avatar: "ب",
+                                status: "offline",
+                                company: "خدمات مصرفية",
+                                lastActive: "قبل ساعة",
+                                projects: 5,
+                                revenue: 65000,
+                                rating: 4.8,
+                                color: "linear-gradient(135deg, #9b5de5, #7209b7)"
+                            },
+                            {
+                                id: 4,
+                                name: "أكاديمية المستقبل",
+                                avatar: "أ",
+                                status: "online",
+                                company: "تعليم وتدريب",
+                                lastActive: "قبل 30 دقيقة",
+                                projects: 3,
+                                revenue: 35000,
+                                rating: 4.6,
+                                color: "linear-gradient(135deg, #2a9d8f, #21867a)"
+                            },
+                            {
+                                id: 5,
+                                name: "مستشفى التميز",
+                                avatar: "م",
+                                status: "offline",
+                                company: "رعاية صحية",
+                                lastActive: "قبل 3 ساعات",
+                                projects: 6,
+                                revenue: 75000,
+                                rating: 4.9,
+                                color: "linear-gradient(135deg, #e76f51, #d1664b)"
+                            }
+                        ],
+                        clientsTable: [
+                            {
+                                id: 1,
+                                name: "شركة التقنية المتقدمة",
+                                email: "contact@tech-advanced.com",
+                                status: "active",
+                                projects: 8,
+                                value: 85000,
+                                rating: 4.9,
+                                lastOrder: "2024-02-25",
+                                joinDate: "2023-05-15",
+                                color: "#0a9396"
+                            },
+                            {
+                                id: 2,
+                                name: "مجموعة الرفاهية",
+                                email: "info@luxury-group.com",
+                                status: "active",
+                                projects: 12,
+                                value: 120000,
+                                rating: 4.7,
+                                lastOrder: "2024-02-24",
+                                joinDate: "2022-11-20",
+                                color: "#ee9b00"
+                            },
+                            {
+                                id: 3,
+                                name: "بنك المستقبل",
+                                email: "support@future-bank.com",
+                                status: "pending",
+                                projects: 5,
+                                value: 65000,
+                                rating: 4.8,
+                                lastOrder: "2024-02-20",
+                                joinDate: "2023-08-10",
+                                color: "#9b5de5"
+                            },
+                            {
+                                id: 4,
+                                name: "أكاديمية المستقبل",
+                                email: "info@future-academy.com",
+                                status: "active",
+                                projects: 3,
+                                value: 35000,
+                                rating: 4.6,
+                                lastOrder: "2024-02-18",
+                                joinDate: "2024-01-05",
+                                color: "#2a9d8f"
+                            },
+                            {
+                                id: 5,
+                                name: "مستشفى التميز",
+                                email: "contact@excellence-hospital.com",
+                                status: "inactive",
+                                projects: 6,
+                                value: 75000,
+                                rating: 4.9,
+                                lastOrder: "2024-01-30",
+                                joinDate: "2023-03-12",
+                                color: "#e76f51"
+                            },
+                            {
+                                id: 6,
+                                name: "شركة النقل السريع",
+                                email: "support@fast-transport.com",
+                                status: "active",
+                                projects: 4,
+                                value: 45000,
+                                rating: 4.5,
+                                lastOrder: "2024-02-22",
+                                joinDate: "2023-09-18",
+                                color: "#4cc9f0"
+                            },
+                            {
+                                id: 7,
+                                name: "مطاعم الذواقة",
+                                email: "info@gourmet-restaurants.com",
+                                status: "pending",
+                                projects: 2,
+                                value: 25000,
+                                rating: 4.3,
+                                lastOrder: "2024-02-15",
+                                joinDate: "2024-02-01",
+                                color: "#ff6b6b"
+                            },
+                            {
+                                id: 8,
+                                name: "وكالة سفر وسياحة",
+                                email: "contact@travel-agency.com",
+                                status: "active",
+                                projects: 7,
+                                value: 55000,
+                                rating: 4.7,
+                                lastOrder: "2024-02-28",
+                                joinDate: "2023-06-25",
+                                color: "#ffd166"
+                            }
+                        ],
+                        geography: {
+                            saudi: 64,
+                            uae: 28,
+                            kuwait: 18,
+                            qatar: 12,
+                            oman: 6
+                        },
+                        sources: [
+                            {
+                                name: "البحث العضوي",
+                                count: 48,
+                                percentage: 37.5,
+                                icon: "fa-search",
+                                color: "linear-gradient(135deg, #0a9396, #005f73)"
+                            },
+                            {
+                                name: "التوصيات",
+                                count: 32,
+                                percentage: 25,
+                                icon: "fa-user-friends",
+                                color: "linear-gradient(135deg, #ee9b00, #ca6702)"
+                            },
+                            {
+                                name: "وسائل التواصل",
+                                count: 24,
+                                percentage: 18.8,
+                                icon: "fa-share-alt",
+                                color: "linear-gradient(135deg, #9b5de5, #7209b7)"
+                            },
+                            {
+                                name: "إعلانات مدفوعة",
+                                count: 16,
+                                percentage: 12.5,
+                                icon: "fa-ad",
+                                color: "linear-gradient(135deg, #2a9d8f, #21867a)"
+                            },
+                            {
+                                name: "أخرى",
+                                count: 8,
+                                percentage: 6.2,
+                                icon: "fa-ellipsis-h",
+                                color: "linear-gradient(135deg, #64748b, #475569)"
+                            }
+                        ],
+                        reviews: [
+                            {
+                                id: 1,
+                                clientName: "شركة التقنية المتقدمة",
+                                clientAvatar: "ت",
+                                rating: 5,
+                                text: "مستوى احترافي ممتاز وتنفيذ سريع للطلبات. نوصي بالتعامل معهم بشدة.",
+                                date: "منذ يومين",
+                                color: "linear-gradient(135deg, #0a9396, #005f73)"
+                            },
+                            {
+                                id: 2,
+                                clientName: "مجموعة الرفاهية",
+                                clientAvatar: "ر",
+                                rating: 4,
+                                text: "تصميم إبداعي ورائع، ولكن التسليم تأخر قليلاً عن الموعد المتفق عليه.",
+                                date: "منذ أسبوع",
+                                color: "linear-gradient(135deg, #ee9b00, #ca6702)"
+                            },
+                            {
+                                id: 3,
+                                clientName: "بنك المستقبل",
+                                clientAvatar: "ب",
+                                rating: 5,
+                                text: "فريق متعاون ومبدع، نتائج تتجاوز التوقعات. سنواصل التعاون معهم.",
+                                date: "منذ 3 أسابيع",
+                                color: "linear-gradient(135deg, #9b5de5, #7209b7)"
+                            }
+                        ],
+                        analytics: {
+                            labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو'],
+                            newClients: [18, 22, 20, 25, 28, 30, 32],
+                            activeClients: [85, 88, 90, 92, 94, 93, 95],
+                            revenue: [180000, 195000, 210000, 225000, 235000, 240000, 245000]
+                        }
+                    };
+                    
+                    localStorage.setItem('clientsStatsData', JSON.stringify(this.clientsData));
+                }
+            }
+
+            setupEventListeners() {
+                // تحديث الوقت كل دقيقة
+                setInterval(() => this.updateTime(), 60000);
+                
+                // تحديث البيانات في الوقت الفعلي
+                setInterval(() => this.simulateRealTimeUpdate(), 15000);
+                
+                // السحب للتحديث
+                this.setupPullToRefresh();
+            }
+
+            setupPullToRefresh() {
+                let touchStartY = 0;
+                let touchEndY = 0;
+
+                document.addEventListener('touchstart', e => {
+                    touchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', e => {
+                    touchEndY = e.changedTouches[0].screenY;
+                    this.handlePullToRefresh(touchStartY, touchEndY);
+                }, { passive: true });
+            }
+
+            handlePullToRefresh(startY, endY) {
+                const pullDistance = endY - startY;
+                
+                if (pullDistance > 100 && window.scrollY === 0) {
+                    this.showToast('جاري تحديث بيانات العملاء...', 'info');
+                    setTimeout(() => {
+                        this.refreshData();
+                        this.showToast('تم تحديث البيانات بنجاح', 'success');
+                    }, 1000);
+                }
+            }
+
+            setupTouchGestures() {
+                // إضافة تأثيرات اللمس للعناصر
+                document.querySelectorAll('.touch-feedback').forEach(element => {
+                    element.addEventListener('touchstart', function() {
+                        this.classList.add('active');
+                    }, { passive: true });
+                    
+                    element.addEventListener('touchend', function() {
+                        this.classList.remove('active');
+                    }, { passive: true });
+                });
+            }
+
+            renderDashboard() {
+                this.renderSummaryStats();
+                this.renderActiveClients();
+                this.renderClientsTable();
+                this.renderGeographyStats();
+                this.renderSources();
+                this.renderReviews();
+            }
+
+            renderSummaryStats() {
+                document.getElementById('totalClients').textContent = 
+                    this.clientsData.summary.totalClients;
+                document.getElementById('activeClients').textContent = 
+                    this.clientsData.summary.activeClients;
+                document.getElementById('clientRevenue').textContent = 
+                    this.formatNumber(this.clientsData.summary.revenue);
+                document.getElementById('satisfactionRate').textContent = 
+                    this.clientsData.summary.satisfaction;
+            }
+
+            renderActiveClients() {
+                const container = document.getElementById('activeClientsList');
+                container.innerHTML = this.clientsData.activeClients.map(client => `
+                    <div class="client-item touch-feedback" onclick="clientsStatsSystem.showClientDetail(${client.id})">
+                        <div class="client-avatar" style="background: ${client.color};">
+                            <span>${client.avatar}</span>
+                            <div class="avatar-status ${client.status === 'online' ? 'status-online' : 'status-offline'}"></div>
+                        </div>
+                        <div class="client-details">
+                            <div class="client-name">${client.name}</div>
+                            <div class="client-company">${client.company}</div>
+                            <div class="client-meta">
+                                <div class="client-meta-item">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>${client.projects} مشاريع</span>
+                                </div>
+                                <div class="client-meta-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>${client.lastActive}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="client-actions">
+                            <button class="client-action-btn" onclick="clientsStatsSystem.messageClient(${client.id}, event)">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                            <button class="client-action-btn" onclick="clientsStatsSystem.callClient(${client.id}, event)">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderClientsTable() {
+                const container = document.getElementById('clientsTableBody');
+                container.innerHTML = this.clientsData.clientsTable.map(client => {
+                    const statusClass = `status-${client.status}`;
+                    const statusText = this.getStatusText(client.status);
+                    
+                    return `
+                        <tr onclick="clientsStatsSystem.showClientDetail(${client.id})" style="cursor: pointer;">
+                            <td>
+                                <div class="client-cell">
+                                    <div class="client-cell-avatar" style="background: ${client.color};">
+                                        ${client.name.charAt(0)}
+                                    </div>
+                                    <div class="client-cell-info">
+                                        <div class="client-cell-name">${client.name}</div>
+                                        <div class="client-cell-email">${client.email}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge-table ${statusClass}">
+                                    ${statusText}
+                                </span>
+                            </td>
+                            <td>${client.projects}</td>
+                            <td>${this.formatNumber(client.value)} ريال</td>
+                            <td>
+                                <div class="rating-stars">
+                                    ${this.renderRatingStars(client.rating)}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="action-dropdown">
+                                    <button class="action-btn" onclick="clientsStatsSystem.showClientActions(${client.id}, event)">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            renderGeographyStats() {
+                document.getElementById('saudiClients').textContent = this.clientsData.geography.saudi;
+                document.getElementById('uaeClients').textContent = this.clientsData.geography.uae;
+                document.getElementById('kuwaitClients').textContent = this.clientsData.geography.kuwait;
+                document.getElementById('otherClients').textContent = 
+                    this.clientsData.geography.qatar + this.clientsData.geography.oman;
+            }
+
+            renderSources() {
+                const container = document.getElementById('sourcesList');
+                container.innerHTML = this.clientsData.sources.map(source => `
+                    <div class="source-item">
+                        <div class="source-info">
+                            <div class="source-icon" style="background: ${source.color};">
+                                <i class="fas ${source.icon}"></i>
+                            </div>
+                            <div class="source-details">
+                                <h4>${source.name}</h4>
+                                <p>${source.count} عميل</p>
+                            </div>
+                        </div>
+                        <div class="source-stats">
+                            <div class="source-count">${source.percentage}%</div>
+                            <div class="source-percentage">من إجمالي العملاء</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderReviews() {
+                const container = document.getElementById('reviewsContainer');
+                container.innerHTML = this.clientsData.reviews.map(review => `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-info">
+                                <div class="reviewer-avatar" style="background: ${review.color};">
+                                    ${review.clientAvatar}
+                                </div>
+                                <div class="reviewer-details">
+                                    <h4>${review.clientName}</h4>
+                                    <p>${review.date}</p>
+                                </div>
+                            </div>
+                            <div class="review-rating">
+                                ${this.renderRatingStars(review.rating)}
+                            </div>
+                        </div>
+                        <div class="review-text">${review.text}</div>
+                        <div class="review-meta">
+                            <span>تمت المشاركة</span>
+                            <button class="action-btn" onclick="clientsStatsSystem.replyToReview(${review.id}, event)">
+                                <i class="fas fa-reply"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderRatingStars(rating) {
+                let stars = '';
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 >= 0.5;
+                
+                for (let i = 0; i < 5; i++) {
+                    if (i < fullStars) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else if (i === fullStars && hasHalfStar) {
+                        stars += '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+
+            getStatusText(status) {
+                const statusMap = {
+                    'active': 'نشط',
+                    'pending': 'قيد الانتظار',
+                    'inactive': 'غير نشط'
+                };
+                return statusMap[status] || status;
+            }
+
+            formatNumber(num) {
+                if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num.toString();
+            }
+
+            initAnalyticsChart() {
+                const ctx = document.getElementById('clientsAnalyticsChart').getContext('2d');
+                
+                if (this.analyticsChart) {
+                    this.analyticsChart.destroy();
+                }
+                
+                const data = {
+                    labels: this.clientsData.analytics.labels,
+                    datasets: [
+                        {
+                            label: 'عملاء جدد',
+                            data: this.clientsData.analytics.newClients,
+                            backgroundColor: 'rgba(10, 147, 150, 0.2)',
+                            borderColor: 'rgba(10, 147, 150, 1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'عملاء نشطون',
+                            data: this.clientsData.analytics.activeClients,
+                            backgroundColor: 'rgba(238, 155, 0, 0.2)',
+                            borderColor: 'rgba(238, 155, 0, 1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                };
+                
+                this.analyticsChart = new Chart(ctx, {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                rtl: true,
+                                labels: {
+                                    font: {
+                                        family: 'Cairo'
+                                    },
+                                    color: 'var(--text-primary)'
+                                }
+                            },
+                            tooltip: {
+                                rtl: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        label += context.parsed.y;
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: 'var(--text-secondary)',
+                                    font: {
+                                        family: 'Cairo'
+                                    }
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                },
+                                ticks: {
+                                    color: 'var(--text-secondary)',
+                                    font: {
+                                        family: 'Cairo'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            filterByPeriod() {
+                const period = document.getElementById('periodFilter').value;
+                this.currentFilter.period = period;
+                this.showToast(`تم تصفية البيانات حسب: ${this.getPeriodText(period)}`, 'info');
+                
+                // في التطبيق الحقيقي، سيتم إعادة جلب البيانات حسب الفترة
+                this.simulateFilteredData();
+            }
+
+            filterByType() {
+                const type = document.getElementById('typeFilter').value;
+                this.currentFilter.type = type;
+                this.showToast(`تم تصفية العملاء حسب: ${this.getTypeText(type)}`, 'info');
+                
+                // في التطبيق الحقيقي، سيتم إعادة جلب البيانات حسب النوع
+                this.simulateFilteredData();
+            }
+
+            getPeriodText(period) {
+                const periods = {
+                    'today': 'اليوم',
+                    'week': 'هذا الأسبوع',
+                    'month': 'هذا الشهر',
+                    'quarter': 'هذا الربع',
+                    'year': 'هذه السنة'
+                };
+                return periods[period] || period;
+            }
+
+            getTypeText(type) {
+                const types = {
+                    'all': 'جميع العملاء',
+                    'active': 'النشطون فقط',
+                    'premium': 'المميزون',
+                    'new': 'الجدد'
+                };
+                return types[type] || type;
+            }
+
+            refreshData() {
+                this.showToast('جاري تحديث البيانات...', 'info');
+                
+                // محاكاة تحديث البيانات
+                setTimeout(() => {
+                    // تحديث بعض البيانات عشوائياً
+                    this.clientsData.summary.totalClients += Math.floor(Math.random() * 3);
+                    this.clientsData.summary.activeClients += Math.floor(Math.random() * 2);
+                    this.clientsData.summary.revenue += Math.floor(Math.random() * 5000);
+                    
+                    // تحديث الواجهة
+                    this.renderSummaryStats();
+                    this.initAnalyticsChart();
+                    
+                    this.showToast('تم تحديث البيانات بنجاح', 'success');
+                }, 1500);
+            }
+
+            simulateFilteredData() {
+                // محاكاة بيانات مفلترة
+                const filterFactors = {
+                    'today': 0.2,
+                    'week': 0.7,
+                    'month': 1,
+                    'quarter': 1.2,
+                    'year': 1.5
+                };
+                
+                const factor = filterFactors[this.currentFilter.period] || 1;
+                
+                // تحديث الإحصائيات حسب الفلتر
+                const filteredStats = {
+                    totalClients: Math.floor(this.clientsData.summary.totalClients * factor),
+                    activeClients: Math.floor(this.clientsData.summary.activeClients * factor * 0.9),
+                    revenue: Math.floor(this.clientsData.summary.revenue * factor)
+                };
+                
+                // تحديث الواجهة مؤقتاً
+                document.getElementById('totalClients').textContent = filteredStats.totalClients;
+                document.getElementById('activeClients').textContent = filteredStats.activeClients;
+                document.getElementById('clientRevenue').textContent = this.formatNumber(filteredStats.revenue);
+            }
+
+            showClientDetail(clientId) {
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId) ||
+                             this.clientsData.activeClients.find(c => c.id === clientId);
+                
+                if (!client) return;
+                
+                this.selectedClient = client;
+                
+                const modal = document.getElementById('clientDetailModal');
+                const title = document.getElementById('clientDetailTitle');
+                const body = document.getElementById('clientDetailBody');
+                
+                title.textContent = `تفاصيل العميل: ${client.name}`;
+                
+                // حساب الإحصائيات الإضافية
+                const lifetimeValue = client.value * 1.5;
+                const avgProjectValue = client.value / client.projects;
+                const daysSinceJoin = Math.floor((new Date() - new Date(client.joinDate)) / (1000 * 60 * 60 * 24));
+                
+                body.innerHTML = `
+                    <div class="client-profile-header">
+                        <div class="client-profile-avatar" style="background: ${client.color};">
+                            ${client.name.charAt(0)}
+                        </div>
+                        <div class="client-profile-info">
+                            <h3>${client.name}</h3>
+                            <p>${client.email}</p>
+                            <p>تاريخ الانضمام: ${this.formatDate(client.joinDate)}</p>
+                            <p>آخر طلب: ${this.formatDate(client.lastOrder)}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="client-profile-stats">
+                        <div class="client-profile-stat">
+                            <div class="client-profile-stat-value">${client.projects}</div>
+                            <div class="client-profile-stat-label">المشاريع</div>
+                        </div>
+                        <div class="client-profile-stat">
+                            <div class="client-profile-stat-value">${this.formatNumber(client.value)}</div>
+                            <div class="client-profile-stat-label">القيمة الإجمالية</div>
+                        </div>
+                        <div class="client-profile-stat">
+                            <div class="client-profile-stat-value">${client.rating}</div>
+                            <div class="client-profile-stat-label">التقييم</div>
+                        </div>
+                        <div class="client-profile-stat">
+                            <div class="client-profile-stat-value">${daysSinceJoin}</div>
+                            <div class="client-profile-stat-label">يوم من الانضمام</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 32px;">
+                        <h4 style="font-size: 18px; margin-bottom: 16px; color: var(--text-primary);">تحليل الأداء</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px;">
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">متوسط قيمة المشروع</div>
+                                <div style="font-size: 20px; font-weight: 900; color: var(--text-primary);">
+                                    ${this.formatNumber(avgProjectValue)} ريال
+                                </div>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px;">
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">القيمة مدى الحياة</div>
+                                <div style="font-size: 20px; font-weight: 900; color: var(--text-primary);">
+                                    ${this.formatNumber(lifetimeValue)} ريال
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 32px; display: flex; gap: 16px;">
+                        <button onclick="clientsStatsSystem.messageClient(${client.id})" 
+                                style="flex: 1; padding: 16px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+                                       color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer;">
+                            <i class="fas fa-comment"></i> إرسال رسالة
+                        </button>
+                        <button onclick="clientsStatsSystem.createProjectForClient(${client.id})" 
+                                style="flex: 1; padding: 16px; background: var(--bg-secondary); 
+                                       color: var(--text-primary); border: 1px solid var(--border-color); 
+                                       border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer;">
+                            <i class="fas fa-plus"></i> مشروع جديد
+                        </button>
+                    </div>
+                `;
+                
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            closeClientDetail() {
+                document.getElementById('clientDetailModal').classList.remove('show');
+                document.body.style.overflow = 'auto';
+                this.selectedClient = null;
+            }
+
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ar-SA');
+            }
+
+            messageClient(clientId, event = null) {
+                if (event) event.stopPropagation();
+                
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId);
+                if (client) {
+                    this.showToast(`جاري فتح محادثة مع ${client.name}...`, 'info');
+                    
+                    // في التطبيق الحقيقي، سيتم فتح صفحة المحادثة
+                    setTimeout(() => {
+                        window.location.href = `messages.html?client=${clientId}`;
+                    }, 500);
+                }
+            }
+
+            callClient(clientId, event = null) {
+                if (event) event.stopPropagation();
+                
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId);
+                if (client) {
+                    this.showToast(`جاري الاتصال بـ ${client.name}...`, 'info');
+                    
+                    // محاكاة الاتصال
+                    setTimeout(() => {
+                        this.showToast('جاري الاتصال... اضغط للرد', 'info');
+                    }, 1000);
+                }
+            }
+
+            showClientActions(clientId, event) {
+                if (event) event.stopPropagation();
+                
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId);
+                if (!client) return;
+                
+                const actions = [
+                    { text: 'إرسال رسالة', icon: 'fa-comment', action: () => this.messageClient(clientId) },
+                    { text: 'مكالمة', icon: 'fa-phone', action: () => this.callClient(clientId) },
+                    { text: 'إنشاء مشروع', icon: 'fa-plus', action: () => this.createProjectForClient(clientId) },
+                    { text: 'تعديل البيانات', icon: 'fa-edit', action: () => this.editClient(clientId) },
+                    { text: 'حذف العميل', icon: 'fa-trash', action: () => this.deleteClient(clientId) }
+                ];
+                
+                this.showActionMenu(actions, event.target);
+            }
+
+            showActionMenu(actions, targetElement) {
+                // إنشاء قائمة الإجراءات
+                const menu = document.createElement('div');
+                menu.className = 'action-menu';
+                menu.style.cssText = `
+                    position: fixed;
+                    background: var(--glass-bg);
+                    backdrop-filter: var(--backdrop-blur);
+                    -webkit-backdrop-filter: var(--backdrop-blur);
+                    border: 1px solid var(--glass-border);
+                    border-radius: 16px;
+                    box-shadow: 0 8px 32px var(--shadow-heavy);
+                    z-index: var(--z-modal);
+                    min-width: 200px;
+                    overflow: hidden;
+                `;
+                
+                menu.innerHTML = actions.map(action => `
+                    <div class="action-menu-item" 
+                         onclick="${action.action.toString().replace(/"/g, '&quot;')}; this.parentElement.remove()"
+                         style="padding: 16px; display: flex; align-items: center; gap: 12px; 
+                                cursor: pointer; transition: all var(--transition-fast);
+                                border-bottom: 1px solid var(--border-color);">
+                        <i class="fas ${action.icon}" style="color: var(--primary-color);"></i>
+                        <span style="flex: 1;">${action.text}</span>
+                    </div>
+                `).join('');
+                
+                // إضافة زر الإغلاق
+                const closeItem = document.createElement('div');
+                closeItem.innerHTML = `
+                    <div class="action-menu-item" 
+                         onclick="this.parentElement.remove()"
+                         style="padding: 16px; display: flex; align-items: center; gap: 12px; 
+                                cursor: pointer; transition: all var(--transition-fast);">
+                        <i class="fas fa-times" style="color: var(--danger-color);"></i>
+                        <span style="flex: 1;">إغلاق</span>
+                    </div>
+                `;
+                menu.appendChild(closeItem);
+                
+                // وضع القائمة بجوار العنصر
+                const rect = targetElement.getBoundingClientRect();
+                menu.style.top = `${rect.bottom + 10}px`;
+                menu.style.right = `${window.innerWidth - rect.right}px`;
+                
+                document.body.appendChild(menu);
+                
+                // إغلاق القائمة عند النقر خارجها
+                setTimeout(() => {
+                    const closeMenu = (e) => {
+                        if (!menu.contains(e.target) && e.target !== targetElement) {
+                            menu.remove();
+                            document.removeEventListener('click', closeMenu);
+                        }
+                    };
+                    document.addEventListener('click', closeMenu);
+                }, 100);
+            }
+
+            replyToReview(reviewId, event) {
+                if (event) event.stopPropagation();
+                
+                const review = this.clientsData.reviews.find(r => r.id === reviewId);
+                if (review) {
+                    const reply = prompt(`الرد على تقييم ${review.clientName}:`, 'شكراً لك على تقييمك القيم!');
+                    if (reply) {
+                        this.showToast('تم إرسال ردك بنجاح', 'success');
+                    }
+                }
+            }
+
+            createProjectForClient(clientId) {
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId);
+                if (client) {
+                    this.showToast(`جاري إنشاء مشروع جديد لـ ${client.name}...`, 'info');
+                    
+                    setTimeout(() => {
+                        this.showToast('تم فتح نموذج المشروع الجديد', 'success');
+                    }, 500);
+                }
+            }
+
+            editClient(clientId) {
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId);
+                if (client) {
+                    this.showToast(`جاري فتح نموذج تعديل بيانات ${client.name}...`, 'info');
+                }
+            }
+
+            deleteClient(clientId) {
+                const client = this.clientsData.clientsTable.find(c => c.id === clientId);
+                if (client) {
+                    if (confirm(`هل أنت متأكد من حذف العميل "${client.name}"؟`)) {
+                        // محاكاة الحذف
+                        this.clientsData.clientsTable = this.clientsData.clientsTable.filter(c => c.id !== clientId);
+                        this.renderClientsTable();
+                        this.showToast('تم حذف العميل بنجاح', 'success');
+                    }
+                }
+            }
+
+            // عرض الصفحات المختلفة
+            viewTotalClients() {
+                this.showToast('جاري فتح قائمة جميع العملاء...', 'info');
+            }
+
+            viewActiveClients() {
+                this.showToast('جاري فتح قائمة العملاء النشطين...', 'info');
+            }
+
+            viewRevenue() {
+                this.showToast('جاري فتح تحليل الإيرادات...', 'info');
+            }
+
+            viewSatisfaction() {
+                this.showToast('جاري فتح تحليل رضا العملاء...', 'info');
+            }
+
+            viewAdvancedAnalytics() {
+                this.showToast('جاري فتح التحليلات المتقدمة...', 'info');
+            }
+
+            viewAllActiveClients() {
+                this.showToast('جاري فتح جميع العملاء النشطين...', 'info');
+            }
+
+            viewGeographicDetails() {
+                this.showToast('جاري فتح الخريطة التفاعلية...', 'info');
+            }
+
+            viewAllReviews() {
+                this.showToast('جاري فتح جميع التقييمات...', 'info');
+            }
+
+            exportData() {
+                this.showToast('جاري إنشاء تقرير البيانات...', 'info');
+                
+                setTimeout(() => {
+                    // محاكاة إنشاء تقرير
+                    const report = {
+                        title: 'تقرير إحصائيات العملاء',
+                        date: new Date().toLocaleDateString('ar-SA'),
+                        summary: this.clientsData.summary,
+                        totalClients: this.clientsData.clientsTable.length
+                    };
+                    
+                    this.showToast('تم إنشاء التقرير بنجاح', 'success');
+                    console.log('تقرير العملاء:', report);
+                }, 2000);
+            }
+
+            exportTable() {
+                this.showToast('جاري تصدير جدول العملاء...', 'info');
+                
+                setTimeout(() => {
+                    this.showToast('تم تصدير الجدول بنجاح', 'success');
+                }, 1500);
+            }
+
+            addClient() {
+                this.showToast('جاري فتح نموذج إضافة عميل جديد...', 'info');
+                
+                setTimeout(() => {
+                    const name = prompt('اسم العميل الجديد:', '');
+                    const email = prompt('البريد الإلكتروني:', '');
+                    
+                    if (name && email) {
+                        const newClient = {
+                            id: Date.now(),
+                            name: name,
+                            email: email,
+                            status: 'pending',
+                            projects: 0,
+                            value: 0,
+                            rating: 0,
+                            lastOrder: new Date().toISOString().split('T')[0],
+                            joinDate: new Date().toISOString().split('T')[0],
+                            color: this.getRandomColor()
+                        };
+                        
+                        this.clientsData.clientsTable.unshift(newClient);
+                        this.clientsData.summary.totalClients++;
+                        this.saveData();
+                        this.renderDashboard();
+                        
+                        this.showToast('تم إضافة العميل الجديد بنجاح', 'success');
+                    }
+                }, 500);
+            }
+
+            getRandomColor() {
+                const colors = [
+                    '#0a9396', '#ee9b00', '#9b5de5', '#2a9d8f', '#e76f51',
+                    '#4cc9f0', '#ff6b6b', '#ffd166', '#06d6a0', '#118ab2'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            updateRealTimeData() {
+                // محاكاة تحديث البيانات في الوقت الحقيقي
+                if (Math.random() > 0.7) {
+                    // زيادة عدد العملاء النشطين عشوائياً
+                    this.clientsData.summary.activeClients += Math.random() > 0.5 ? 1 : 0;
+                    this.renderSummaryStats();
+                    
+                    // تحديث حالة عميل عشوائي
+                    const randomClient = this.clientsData.activeClients[
+                        Math.floor(Math.random() * this.clientsData.activeClients.length)
+                    ];
+                    if (randomClient) {
+                        randomClient.status = Math.random() > 0.5 ? 'online' : 'offline';
+                        randomClient.lastActive = this.getRandomTimeAgo();
+                        this.renderActiveClients();
+                    }
+                }
+            }
+
+            simulateRealTimeUpdate() {
+                // محاكاة تحديثات في الوقت الفعلي
+                const updates = [
+                    'عميل جديد قام بالتسجيل',
+                    'عميل قام بإكمال مشروع',
+                    'تمت إضافة تقييم جديد',
+                    'عميل قام بتحديث بياناته'
+                ];
+                
+                if (Math.random() > 0.8) {
+                    const update = updates[Math.floor(Math.random() * updates.length)];
+                    this.showToast(update, 'info');
+                }
+            }
+
+            getRandomTimeAgo() {
+                const times = [
+                    'قبل دقيقة',
+                    'قبل 5 دقائق',
+                    'قبل 15 دقيقة',
+                    'قبل ساعة',
+                    'قبل 3 ساعات'
+                ];
+                return times[Math.floor(Math.random() * times.length)];
+            }
+
+            updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ar-SA', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                document.getElementById('currentTime').textContent = timeString;
+            }
+
+            saveData() {
+                localStorage.setItem('clientsStatsData', JSON.stringify(this.clientsData));
+            }
+
+            showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 120px;
+                    left: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? 'linear-gradient(135deg, var(--success-color), #21867a)' : 
+                                type === 'error' ? 'linear-gradient(135deg, var(--danger-color), #d1664b)' :
+                                'linear-gradient(135deg, var(--primary-color), var(--accent-color))'};
+                    color: white;
+                    padding: 16px 20px;
+                    border-radius: 16px;
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                    z-index: var(--z-toast);
+                    animation: slideInUp 0.3s ease-out;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                `;
+                
+                const icon = type === 'success' ? 'check-circle' : 
+                           type === 'error' ? 'exclamation-circle' : 'info-circle';
+                
+                toast.innerHTML = `
+                    <i class="fas fa-${icon}" style="font-size: 20px;"></i>
+                    <div style="flex: 1; font-size: 14px;">${message}</div>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(20px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+
+            showWelcomeMessage() {
+                setTimeout(() => {
+                    this.showToast('مرحباً في نظام تحليل العملاء المتقدم!', 'info');
+                }, 1000);
+            }
+        }
+
+        // تهيئة النظام
+        let clientsStatsSystem;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            clientsStatsSystem = new ClientsStatsSystem();
+        });
+
+        // دالات الواجهة العامة
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#darkModeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('darkMode', 'false');
+            }
+            
+            // تحديث الرسم البياني عند تغيير الوضع
+            if (clientsStatsSystem) {
+                setTimeout(() => {
+                    clientsStatsSystem.initAnalyticsChart();
+                }, 100);
+            }
+        }
+
+        // التحقق من الوضع المحفوظ
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').className = 'fas fa-sun';
+        }
+
+        // إضافة أنيميشن للرسوم البيانية
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes chartGrow {
+                from {
+                    transform: scaleY(0);
+                }
+                to {
+                    transform: scaleY(1);
+                }
+            }
+            
+            .overview-stat {
+                animation: slideInUp 0.6s ease-out;
+            }
+            
+            .overview-stat:nth-child(2) {
+                animation-delay: 0.1s;
+            }
+            
+            .overview-stat:nth-child(3) {
+                animation-delay: 0.2s;
+            }
+            
+            .overview-stat:nth-child(4) {
+                animation-delay: 0.3s;
+            }
+            
+            .action-menu-item:hover {
+                background: var(--primary-color);
+                color: white;
+            }
+            
+            .action-menu-item:hover i {
+                color: white !important;
+            }
+            
+            /* تحسينات للشاشات الصغيرة */
+            @media (max-width: 768px) {
+                .client-profile-stats {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                
+                .action-menu {
+                    min-width: 180px !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

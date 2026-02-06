@@ -1,0 +1,2845 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إنشاء مشروع جديد | بيكسل آرت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0a9396;
+            --primary-dark: #005f73;
+            --primary-light: #94d2bd;
+            --primary-gradient: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+            --secondary-color: #ee9b00;
+            --secondary-dark: #ca6702;
+            --secondary-light: #ffb347;
+            --success-color: #2a9d8f;
+            --warning-color: #e9c46a;
+            --danger-color: #e76f51;
+            --bg-primary: rgba(255, 255, 255, 0.95);
+            --bg-secondary: rgba(248, 250, 252, 0.9);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.25);
+            --transition-fast: 200ms;
+            --transition-medium: 300ms;
+            --transition-slow: 500ms;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                url('background/designer-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-primary);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* شريط الحالة */
+        .status-bar {
+            height: 28px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .status-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* هيدر الصفحة */
+        .page-header {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 28px;
+            z-index: 999;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(-2px);
+        }
+
+        .page-title {
+            flex: 1;
+            text-align: center;
+            margin-right: 16px;
+        }
+
+        .page-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 2px 0 0 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-action {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .header-action:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* محتوى النموذج */
+        .form-container {
+            padding: 16px;
+            margin-top: 98px;
+            margin-bottom: 80px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* تقدم النموذج */
+        .form-progress {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            height: 3px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            z-index: 2;
+            transition: width var(--transition-slow);
+        }
+
+        .progress-step {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 16px;
+            transition: all var(--transition-medium);
+        }
+
+        .progress-step.active .step-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .progress-step.completed .step-icon {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .progress-step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* خطوات النموذج */
+        .form-steps {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 24px;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .step-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .step-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* مجموعة الحقول */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: var(--danger-color);
+            margin-right: 4px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+
+        /* حقول الإدخال */
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--glass-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10, 147, 150, 0.1);
+        }
+
+        .form-input.error, .form-textarea.error, .form-select.error {
+            border-color: var(--danger-color);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* حقل البحث */
+        .search-field {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .search-field .form-input {
+            padding-left: 44px;
+        }
+
+        /* فئات المشروع */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .category-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            position: relative;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .category-card.selected {
+            background: rgba(10, 147, 150, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .category-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* محدد التاريخ */
+        .date-picker {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .date-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .date-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .date-input .form-input {
+            padding-left: 44px;
+        }
+
+        /* شريط المدى الزمني */
+        .timeline-slider {
+            margin-top: 16px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .slider-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--border-color);
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* محدد السعر */
+        .price-input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .price-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .currency {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .price-input .form-input {
+            padding-left: 44px;
+        }
+
+        .price-suggestions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .price-suggestion {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .price-suggestion:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* رفع الملفات */
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.05);
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--success-color);
+            background: rgba(42, 157, 143, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .upload-text h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .upload-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+        }
+
+        .browse-btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 24px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .browse-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .file-list {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .file-list.has-files {
+            display: block;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .file-remove {
+            color: var(--danger-color);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .file-remove:hover {
+            transform: scale(1.2);
+        }
+
+        /* خيارات متقدمة */
+        .advanced-options {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .options-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .options-toggle.collapsed {
+            margin-bottom: 0;
+        }
+
+        .toggle-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+        }
+
+        .options-toggle:hover .toggle-icon {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .options-toggle h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            flex: 1;
+        }
+
+        .options-content {
+            overflow: hidden;
+            transition: all var(--transition-medium);
+        }
+
+        .options-content.collapsed {
+            height: 0;
+            opacity: 0;
+        }
+
+        /* المعايير */
+        .criteria-list {
+            margin-top: 16px;
+        }
+
+        .criteria-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: var(--radius-md);
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .criteria-check {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .criteria-check.checked {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .criteria-text {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .criteria-delete {
+            color: var(--danger-color);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all var(--transition-fast);
+        }
+
+        .criteria-delete:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .add-criteria {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .add-criteria input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+        }
+
+        .add-criteria button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .add-criteria button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* نموذج المعاينة */
+        .preview-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .preview-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .preview-title h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0 0 4px 0;
+        }
+
+        .preview-title p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .preview-section {
+            margin-bottom: 20px;
+        }
+
+        .preview-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .preview-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .preview-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* أزرار التنقل */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .nav-btn {
+            padding: 14px 28px;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .nav-btn.prev {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            margin-right: auto;
+        }
+
+        .nav-btn.submit {
+            background: linear-gradient(135deg, var(--success-color), #2a9d8f);
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-btn.prev:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* شريط التنقل السفلي */
+        .bottom-nav {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 10px;
+            border-top: 1px solid var(--glass-border);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 11px;
+            flex: 1;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-item:hover {
+            color: var(--primary-color);
+            background: rgba(10, 147, 150, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--secondary-color);
+            background: rgba(238, 155, 0, 0.1);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+        }
+
+        /* نافذة التأكيد */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-medium);
+            padding: 20px;
+        }
+
+        .confirm-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .confirm-content {
+            background: var(--glass-bg);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            animation: modalSlideIn 0.4s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirm-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .confirm-header i {
+            font-size: 48px;
+            color: var(--success-color);
+            margin-bottom: 16px;
+        }
+
+        .confirm-header h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .confirm-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .confirm-body {
+            padding: 24px;
+        }
+
+        .confirm-details {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .confirm-details p {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .confirm-details p:last-child {
+            margin-bottom: 0;
+        }
+
+        .confirm-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+        }
+
+        .confirm-btn.cancel {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .confirm-btn.confirm {
+            background: linear-gradient(135deg, var(--success-color), #2a9d8f);
+            color: white;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            animation: slideInRight 0.3s ease;
+            transform-origin: right center;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.success {
+            border-right: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-right: 4px solid var(--danger-color);
+        }
+
+        .toast.info {
+            border-right: 4px solid var(--primary-color);
+        }
+
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .toast.success .toast-icon {
+            background: rgba(42, 157, 143, 0.2);
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-icon {
+            background: rgba(231, 111, 81, 0.2);
+            color: var(--danger-color);
+        }
+
+        .toast.info .toast-icon {
+            background: rgba(10, 147, 150, 0.2);
+            color: var(--primary-color);
+        }
+
+        .toast-content {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 14px;
+            transition: all var(--transition-fast);
+        }
+
+        .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* تحسينات للأندرويد */
+        @media (hover: none) {
+            .nav-btn:hover,
+            .header-action:hover,
+            .category-card:hover,
+            .price-suggestion:hover,
+            .browse-btn:hover,
+            .confirm-btn:hover {
+                transform: none;
+            }
+            
+            .nav-btn:active,
+            .header-action:active,
+            .category-card:active,
+            .price-suggestion:active,
+            .browse-btn:active,
+            .confirm-btn:active {
+                transform: scale(0.95);
+            }
+            
+            .file-upload-area.dragover {
+                transform: none;
+            }
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .form-container {
+                margin-top: 78px;
+                padding: 12px;
+            }
+            
+            .form-steps {
+                padding: 16px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .nav-btn.next {
+                margin-right: 0;
+            }
+            
+            .price-input-group {
+                flex-direction: column;
+            }
+            
+            .date-picker {
+                flex-direction: column;
+            }
+            
+            .confirm-footer {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                height: 60px;
+            }
+            
+            .page-title h1 {
+                font-size: 16px;
+            }
+            
+            .page-title p {
+                font-size: 10px;
+            }
+            
+            .form-container {
+                margin-top: 68px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .progress-steps::before {
+                display: none;
+            }
+            
+            .progress-line {
+                display: none;
+            }
+            
+            .bottom-nav {
+                height: 60px;
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .nav-item i {
+                font-size: 18px;
+            }
+        }
+
+        /* شريط التمرير المخصص */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
+        }
+
+        /* تأثيرات التحريك */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* تأثير الهز */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط الحالة -->
+    <div class="status-bar">
+        <div class="status-time">
+            <i class="far fa-clock"></i>
+            <span id="currentTime">--:--</span>
+        </div>
+        <div class="status-icons">
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+            <i class="fas fa-signal"></i>
+        </div>
+    </div>
+
+    <!-- هيدر الصفحة -->
+    <header class="page-header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="page-title">
+            <h1>إنشاء مشروع جديد</h1>
+            <p>ابدأ مشروعك الإبداعي الآن</p>
+        </div>
+        <div class="header-actions">
+            <div class="header-action" onclick="saveDraft()">
+                <i class="fas fa-save"></i>
+            </div>
+            <div class="header-action" onclick="toggleDarkMode()">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="form-container">
+        <!-- تقدم النموذج -->
+        <div class="form-progress">
+            <div class="progress-steps">
+                <div class="progress-line" id="progressLine" style="width: 0%"></div>
+                
+                <div class="progress-step active" data-step="1">
+                    <div class="step-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <span class="step-label">المعلومات الأساسية</span>
+                </div>
+                
+                <div class="progress-step" data-step="2">
+                    <div class="step-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <span class="step-label">التفاصيل</span>
+                </div>
+                
+                <div class="progress-step" data-step="3">
+                    <div class="step-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <span class="step-label">السعر والتوقيت</span>
+                </div>
+                
+                <div class="progress-step" data-step="4">
+                    <div class="step-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <span class="step-label">المرفقات</span>
+                </div>
+                
+                <div class="progress-step" data-step="5">
+                    <div class="step-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <span class="step-label">معاينة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- خطوات النموذج -->
+        <div class="form-steps">
+            <!-- الخطوة 1: المعلومات الأساسية -->
+            <div class="form-step active" id="step1">
+                <div class="step-header">
+                    <h2>المعلومات الأساسية</h2>
+                    <p>أدخل المعلومات الأساسية لمشروعك الجديد</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        عنوان المشروع
+                    </label>
+                    <input type="text" class="form-input" id="projectTitle" placeholder="مثال: تصميم شعار لمطعم" maxlength="100">
+                    <div class="error-message" id="titleError">يرجى إدخال عنوان المشروع</div>
+                    <div class="form-hint">يجب أن يكون العنوان واضحاً ومعبراً عن محتوى المشروع (الحد الأقصى 100 حرف)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        فئة المشروع
+                    </label>
+                    <div class="search-field">
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <input type="text" class="form-input" id="categorySearch" placeholder="ابحث عن فئة...">
+                    </div>
+                    
+                    <div class="categories-grid" id="categoriesGrid">
+                        <!-- سيتم إضافة الفئات ديناميكياً -->
+                    </div>
+                    <div class="error-message" id="categoryError">يرجى اختيار فئة المشروع</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        وصف المشروع
+                    </label>
+                    <textarea class="form-textarea" id="projectDescription" placeholder="صف مشروعك بالتفصيل..."></textarea>
+                    <div class="error-message" id="descriptionError">يرجى إدخال وصف المشروع</div>
+                    <div class="form-hint">
+                        اشرح متطلبات المشروع بوضوح. كلما كان الوصف دقيقاً، كانت النتائج أفضل
+                    </div>
+                </div>
+            </div>
+
+            <!-- الخطوة 2: التفاصيل -->
+            <div class="form-step" id="step2">
+                <div class="step-header">
+                    <h2>تفاصيل المشروع</h2>
+                    <p>حدد التفاصيل الدقيقة لمشروعك</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        العميل
+                    </label>
+                    <div class="search-field">
+                        <div class="search-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <input type="text" class="form-input" id="clientSearch" placeholder="ابحث عن عميل...">
+                    </div>
+                    <div class="form-hint">يمكنك اختيار عميل من قائمة العملاء أو إضافة عميل جديد</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        نوع العميل
+                    </label>
+                    <div class="client-types">
+                        <div class="categories-grid">
+                            <div class="category-card" data-client-type="individual" onclick="selectClientType('individual')">
+                                <div class="category-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="category-name">فرد</div>
+                                <div class="category-desc">عميل فرد</div>
+                            </div>
+                            <div class="category-card" data-client-type="company" onclick="selectClientType('company')">
+                                <div class="category-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="category-name">شركة</div>
+                                <div class="category-desc">مؤسسة أو شركة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        الأولوية
+                    </label>
+                    <div class="categories-grid">
+                        <div class="category-card" data-priority="low" onclick="selectPriority('low')">
+                            <div class="category-icon">
+                                <i class="fas fa-thermometer-empty"></i>
+                            </div>
+                            <div class="category-name">منخفضة</div>
+                            <div class="category-desc">غير مستعجل</div>
+                        </div>
+                        <div class="category-card" data-priority="medium" onclick="selectPriority('medium')">
+                            <div class="category-icon">
+                                <i class="fas fa-thermometer-half"></i>
+                            </div>
+                            <div class="category-name">متوسطة</div>
+                            <div class="category-desc">عادية</div>
+                        </div>
+                        <div class="category-card" data-priority="high" onclick="selectPriority('high')">
+                            <div class="category-icon">
+                                <i class="fas fa-thermometer-full"></i>
+                            </div>
+                            <div class="category-name">عالية</div>
+                            <div class="category-desc">مستعجل</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="advanced-options">
+                    <div class="options-toggle" onclick="toggleOptions()">
+                        <div class="toggle-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h3>خيارات متقدمة</h3>
+                    </div>
+                    
+                    <div class="options-content collapsed" id="advancedOptions">
+                        <div class="form-group">
+                            <label class="form-label">
+                                المعايير والمتطلبات
+                            </label>
+                            <div class="criteria-list" id="criteriaList">
+                                <!-- سيتم إضافة المعايير ديناميكياً -->
+                            </div>
+                            
+                            <div class="add-criteria">
+                                <input type="text" id="newCriteria" placeholder="أضف معياراً جديداً...">
+                                <button onclick="addCriteria()">إضافة</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                الألوان المفضلة
+                            </label>
+                            <input type="text" class="form-input" id="projectColors" placeholder="#FF5733, #33FF57, #3357FF">
+                            <div class="form-hint">أدخل الألوان بصيغة hex مفصولة بفواصل</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                النمط التصميمي
+                            </label>
+                            <select class="form-select" id="designStyle">
+                                <option value="">اختر النمط التصميمي</option>
+                                <option value="modern">حديث</option>
+                                <option value="classic">كلاسيكي</option>
+                                <option value="minimal">بسيط</option>
+                                <option value="creative">إبداعي</option>
+                                <option value="corporate">شركات</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الخطوة 3: السعر والتوقيت -->
+            <div class="form-step" id="step3">
+                <div class="step-header">
+                    <h2>السعر والتوقيت</h2>
+                    <p>حدد السعر والمواعيد النهائية للمشروع</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        الميزانية
+                    </label>
+                    <div class="price-input-group">
+                        <div class="price-input">
+                            <span class="currency">ريال</span>
+                            <input type="number" class="form-input" id="projectBudget" placeholder="0" min="0" step="100">
+                        </div>
+                    </div>
+                    <div class="error-message" id="budgetError">يرجى إدخال الميزانية</div>
+                    
+                    <div class="price-suggestions">
+                        <div class="price-suggestion" onclick="setBudget(500)">500 ريال</div>
+                        <div class="price-suggestion" onclick="setBudget(1000)">1,000 ريال</div>
+                        <div class="price-suggestion" onclick="setBudget(2000)">2,000 ريال</div>
+                        <div class="price-suggestion" onclick="setBudget(5000)">5,000 ريال</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        تاريخ البدء
+                    </label>
+                    <div class="date-picker">
+                        <div class="date-input">
+                            <div class="date-icon">
+                                <i class="far fa-calendar-alt"></i>
+                            </div>
+                            <input type="date" class="form-input" id="startDate">
+                        </div>
+                    </div>
+                    <div class="error-message" id="startDateError">يرجى تحديد تاريخ البدء</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="required">*</span>
+                        تاريخ التسليم
+                    </label>
+                    <div class="date-picker">
+                        <div class="date-input">
+                            <div class="date-icon">
+                                <i class="far fa-calendar-check"></i>
+                            </div>
+                            <input type="date" class="form-input" id="deadline">
+                        </div>
+                    </div>
+                    <div class="error-message" id="deadlineError">يرجى تحديد تاريخ التسليم</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        المدة المتوقعة
+                    </label>
+                    <div class="timeline-slider">
+                        <div class="slider-header">
+                            <span>المدة:</span>
+                            <span class="slider-value" id="timelineValue">7 أيام</span>
+                        </div>
+                        <input type="range" class="range-slider" id="timelineSlider" min="1" max="30" value="7">
+                        <div class="timeline-labels">
+                            <span>يوم</span>
+                            <span>أسبوع</span>
+                            <span>شهر</span>
+                        </div>
+                    </div>
+                    <div class="form-hint">يمكنك ضبط المدة المتوقعة للمشروع</div>
+                </div>
+            </div>
+
+            <!-- الخطوة 4: المرفقات -->
+            <div class="form-step" id="step4">
+                <div class="step-header">
+                    <h2>المرفقات</h2>
+                    <p>أرفق الملفات اللازمة لمشروعك</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        ملفات المشروع
+                    </label>
+                    <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h3>اسحب وأفلت الملفات هنا</h3>
+                            <p>أو انقر للاختيار من جهازك</p>
+                            <div class="browse-btn">تصفح الملفات</div>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFiles(this.files)">
+                    
+                    <div class="file-list" id="fileList">
+                        <!-- سيتم إضافة الملفات المرفوعة ديناميكياً -->
+                    </div>
+                    
+                    <div class="form-hint">
+                        يمكنك رفع الصور، ملفات PDF، مستندات Word، أو ملفات التصميم. الحد الأقصى 50MB لكل ملف
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        روابط خارجية
+                    </label>
+                    <div class="add-criteria">
+                        <input type="url" id="newLink" placeholder="https://example.com">
+                        <button onclick="addLink()">إضافة رابط</button>
+                    </div>
+                    <div class="links-list" id="linksList">
+                        <!-- سيتم إضافة الروابط ديناميكياً -->
+                    </div>
+                    <div class="form-hint">يمكنك إضافة روابط للتصاميم المرجعية أو المواقع المشابهة</div>
+                </div>
+            </div>
+
+            <!-- الخطوة 5: المعاينة -->
+            <div class="form-step" id="step5">
+                <div class="step-header">
+                    <h2>معاينة المشروع</h2>
+                    <p>راجع معلومات مشروعك قبل الإنشاء</p>
+                </div>
+
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <div class="preview-icon" id="previewIcon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div class="preview-title">
+                            <h3 id="previewTitle">عنوان المشروع</h3>
+                            <p id="previewCategory">فئة المشروع</p>
+                        </div>
+                    </div>
+
+                    <div class="preview-section">
+                        <h4>الوصف</h4>
+                        <div class="preview-content" id="previewDescription">وصف المشروع</div>
+                    </div>
+
+                    <div class="preview-section">
+                        <h4>التفاصيل</h4>
+                        <div class="preview-content">
+                            <div class="preview-row">
+                                <span class="preview-label">العميل:</span>
+                                <span id="previewClient">غير محدد</span>
+                            </div>
+                            <div class="preview-row">
+                                <span class="preview-label">الأولوية:</span>
+                                <span id="previewPriority">متوسطة</span>
+                            </div>
+                            <div class="preview-row">
+                                <span class="preview-label">الميزانية:</span>
+                                <span id="previewBudget">0 ريال</span>
+                            </div>
+                            <div class="preview-row">
+                                <span class="preview-label">تاريخ البدء:</span>
+                                <span id="previewStartDate">غير محدد</span>
+                            </div>
+                            <div class="preview-row">
+                                <span class="preview-label">تاريخ التسليم:</span>
+                                <span id="previewDeadline">غير محدد</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preview-section">
+                        <h4>المعايير</h4>
+                        <div class="preview-content" id="previewCriteria">لا توجد معايير محددة</div>
+                    </div>
+
+                    <div class="preview-section">
+                        <h4>الملفات المرفقة</h4>
+                        <div class="preview-content" id="previewFiles">لا توجد ملفات مرفقة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار التنقل -->
+            <div class="form-navigation">
+                <button class="nav-btn prev" id="prevBtn" onclick="prevStep()" disabled>
+                    <i class="fas fa-arrow-right"></i>
+                    السابق
+                </button>
+                
+                <button class="nav-btn next" id="nextBtn" onclick="nextStep()">
+                    التالي
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+                <button class="nav-btn submit" id="submitBtn" onclick="submitProject()" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    إنشاء المشروع
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+        <a href="dashboard-designer.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        
+        <a href="my-projects.html" class="nav-item">
+            <i class="fas fa-project-diagram"></i>
+            <span>مشاريعي</span>
+        </a>
+        
+        <a href="new-project.html" class="nav-item active">
+            <i class="fas fa-plus-circle"></i>
+            <span>جديد</span>
+        </a>
+        
+        <a href="jobs.html" class="nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span>الوظائف</span>
+        </a>
+        
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>حسابي</span>
+        </a>
+    </nav>
+
+    <!-- نافذة التأكيد -->
+    <div class="confirm-modal" id="confirmModal">
+        <div class="confirm-content">
+            <div class="confirm-header">
+                <i class="fas fa-check-circle"></i>
+                <h3>تم إنشاء المشروع بنجاح!</h3>
+                <p>سيتم إضافة المشروع إلى قائمة مشاريعك</p>
+            </div>
+            <div class="confirm-body">
+                <div class="confirm-details">
+                    <p><strong>رقم المشروع:</strong> <span id="confirmProjectId">#001</span></p>
+                    <p><strong>الحالة:</strong> <span style="color: var(--primary-color);">مسودة</span></p>
+                    <p><strong>سيتم إرسال إشعار إلى:</strong> <span id="confirmClient">العميل</span></p>
+                </div>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-btn cancel" onclick="closeConfirmModal()">
+                    عرض المشروع
+                </button>
+                <button class="confirm-btn confirm" onclick="goToProjects()">
+                    إنشاء مشروع جديد
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- حاوية Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // البيانات والمتغيرات
+        let currentStep = 1;
+        let totalSteps = 5;
+        let selectedCategory = null;
+        let selectedClientType = null;
+        let selectedPriority = 'medium';
+        let projectData = {
+            title: '',
+            category: '',
+            description: '',
+            client: '',
+            clientType: '',
+            priority: 'medium',
+            budget: 0,
+            startDate: '',
+            deadline: '',
+            timeline: 7,
+            criteria: [],
+            files: [],
+            links: [],
+            colors: '',
+            designStyle: ''
+        };
+
+        // بيانات الفئات
+        const categories = [
+            { id: 1, name: 'شعارات وهوية بصرية', icon: 'fa-paint-brush', description: 'تصميم الشعارات والهوية البصرية' },
+            { id: 2, name: 'UI/UX تصميم', icon: 'fa-layer-group', description: 'واجهات المستخدم وتجربة المستخدم' },
+            { id: 3, name: 'تصميم مواقع', icon: 'fa-globe', description: 'تصميم المواقع الإلكترونية' },
+            { id: 4, name: 'مونتاج فيديو', icon: 'fa-video', description: 'تحرير وتصميم الفيديو' },
+            { id: 5, name: 'تصميم جرافيك', icon: 'fa-image', description: 'تصميمات جرافيك متنوعة' },
+            { id: 6, name: 'تصميم تطبيقات جوال', icon: 'fa-mobile-alt', description: 'واجهات تطبيقات الهاتف' },
+            { id: 7, name: 'تصميم أغلفة كتب', icon: 'fa-book', description: 'تصميم أغلفة الكتب والمجلات' },
+            { id: 8, name: 'تصميم إعلانات', icon: 'fa-bullhorn', description: 'إعلانات وبانرات تسويقية' },
+            { id: 9, name: 'تصميم شخصيات', icon: 'fa-user-ninja', description: 'شخصيات كرتونية ورسوم متحركة' }
+        ];
+
+        // بيانات العملاء
+        const clients = [
+            { id: 1, name: 'أحمد التميمي', type: 'individual', email: 'ahmed@example.com' },
+            { id: 2, name: 'شركة التقنية المتقدمة', type: 'company', email: 'info@tech.com' },
+            { id: 3, name: 'متجر الأثاث الراقي', type: 'company', email: 'contact@furniture.com' },
+            { id: 4, name: 'دار النشر العربية', type: 'company', email: 'publish@arabic.com' },
+            { id: 5, name: 'مؤسسة التعليم الحديث', type: 'company', email: 'education@modern.com' }
+        ];
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // التحقق من تسجيل الدخول
+            checkLoginStatus();
+            
+            // تحديث الوقت
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // تحميل الفئات
+            loadCategories();
+            
+            // تحميل العملاء
+            loadClients();
+            
+            // تهيئة شريط التقدم
+            updateProgressBar();
+            
+            // تهيئة السلايدر
+            initSlider();
+            
+            // تحميل المسودة المحفوظة
+            loadDraft();
+            
+            // إعداد سحب وإفلات الملفات
+            initFileUpload();
+            
+            // إعداد البحث
+            initSearch();
+        });
+
+        // التحقق من تسجيل الدخول
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser || currentUser.type !== 'designer') {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // تحديث الوقت
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ar-SA', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // العودة للصفحة السابقة
+        function goBack() {
+            if (confirm('هل تريد الخروج دون حفظ؟ سيتم فقدان البيانات غير المحفوظة.')) {
+                window.history.back();
+            }
+        }
+
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            const icon = document.querySelector('.header-action:nth-child(2) i');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.remove('dark-mode');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                document.body.classList.add('dark-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+
+        // تحميل الفئات
+        function loadCategories() {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            categoriesGrid.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.dataset.categoryId = category.id;
+                categoryCard.innerHTML = `
+                    <div class="category-icon">
+                        <i class="fas ${category.icon}"></i>
+                    </div>
+                    <div class="category-name">${category.name}</div>
+                    <div class="category-desc">${category.description}</div>
+                `;
+                
+                categoryCard.addEventListener('click', () => selectCategory(category.id));
+                categoriesGrid.appendChild(categoryCard);
+            });
+        }
+
+        // تحميل العملاء
+        function loadClients() {
+            const clientSearch = document.getElementById('clientSearch');
+            clientSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                // هنا يمكن إضافة منطق البحث في العملاء
+            });
+        }
+
+        // اختيار الفئة
+        function selectCategory(categoryId) {
+            // إزالة التحديد من جميع الفئات
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للفئة المختارة
+            const selectedCard = document.querySelector(`[data-category-id="${categoryId}"]`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+                selectedCategory = categories.find(c => c.id === categoryId);
+                projectData.category = selectedCategory.name;
+                clearError('categoryError');
+            }
+        }
+
+        // اختيار نوع العميل
+        function selectClientType(type) {
+            selectedClientType = type;
+            projectData.clientType = type;
+            
+            // إزالة التحديد من جميع الأنواع
+            document.querySelectorAll('[data-client-type]').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للنوع المختار
+            document.querySelector(`[data-client-type="${type}"]`).classList.add('selected');
+        }
+
+        // اختيار الأولوية
+        function selectPriority(priority) {
+            selectedPriority = priority;
+            projectData.priority = priority;
+            
+            // إزالة التحديد من جميع الأولويات
+            document.querySelectorAll('[data-priority]').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // إضافة التحديد للأولوية المختارة
+            document.querySelector(`[data-priority="${priority}"]`).classList.add('selected');
+        }
+
+        // تهيئة السلايدر
+        function initSlider() {
+            const slider = document.getElementById('timelineSlider');
+            const valueDisplay = document.getElementById('timelineValue');
+            
+            slider.addEventListener('input', function() {
+                const days = parseInt(this.value);
+                valueDisplay.textContent = `${days} أيام`;
+                projectData.timeline = days;
+            });
+        }
+
+        // الخطوة التالية
+        function nextStep() {
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            if (currentStep < totalSteps) {
+                // إخفاء الخطوة الحالية
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                
+                // تحديث شريط التقدم
+                const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+                currentStepElement.classList.remove('active');
+                currentStepElement.classList.add('completed');
+                
+                // الانتقال للخطوة التالية
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                const nextStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+                nextStepElement.classList.add('active');
+                
+                // تحديث شريط التقدم
+                updateProgressBar();
+                
+                // تحديث أزرار التنقل
+                updateNavigationButtons();
+                
+                // تحديث المعاينة في الخطوة الأخيرة
+                if (currentStep === totalSteps) {
+                    updatePreview();
+                }
+            }
+        }
+
+        // الخطوة السابقة
+        function prevStep() {
+            if (currentStep > 1) {
+                // إخفاء الخطوة الحالية
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                
+                // تحديث شريط التقدم
+                const currentStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+                currentStepElement.classList.remove('active');
+                currentStepElement.classList.remove('completed');
+                
+                // الانتقال للخطوة السابقة
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                const prevStepElement = document.querySelector(`[data-step="${currentStep}"]`);
+                prevStepElement.classList.add('active');
+                prevStepElement.classList.remove('completed');
+                
+                // تحديث شريط التقدم
+                updateProgressBar();
+                
+                // تحديث أزرار التنقل
+                updateNavigationButtons();
+            }
+        }
+
+        // التحقق من صحة الخطوة الحالية
+        function validateCurrentStep() {
+            let isValid = true;
+            
+            switch(currentStep) {
+                case 1:
+                    // التحقق من العنوان
+                    const title = document.getElementById('projectTitle').value.trim();
+                    if (!title) {
+                        showError('titleError', 'يرجى إدخال عنوان المشروع');
+                        isValid = false;
+                    } else {
+                        clearError('titleError');
+                        projectData.title = title;
+                    }
+                    
+                    // التحقق من الفئة
+                    if (!selectedCategory) {
+                        showError('categoryError', 'يرجى اختيار فئة المشروع');
+                        isValid = false;
+                    } else {
+                        clearError('categoryError');
+                    }
+                    
+                    // التحقق من الوصف
+                    const description = document.getElementById('projectDescription').value.trim();
+                    if (!description) {
+                        showError('descriptionError', 'يرجى إدخال وصف المشروع');
+                        isValid = false;
+                    } else if (description.length < 20) {
+                        showError('descriptionError', 'يجب أن يكون الوصف 20 حرفاً على الأقل');
+                        isValid = false;
+                    } else {
+                        clearError('descriptionError');
+                        projectData.description = description;
+                    }
+                    break;
+                    
+                case 3:
+                    // التحقق من الميزانية
+                    const budget = document.getElementById('projectBudget').value;
+                    if (!budget || budget <= 0) {
+                        showError('budgetError', 'يرجى إدخال ميزانية صحيحة');
+                        isValid = false;
+                    } else {
+                        clearError('budgetError');
+                        projectData.budget = parseInt(budget);
+                    }
+                    
+                    // التحقق من تاريخ البدء
+                    const startDate = document.getElementById('startDate').value;
+                    if (!startDate) {
+                        showError('startDateError', 'يرجى تحديد تاريخ البدء');
+                        isValid = false;
+                    } else {
+                        clearError('startDateError');
+                        projectData.startDate = startDate;
+                    }
+                    
+                    // التحقق من تاريخ التسليم
+                    const deadline = document.getElementById('deadline').value;
+                    if (!deadline) {
+                        showError('deadlineError', 'يرجى تحديد تاريخ التسليم');
+                        isValid = false;
+                    } else if (startDate && deadline <= startDate) {
+                        showError('deadlineError', 'يجب أن يكون تاريخ التسليم بعد تاريخ البدء');
+                        isValid = false;
+                    } else {
+                        clearError('deadlineError');
+                        projectData.deadline = deadline;
+                    }
+                    break;
+            }
+            
+            if (!isValid) {
+                // تأثير الهز للإشارة إلى وجود خطأ
+                document.getElementById(`step${currentStep}`).classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById(`step${currentStep}`).classList.remove('shake');
+                }, 500);
+            }
+            
+            return isValid;
+        }
+
+        // تحديث شريط التقدم
+        function updateProgressBar() {
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressLine').style.width = `${progressPercentage}%`;
+        }
+
+        // تحديث أزرار التنقل
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // زر السابق
+            prevBtn.disabled = currentStep === 1;
+            
+            // زر التالي وإرسال
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'flex';
+            } else {
+                nextBtn.style.display = 'flex';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // عرض خطأ
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            
+            // إضافة كلاس error للحقل
+            const inputId = elementId.replace('Error', '');
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.classList.add('error');
+            }
+        }
+
+        // إخفاء الخطأ
+        function clearError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.classList.remove('show');
+            
+            // إزالة كلاس error من الحقل
+            const inputId = elementId.replace('Error', '');
+            const inputElement = document.getElementById(inputId);
+            if (inputElement) {
+                inputElement.classList.remove('error');
+            }
+        }
+
+        // تعيين الميزانية
+        function setBudget(amount) {
+            document.getElementById('projectBudget').value = amount;
+            projectData.budget = amount;
+            clearError('budgetError');
+        }
+
+        // تبديل الخيارات المتقدمة
+        function toggleOptions() {
+            const optionsContent = document.getElementById('advancedOptions');
+            const toggleIcon = document.querySelector('.toggle-icon i');
+            const optionsToggle = document.querySelector('.options-toggle');
+            
+            if (optionsContent.classList.contains('collapsed')) {
+                optionsContent.classList.remove('collapsed');
+                toggleIcon.classList.remove('fa-plus');
+                toggleIcon.classList.add('fa-minus');
+                optionsToggle.classList.remove('collapsed');
+            } else {
+                optionsContent.classList.add('collapsed');
+                toggleIcon.classList.remove('fa-minus');
+                toggleIcon.classList.add('fa-plus');
+                optionsToggle.classList.add('collapsed');
+            }
+        }
+
+        // إضافة معيار
+        function addCriteria() {
+            const criteriaInput = document.getElementById('newCriteria');
+            const criteriaText = criteriaInput.value.trim();
+            
+            if (!criteriaText) {
+                showToast('يرجى إدخال معيار', 'error');
+                return;
+            }
+            
+            projectData.criteria.push(criteriaText);
+            updateCriteriaList();
+            criteriaInput.value = '';
+            
+            showToast('تم إضافة المعيار', 'success');
+        }
+
+        // تحديث قائمة المعايير
+        function updateCriteriaList() {
+            const criteriaList = document.getElementById('criteriaList');
+            criteriaList.innerHTML = '';
+            
+            projectData.criteria.forEach((criteria, index) => {
+                const criteriaItem = document.createElement('div');
+                criteriaItem.className = 'criteria-item';
+                criteriaItem.innerHTML = `
+                    <div class="criteria-check checked">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="criteria-text">${criteria}</div>
+                    <div class="criteria-delete" onclick="deleteCriteria(${index})">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                criteriaList.appendChild(criteriaItem);
+            });
+        }
+
+        // حذف معيار
+        function deleteCriteria(index) {
+            projectData.criteria.splice(index, 1);
+            updateCriteriaList();
+            showToast('تم حذف المعيار', 'info');
+        }
+
+        // تهيئة رفع الملفات
+        function initFileUpload() {
+            const uploadArea = document.getElementById('fileUploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            // سحب وإفلات الملفات
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+        }
+
+        // معالجة الملفات
+        function handleFiles(files) {
+            const fileList = document.getElementById('fileList');
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // التحقق من حجم الملف (50MB كحد أقصى)
+                if (file.size > 50 * 1024 * 1024) {
+                    showToast(`الملف ${file.name} كبير جداً (الحد الأقصى 50MB)`, 'error');
+                    continue;
+                }
+                
+                // إضافة الملف للبيانات
+                projectData.files.push({
+                    name: file.name,
+                    size: formatFileSize(file.size),
+                    type: file.type,
+                    file: file
+                });
+                
+                // إضافة الملف للعرض
+                addFileToList(file);
+            }
+            
+            // عرض قائمة الملفات إذا كان هناك ملفات
+            if (projectData.files.length > 0) {
+                fileList.classList.add('has-files');
+            }
+            
+            showToast(`تم رفع ${files.length} ملف(ات)`, 'success');
+        }
+
+        // إضافة ملف للقائمة
+        function addFileToList(file) {
+            const fileList = document.getElementById('fileList');
+            
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-icon">
+                    <i class="fas ${getFileIcon(file.type)}"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-size">${formatFileSize(file.size)}</div>
+                </div>
+                <div class="file-remove" onclick="removeFile(this)">
+                    <i class="fas fa-times"></i>
+                </div>
+            `;
+            
+            fileList.appendChild(fileItem);
+        }
+
+        // إزالة ملف
+        function removeFile(element) {
+            const fileItem = element.closest('.file-item');
+            const fileName = fileItem.querySelector('.file-name').textContent;
+            
+            // إزالة الملف من البيانات
+            projectData.files = projectData.files.filter(f => f.name !== fileName);
+            
+            // إزالة الملف من العرض
+            fileItem.remove();
+            
+            // إخفاء قائمة الملفات إذا لم تعد هناك ملفات
+            if (projectData.files.length === 0) {
+                document.getElementById('fileList').classList.remove('has-files');
+            }
+            
+            showToast('تم حذف الملف', 'info');
+        }
+
+        // إضافة رابط
+        function addLink() {
+            const linkInput = document.getElementById('newLink');
+            const linkUrl = linkInput.value.trim();
+            
+            if (!linkUrl) {
+                showToast('يرجى إدخال رابط', 'error');
+                return;
+            }
+            
+            if (!isValidUrl(linkUrl)) {
+                showToast('يرجى إدخال رابط صحيح', 'error');
+                return;
+            }
+            
+            projectData.links.push(linkUrl);
+            updateLinksList();
+            linkInput.value = '';
+            
+            showToast('تم إضافة الرابط', 'success');
+        }
+
+        // تحديث قائمة الروابط
+        function updateLinksList() {
+            const linksList = document.getElementById('linksList');
+            linksList.innerHTML = '';
+            
+            projectData.links.forEach((link, index) => {
+                const linkItem = document.createElement('div');
+                linkItem.className = 'criteria-item';
+                linkItem.innerHTML = `
+                    <div class="criteria-check">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <div class="criteria-text">
+                        <a href="${link}" target="_blank">${link}</a>
+                    </div>
+                    <div class="criteria-delete" onclick="deleteLink(${index})">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                linksList.appendChild(linkItem);
+            });
+        }
+
+        // حذف رابط
+        function deleteLink(index) {
+            projectData.links.splice(index, 1);
+            updateLinksList();
+            showToast('تم حذف الرابط', 'info');
+        }
+
+        // تحديث المعاينة
+        function updatePreview() {
+            // العنوان والفئة
+            document.getElementById('previewTitle').textContent = projectData.title;
+            document.getElementById('previewCategory').textContent = projectData.category;
+            
+            // الأيقونة حسب الفئة
+            const categoryIcon = categories.find(c => c.name === projectData.category)?.icon || 'fa-paint-brush';
+            document.getElementById('previewIcon').innerHTML = `<i class="fas ${categoryIcon}"></i>`;
+            
+            // الوصف
+            document.getElementById('previewDescription').textContent = projectData.description;
+            
+            // العميل
+            const clientName = document.getElementById('clientSearch').value || 'غير محدد';
+            document.getElementById('previewClient').textContent = clientName;
+            
+            // الأولوية
+            const priorityText = {
+                'low': 'منخفضة',
+                'medium': 'متوسطة',
+                'high': 'عالية'
+            }[projectData.priority] || 'متوسطة';
+            document.getElementById('previewPriority').textContent = priorityText;
+            
+            // الميزانية
+            document.getElementById('previewBudget').textContent = projectData.budget.toLocaleString() + ' ريال';
+            
+            // التواريخ
+            document.getElementById('previewStartDate').textContent = projectData.startDate ? formatDate(projectData.startDate) : 'غير محدد';
+            document.getElementById('previewDeadline').textContent = projectData.deadline ? formatDate(projectData.deadline) : 'غير محدد';
+            
+            // المعايير
+            const criteriaPreview = document.getElementById('previewCriteria');
+            if (projectData.criteria.length > 0) {
+                criteriaPreview.innerHTML = projectData.criteria.map(c => `• ${c}`).join('<br>');
+            } else {
+                criteriaPreview.textContent = 'لا توجد معايير محددة';
+            }
+            
+            // الملفات
+            const filesPreview = document.getElementById('previewFiles');
+            if (projectData.files.length > 0) {
+                filesPreview.innerHTML = projectData.files.map(f => `• ${f.name} (${f.size})`).join('<br>');
+            } else {
+                filesPreview.textContent = 'لا توجد ملفات مرفقة';
+            }
+        }
+
+        // تقديم المشروع
+        function submitProject() {
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            // جمع البيانات النهائية
+            const finalData = {
+                ...projectData,
+                id: generateProjectId(),
+                createdAt: new Date().toISOString(),
+                status: 'draft',
+                designer: JSON.parse(localStorage.getItem('currentUser')).name,
+                progress: 0,
+                client: document.getElementById('clientSearch').value || 'عميل جديد',
+                colors: document.getElementById('projectColors').value,
+                designStyle: document.getElementById('designStyle').value
+            };
+            
+            // حفظ المشروع
+            saveProject(finalData);
+            
+            // عرض نافذة التأكيد
+            showConfirmModal(finalData);
+        }
+
+        // حفظ المشروع
+        function saveProject(project) {
+            // الحصول على المشاريع الحالية من localStorage
+            const projects = JSON.parse(localStorage.getItem('userProjects') || '[]');
+            
+            // إضافة المشروع الجديد
+            projects.push(project);
+            
+            // حفظ المشاريع المحدثة
+            localStorage.setItem('userProjects', JSON.stringify(projects));
+            
+            // حفظ المشروع الأخير للمعاينة
+            localStorage.setItem('lastCreatedProject', JSON.stringify(project));
+            
+            // إظهار رسالة نجاح
+            showToast('تم إنشاء المشروع بنجاح!', 'success');
+        }
+
+        // عرض نافذة التأكيد
+        function showConfirmModal(project) {
+            document.getElementById('confirmProjectId').textContent = `#${project.id}`;
+            document.getElementById('confirmClient').textContent = project.client;
+            
+            document.getElementById('confirmModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق نافذة التأكيد
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // الانتقال إلى صفحة المشاريع
+            window.location.href = 'my-projects.html';
+        }
+
+        // الانتقال إلى المشاريع
+        function goToProjects() {
+            window.location.href = 'my-projects.html';
+        }
+
+        // حفظ المسودة
+        function saveDraft() {
+            // جمع البيانات الحالية
+            const draftData = {
+                ...projectData,
+                savedAt: new Date().toISOString(),
+                client: document.getElementById('clientSearch').value,
+                colors: document.getElementById('projectColors').value,
+                designStyle: document.getElementById('designStyle').value
+            };
+            
+            // حفظ المسودة
+            localStorage.setItem('projectDraft', JSON.stringify(draftData));
+            
+            showToast('تم حفظ المسودة', 'success');
+        }
+
+        // تحميل المسودة
+        function loadDraft() {
+            const draft = JSON.parse(localStorage.getItem('projectDraft'));
+            
+            if (draft) {
+                if (confirm('تم العثور على مسودة محفوظة. هل تريد تحميلها؟')) {
+                    // تحميل البيانات
+                    projectData = draft;
+                    
+                    // تعبئة الحقول
+                    document.getElementById('projectTitle').value = draft.title || '';
+                    document.getElementById('projectDescription').value = draft.description || '';
+                    document.getElementById('projectBudget').value = draft.budget || '';
+                    document.getElementById('projectColors').value = draft.colors || '';
+                    document.getElementById('designStyle').value = draft.designStyle || '';
+                    
+                    // اختيار الفئة إذا كانت موجودة
+                    if (draft.category) {
+                        const category = categories.find(c => c.name === draft.category);
+                        if (category) {
+                            selectCategory(category.id);
+                        }
+                    }
+                    
+                    // اختيار الأولوية
+                    if (draft.priority) {
+                        selectPriority(draft.priority);
+                    }
+                    
+                    showToast('تم تحميل المسودة', 'success');
+                }
+            }
+        }
+
+        // تهيئة البحث
+        function initSearch() {
+            // البحث في الفئات
+            const categorySearch = document.getElementById('categorySearch');
+            categorySearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                document.querySelectorAll('.category-card').forEach(card => {
+                    const categoryName = card.querySelector('.category-name').textContent.toLowerCase();
+                    const categoryDesc = card.querySelector('.category-desc').textContent.toLowerCase();
+                    
+                    if (categoryName.includes(searchTerm) || categoryDesc.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // وظائف مساعدة
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.startsWith('image/')) return 'fa-image';
+            if (fileType.includes('pdf')) return 'fa-file-pdf';
+            if (fileType.includes('word') || fileType.includes('document')) return 'fa-file-word';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return 'fa-file-excel';
+            if (fileType.includes('zip') || fileType.includes('compressed')) return 'fa-file-archive';
+            return 'fa-file';
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function generateProjectId() {
+            return 'PRJ' + Date.now().toString().slice(-6);
+        }
+
+        // عرض Toast
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                </div>
+                <div class="toast-content">${message}</div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // إزالة تلقائية بعد 5 ثوانٍ
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.style.animation = 'slideInRight 0.3s ease reverse';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // تهيئة تأثيرات اللمس للأندرويد
+        function initTouchEffects() {
+            // إضافة تأثير اللمس للأزرار
+            const buttons = document.querySelectorAll('.nav-btn, .header-action, .category-card, .price-suggestion, .browse-btn, .confirm-btn');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                }, {passive: true});
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                }, {passive: true});
+            });
+            
+            // إضافة تأثير اللمس للحقول
+            const inputs = document.querySelectorAll('.form-input, .form-textarea, .form-select');
+            inputs.forEach(input => {
+                input.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                }, {passive: true});
+                
+                input.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                }, {passive: true});
+            });
+        }
+
+        // تشغيل تأثيرات اللمس
+        initTouchEffects();
+    </script>
+</body>
+</html>
